@@ -45,12 +45,21 @@ public class MyClipboard {
     }
 
     /**
-     * Adds an {@link ClipboardEventListener} to the underlying {@link ClipboardListener}
+     * Adds a {@link ClipboardEventListener} to the underlying {@link ClipboardListener}
      *
      * @param clipboardEventListener The {@link ClipboardEventListener} to be added
      */
     public void addEventListener(ClipboardEventListener clipboardEventListener) {
         clipboardListener.addEventListener(clipboardEventListener);
+    }
+
+    /**
+     * Removes a {@link ClipboardEventListener} from the underlying {@link ClipboardListener}
+     *
+     * @param clipboardEventListener The {@link ClipboardEventListener} to be removed
+     */
+    public void removeEventListener(ClipboardEventListener clipboardEventListener) {
+        clipboardListener.removeEventListener(clipboardEventListener);
     }
 
     private static boolean isMac() {
