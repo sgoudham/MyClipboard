@@ -7,19 +7,22 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import me.goudham.listener.ClipboardEventListener;
 
 import static me.goudham.domain.Contents.IMAGE;
 import static me.goudham.domain.Contents.STRING;
 
 abstract class ClipboardListener {
     final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-    List<ClipboardEventListener> eventsListener = new ArrayList<>();
+    private EventManager eventManager = new EventManager();
     private boolean imagesMonitored = true;
     private boolean textMonitored = true;
 
+    /**
+     * Try to unmarshal {@link Transferable} into {@link String}
+     *
+     * @param clipboardContents The {@link Transferable} to be converted into {@link String}
+     * @return {@link String} representation of {@code clipboardContents}
+     */
     String getStringContent(Transferable clipboardContents) {
         String newContent = null;
 
@@ -32,6 +35,12 @@ abstract class ClipboardListener {
         return newContent;
     }
 
+    /**
+     * Try to unmarshal {@link Transferable} into {@link BufferedImage}
+     *
+     * @param clipboardContents The {@link Transferable} to be converted into {@link BufferedImage}
+     * @return {@link BufferedImage} representation of {@code clipboardContents}
+     */
     BufferedImage getImageContent(Transferable clipboardContents) {
         BufferedImage bufferedImage = null;
 
@@ -42,28 +51,6 @@ abstract class ClipboardListener {
         }
 
         return bufferedImage;
-    }
-
-    void notifyStringEvent(String stringContent) {
-        for (ClipboardEventListener clipboardEventListener : eventsListener) {
-            clipboardEventListener.onCopyString(stringContent);
-        }
-    }
-
-    void notifyImageEvent(BufferedImage imageContent) {
-        for (ClipboardEventListener clipboardEventListener : eventsListener) {
-            clipboardEventListener.onCopyImage(imageContent);
-        }
-    }
-
-    void addEventListener(ClipboardEventListener clipboardEventListener) {
-        if (!eventsListener.contains(clipboardEventListener)) {
-            eventsListener.add(clipboardEventListener);
-        }
-    }
-
-    void removeEventListener(ClipboardEventListener clipboardEventListener) {
-        eventsListener.remove(clipboardEventListener);
     }
 
     void toggleTextMonitored() {
@@ -90,5 +77,19 @@ abstract class ClipboardListener {
         this.textMonitored = textMonitored;
     }
 
+    EventManager getEventManager() {
+        return eventManager;
+    }
+
+    void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
+    }
+
+    /**
+     * Main entry point of execution for both {@link MacClipboardListener} and {@link WindowsOrUnixClipboardListener}
+     *
+     * @see MacClipboardListener
+     * @see WindowsOrUnixClipboardListener
+     */
     abstract void execute();
 }

@@ -1,7 +1,7 @@
 package me.goudham;
 
 import me.goudham.exception.UnsupportedSystemException;
-import me.goudham.listener.ClipboardEventListener;
+import me.goudham.event.ClipboardEvent;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,22 +45,25 @@ public class MyClipboard {
     }
 
     /**
-     * Adds a {@link ClipboardEventListener} to the underlying {@link ClipboardListener}
+     * Adds a {@link ClipboardEvent} to the underlying {@link ClipboardListener}
      *
-     * @param clipboardEventListener The {@link ClipboardEventListener} to be added
+     * @param clipboardEvent The {@link ClipboardEvent} to be added
+     * @see EventManager
      */
-    public void addEventListener(ClipboardEventListener clipboardEventListener) {
-        clipboardListener.addEventListener(clipboardEventListener);
+    public void subscribe(ClipboardEvent clipboardEvent) {
+        clipboardListener.getEventManager().subscribe(clipboardEvent);
     }
 
     /**
-     * Removes a {@link ClipboardEventListener} from the underlying {@link ClipboardListener}
+     * Removes a {@link ClipboardEvent} from the underlying {@link ClipboardListener#}
      *
-     * @param clipboardEventListener The {@link ClipboardEventListener} to be removed
+     * @param clipboardEvent The {@link ClipboardEvent} to be removed
+     * @see EventManager
      */
-    public void removeEventListener(ClipboardEventListener clipboardEventListener) {
-        clipboardListener.removeEventListener(clipboardEventListener);
+    public void unsubscribe(ClipboardEvent clipboardEvent) {
+        clipboardListener.getEventManager().unsubscribe(clipboardEvent);
     }
+
 
     public void toggleTextMonitored() {
         clipboardListener.toggleTextMonitored();
