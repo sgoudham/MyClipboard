@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        CODECOV_TOKEN = credentials('44a3c021-5cbb-4a6f-bea2-ae6c51d43038')
+        CODECOV_TOKEN = credentials('ea3e54d7-7f4f-40ed-af70-d8132e1c405b')
 
         GPG_SECRET_KEY = credentials('4dbfd4ed-bba4-44e0-8410-fbce1a9bba73')
         GPG_OWNER_TRUST = credentials('8703bbe8-c099-481f-8337-1dce32d51771')
