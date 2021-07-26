@@ -62,6 +62,30 @@ public class MyClipboard {
         clipboardListener.removeEventListener(clipboardEventListener);
     }
 
+    public void toggleTextMonitored() {
+        clipboardListener.toggleTextMonitored();
+    }
+
+    public void toggleImagesMonitored() {
+        clipboardListener.toggleImagesMonitored();
+    }
+
+    public boolean isImagesMonitored() {
+        return clipboardListener.isImagesMonitored();
+    }
+
+    public void setImagesMonitored(boolean imagesMonitored) {
+        clipboardListener.setImagesMonitored(imagesMonitored);
+    }
+
+    public boolean isTextMonitored() {
+        return clipboardListener.isTextMonitored();
+    }
+
+    public void setTextMonitored(boolean textMonitored) {
+        clipboardListener.setTextMonitored(textMonitored);
+    }
+
     private static boolean isMac() {
         return SystemUtils.IS_OS_MAC;
     }

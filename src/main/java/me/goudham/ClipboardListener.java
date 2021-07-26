@@ -66,6 +66,14 @@ abstract class ClipboardListener {
         eventsListener.remove(clipboardEventListener);
     }
 
+    void toggleTextMonitored() {
+        this.textMonitored = !textMonitored;
+    }
+
+    void toggleImagesMonitored() {
+        this.imagesMonitored = !imagesMonitored;
+    }
+
     boolean isImagesMonitored() {
         return imagesMonitored;
     }
