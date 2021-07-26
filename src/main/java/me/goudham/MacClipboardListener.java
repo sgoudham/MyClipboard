@@ -15,6 +15,12 @@ class MacClipboardListener extends ClipboardListener {
 
     MacClipboardListener() { }
 
+    /**
+     * Checks if {@link String} is within the clipboard and changed
+     *
+     * @param newClipboardContents {@link Transferable} containing new clipboard contents
+     * @param myClipboardContents {@link MyClipboardContent[]} of Unknown {@link Class} containing previous contents
+     */
     void checkText(Transferable newClipboardContents, MyClipboardContent<?>[] myClipboardContents) {
         if (isTextMonitored()) {
             if (STRING.isAvailable(clipboard)) {
@@ -28,6 +34,12 @@ class MacClipboardListener extends ClipboardListener {
         }
     }
 
+    /**
+     * Checks if {@link java.awt.Image} is within the clipboard and changed
+     *
+     * @param newClipboardContents {@link Transferable} containing new clipboard contents
+     * @param myClipboardContents {@link MyClipboardContent[]} of Unknown {@link Class} containing previous contents
+     */
     void checkImages(Transferable newClipboardContents, MyClipboardContent<?>[] myClipboardContents) {
         if (isImagesMonitored()) {
             if (IMAGE.isAvailable(clipboard)) {
@@ -41,7 +53,10 @@ class MacClipboardListener extends ClipboardListener {
         }
     }
 
-
+    /**
+     * Main entry point for {@link MacClipboardListener}
+     * <p>Retrieves thread from {@link Executors#newSingleThreadScheduledExecutor()} and executes code on a fixed delay</p>
+     */
     @Override
     void execute() {
         Transferable oldClipboardContents = clipboard.getContents(null);
