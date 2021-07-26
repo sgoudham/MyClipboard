@@ -1,8 +1,8 @@
-package me.goudham.listener;
+package me.goudham.event;
 
 import java.awt.image.BufferedImage;
 
-public interface ClipboardEventListener {
+public interface ClipboardEvent {
 	void onCopyString(String stringContent);
 	void onCopyImage(BufferedImage imageContent);
 }
