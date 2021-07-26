@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>MyClipboard</name>
-    <description>Utility Program to Access and Manipulate the Default System Clipboard</description>
+    <description>Utility Library to Access and Manipulate the Default System Clipboard</description>
     <url>https://github.com/sgoudham/MyClipboard</url>
 
     <properties>
