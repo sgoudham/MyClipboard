@@ -1,16 +1,11 @@
 package me.goudham;
 
-import java.awt.Image;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import me.goudham.listener.ClipboardEventListener;
 
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
@@ -34,19 +29,18 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
     }
 
     public void processContents(Clipboard oldClipboard, Transferable newClipboardContents) {
-        try {
+        if (isTextMonitored()) {
             if (STRING.isAvailable(oldClipboard)) {
-                String stringContent = (String) newClipboardContents.getTransferData(DataFlavor.stringFlavor);
-                for (ClipboardEventListener clipboardEventListener : eventsListener) {
-                    clipboardEventListener.onCopyString(stringContent);
-                }
-            } else if (IMAGE.isAvailable(oldClipboard)) {
-                BufferedImage imageContent = ClipboardUtils.convertToBufferedImage((Image) newClipboardContents.getTransferData(DataFlavor.imageFlavor));
-                for (ClipboardEventListener clipboardEventListener : eventsListener) {
-                    clipboardEventListener.onCopyImage(imageContent);
-                }
+                String stringContent = getStringContent(newClipboardContents);
+                notifyStringEvent(stringContent);
             }
-        } catch (UnsupportedFlavorException | IOException ignored) {
+        }
+
+        if (isImagesMonitored()) {
+            if (IMAGE.isAvailable(oldClipboard)) {
+                BufferedImage bufferedImage = getImageContent(newClipboardContents);
+                notifyImageEvent(bufferedImage);
+            }
         }
     }
 
