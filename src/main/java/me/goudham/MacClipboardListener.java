@@ -28,7 +28,7 @@ class MacClipboardListener extends ClipboardListener {
                 if (STRING.isAvailable(clipboard)) {
                     String newStringContent = getStringContent(newClipboardContents);
                     if (!newStringContent.equals(myClipboardContents[0].getOldContent())) {
-                        notifyStringEvent(newStringContent);
+                        getEventManager().notifyStringEvent(newStringContent);
                         myClipboardContents[0].setOldContent(newStringContent);
                     }
                 }
@@ -39,7 +39,7 @@ class MacClipboardListener extends ClipboardListener {
                     BufferedImage bufferedImageContent = getImageContent(newClipboardContents);
                     Dimension newDimensionContent = new Dimension(bufferedImageContent.getWidth(), bufferedImageContent.getHeight());
                     if (!newDimensionContent.equals(myClipboardContents[0].getOldContent())) {
-                        notifyImageEvent(bufferedImageContent);
+                        getEventManager().notifyImageEvent(bufferedImageContent);
                         myClipboardContents[0].setOldContent(newDimensionContent);
                     }
                 }

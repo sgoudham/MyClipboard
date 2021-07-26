@@ -32,14 +32,14 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         if (isTextMonitored()) {
             if (STRING.isAvailable(oldClipboard)) {
                 String stringContent = getStringContent(newClipboardContents);
-                notifyStringEvent(stringContent);
+                getEventManager().notifyStringEvent(stringContent);
             }
         }
 
         if (isImagesMonitored()) {
             if (IMAGE.isAvailable(oldClipboard)) {
                 BufferedImage bufferedImage = getImageContent(newClipboardContents);
-                notifyImageEvent(bufferedImage);
+                getEventManager().notifyImageEvent(bufferedImage);
             }
         }
     }
@@ -64,6 +64,9 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         regainOwnership(clipboard, currentClipboardContents);
     }
 
+    /**
+     *
+     */
     @Override
     public void execute() {
         ExecutorService executorService = Executors.newCachedThreadPool();
