@@ -4,8 +4,10 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import me.goudham.domain.OldClipboardContent;
 
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
@@ -24,22 +26,31 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         }
 
         Transferable newClipboardContents = oldClipboard.getContents(currentThread());
-        processContents(oldClipboard, newClipboardContents);
+        processContents(oldClipboard, oldClipboardContents, newClipboardContents);
         regainOwnership(oldClipboard, newClipboardContents);
     }
 
-    public void processContents(Clipboard oldClipboard, Transferable newClipboardContents) {
+    /**
+     *
+     *
+     * @param oldClipboard The clipboard that is no longer owned
+     * @param oldClipboardContents The old contents of the clipboard
+     * @param newClipboardContents The new contents of the clipboard
+     */
+    public void processContents(Clipboard oldClipboard, Transferable oldClipboardContents, Transferable newClipboardContents) {
+        OldClipboardContent oldClipboardContent = ClipboardUtils.getOldClipboardContent(oldClipboardContents);
+
         if (isTextMonitored()) {
             if (STRING.isAvailable(oldClipboard)) {
                 String stringContent = getStringContent(newClipboardContents);
-                getEventManager().notifyStringEvent(stringContent);
+                getEventManager().notifyStringEvent(oldClipboardContent, stringContent);
             }
         }
 
         if (isImagesMonitored()) {
             if (IMAGE.isAvailable(oldClipboard)) {
                 BufferedImage bufferedImage = getImageContent(newClipboardContents);
-                getEventManager().notifyImageEvent(bufferedImage);
+                getEventManager().notifyImageEvent(oldClipboardContent, bufferedImage);
             }
         }
     }
@@ -60,12 +71,13 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
     @Override
     public void run() {
         Transferable currentClipboardContents = clipboard.getContents(null);
-        processContents(clipboard, currentClipboardContents);
+        processContents(clipboard, currentClipboardContents, currentClipboardContents);
         regainOwnership(clipboard, currentClipboardContents);
     }
 
     /**
-     *
+     * Entry point for {@link WindowsOrUnixClipboardListener}
+     * <p>Retrieves a thread from {@link Executors#newCachedThreadPool()} and executes code in the background</p>
      */
     @Override
     public void execute() {
