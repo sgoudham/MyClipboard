@@ -55,7 +55,7 @@ public class MyClipboard {
     }
 
     /**
-     * Removes a {@link ClipboardEvent} from the underlying {@link ClipboardListener#}
+     * Removes a {@link ClipboardEvent} from the underlying {@link ClipboardListener}
      *
      * @param clipboardEvent The {@link ClipboardEvent} to be removed
      * @see EventManager
