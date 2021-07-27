@@ -9,6 +9,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import me.goudham.domain.MyClipboardContent;
+import me.goudham.domain.OldClipboardContent;
 
 import static me.goudham.domain.Contents.IMAGE;
 import static me.goudham.domain.Contents.STRING;
@@ -30,6 +31,22 @@ class ClipboardUtils {
         }
 
         return myClipboardContent;
+    }
+
+    static OldClipboardContent getOldClipboardContent(Transferable oldContents) {
+        OldClipboardContent oldClipboardContent = null;
+
+        try {
+            if (oldContents.isDataFlavorSupported(STRING.getDataFlavor())) {
+                oldClipboardContent = new OldClipboardContent((String) oldContents.getTransferData(STRING.getDataFlavor()));
+            } else if (oldContents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
+                oldClipboardContent = new OldClipboardContent(convertToBufferedImage((Image) oldContents.getTransferData(IMAGE.getDataFlavor())));
+            }
+        } catch (UnsupportedFlavorException | IOException exp) {
+            exp.printStackTrace();
+        }
+
+        return oldClipboardContent;
     }
 
     static BufferedImage convertToBufferedImage(Image image) {
