@@ -1,8 +1,9 @@
 package me.goudham.event;
 
 import java.awt.image.BufferedImage;
+import me.goudham.domain.OldClipboardContent;
 
 public interface ClipboardEvent {
-	void onCopyString(String stringContent);
-	void onCopyImage(BufferedImage imageContent);
+	void onCopyString(OldClipboardContent oldClipboardContent, String stringContent);
+	void onCopyImage(OldClipboardContent oldClipboardContent, BufferedImage imageContent);
 }

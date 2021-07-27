@@ -3,6 +3,7 @@ package me.goudham;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import me.goudham.domain.OldClipboardContent;
 import me.goudham.event.ClipboardEvent;
 
 /**
@@ -34,9 +35,9 @@ class EventManager {
      *
      * @param stringContent {@link String} to be consumed
      */
-    void notifyStringEvent(String stringContent) {
+    void notifyStringEvent(OldClipboardContent oldClipboardContent, String stringContent) {
         for (ClipboardEvent clipboardEvent : eventListeners) {
-            clipboardEvent.onCopyString(stringContent);
+            clipboardEvent.onCopyString(oldClipboardContent, stringContent);
         }
     }
 
@@ -45,9 +46,9 @@ class EventManager {
      *
      * @param imageContent {@link BufferedImage} to be consumed
      */
-    void notifyImageEvent(BufferedImage imageContent) {
+    void notifyImageEvent(OldClipboardContent oldClipboardContent, BufferedImage imageContent) {
         for (ClipboardEvent clipboardEvent : eventListeners) {
-            clipboardEvent.onCopyImage(imageContent);
+            clipboardEvent.onCopyImage(oldClipboardContent, imageContent);
         }
     }
 }
