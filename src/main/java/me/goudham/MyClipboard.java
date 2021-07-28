@@ -24,7 +24,7 @@ public class MyClipboard {
     }
 
     /**
-     * Creates an instance of {@link MyClipboard} with an instance of {@link ClipboardListener} dependant on the OS
+     * Creates an instance of {@link MyClipboard} with an instance of {@link ClipboardListener} dependent on the OS
      * <p>A {@link WindowsOrUnixClipboardListener} or {@link MacClipboardListener} can be created</p>
      *
      * @return {@link MyClipboard}
@@ -73,12 +73,12 @@ public class MyClipboard {
         clipboardListener.toggleImagesMonitored();
     }
 
-    public boolean isImagesMonitored() {
-        return clipboardListener.isImagesMonitored();
+    public boolean isImageMonitored() {
+        return clipboardListener.isImageMonitored();
     }
 
-    public void setImagesMonitored(boolean imagesMonitored) {
-        clipboardListener.setImagesMonitored(imagesMonitored);
+    public void setImageMonitored(boolean imagesMonitored) {
+        clipboardListener.setImageMonitored(imagesMonitored);
     }
 
     public boolean isTextMonitored() {
