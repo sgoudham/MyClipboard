@@ -4,15 +4,17 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
+import java.io.File;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import me.goudham.domain.OldClipboardContent;
 
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
+import static me.goudham.domain.Contents.FILELIST;
 import static me.goudham.domain.Contents.IMAGE;
-import static me.goudham.domain.Contents.STRING;
+import static me.goudham.domain.Contents.TEXT;
 
 class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnable, ClipboardOwner {
 
@@ -41,16 +43,23 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         OldClipboardContent oldClipboardContent = ClipboardUtils.getOldClipboardContent(oldClipboardContents);
 
         if (isTextMonitored()) {
-            if (STRING.isAvailable(oldClipboard)) {
+            if (TEXT.isAvailable(oldClipboard)) {
                 String stringContent = getStringContent(newClipboardContents);
-                getEventManager().notifyStringEvent(oldClipboardContent, stringContent);
+                getEventManager().notifyTextEvent(oldClipboardContent, stringContent);
             }
         }
 
-        if (isImagesMonitored()) {
+        if (isImageMonitored()) {
             if (IMAGE.isAvailable(oldClipboard)) {
                 BufferedImage bufferedImage = getImageContent(newClipboardContents);
                 getEventManager().notifyImageEvent(oldClipboardContent, bufferedImage);
+            }
+        }
+
+        if (isFileListMonitored()) {
+            if (FILELIST.isAvailable(oldClipboard)) {
+                List<File> fileList = getFileContent(newClipboardContents);
+                getEventManager().notifyFilesEvent(oldClipboardContent, fileList);
             }
         }
     }
