@@ -7,10 +7,13 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import me.goudham.domain.MyClipboardContent;
 import me.goudham.domain.OldClipboardContent;
 
+import static me.goudham.domain.Contents.FILELIST;
 import static me.goudham.domain.Contents.IMAGE;
 import static me.goudham.domain.Contents.TEXT;
 
@@ -41,6 +44,8 @@ class ClipboardUtils {
                 oldClipboardContent = new OldClipboardContent((String) oldContents.getTransferData(TEXT.getDataFlavor()));
             } else if (oldContents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
                 oldClipboardContent = new OldClipboardContent(convertToBufferedImage((Image) oldContents.getTransferData(IMAGE.getDataFlavor())));
+            } else if (oldContents.isDataFlavorSupported(FILELIST.getDataFlavor())) {
+                oldClipboardContent = new OldClipboardContent((List<File>) oldContents.getTransferData(FILELIST.getDataFlavor()));
             }
         } catch (UnsupportedFlavorException | IOException exp) {
             exp.printStackTrace();
