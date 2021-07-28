@@ -6,16 +6,20 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import static me.goudham.domain.Contents.FILELIST;
 import static me.goudham.domain.Contents.IMAGE;
-import static me.goudham.domain.Contents.STRING;
+import static me.goudham.domain.Contents.TEXT;
 
 abstract class ClipboardListener {
     final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     private EventManager eventManager = new EventManager();
-    private boolean imagesMonitored = true;
+    private boolean imageMonitored = true;
     private boolean textMonitored = true;
+    private boolean fileListMonitored = true;
 
     /**
      * Try to unmarshal {@link Transferable} into {@link String}
@@ -27,7 +31,7 @@ abstract class ClipboardListener {
         String newContent = null;
 
         try {
-            newContent = (String) clipboardContents.getTransferData(STRING.getDataFlavor());
+            newContent = (String) clipboardContents.getTransferData(TEXT.getDataFlavor());
         } catch (UnsupportedFlavorException | IOException exp) {
             exp.printStackTrace();
         }
@@ -53,24 +57,44 @@ abstract class ClipboardListener {
         return bufferedImage;
     }
 
+    List<File> getFileContent(Transferable clipboardContents) {
+        List<File> fileList = null;
+
+        try {
+            fileList = (List<File>) clipboardContents.getTransferData(FILELIST.getDataFlavor());
+        } catch (UnsupportedFlavorException | IOException exp) {
+            exp.printStackTrace();
+        }
+
+        return fileList;
+    }
+
     void toggleTextMonitored() {
         this.textMonitored = !textMonitored;
     }
 
     void toggleImagesMonitored() {
-        this.imagesMonitored = !imagesMonitored;
+        this.imageMonitored = !imageMonitored;
     }
 
-    boolean isImagesMonitored() {
-        return imagesMonitored;
+    boolean isImageMonitored() {
+        return imageMonitored;
     }
 
-    void setImagesMonitored(boolean imagesMonitored) {
-        this.imagesMonitored = imagesMonitored;
+    void setImageMonitored(boolean imageMonitored) {
+        this.imageMonitored = imageMonitored;
     }
 
     boolean isTextMonitored() {
         return textMonitored;
+    }
+
+    public boolean isFileListMonitored() {
+        return fileListMonitored;
+    }
+
+    public void setFileListMonitored(boolean fileListMonitored) {
+        this.fileListMonitored = fileListMonitored;
     }
 
     void setTextMonitored(boolean textMonitored) {
