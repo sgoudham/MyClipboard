@@ -4,7 +4,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 
 public enum Contents {
-    STRING(DataFlavor.stringFlavor) {
+    TEXT(DataFlavor.stringFlavor) {
         @Override
         public boolean isAvailable(Clipboard clipboard) {
             return clipboard.isDataFlavorAvailable(DataFlavor.stringFlavor);

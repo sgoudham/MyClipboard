@@ -12,7 +12,7 @@ import me.goudham.domain.MyClipboardContent;
 import me.goudham.domain.OldClipboardContent;
 
 import static me.goudham.domain.Contents.IMAGE;
-import static me.goudham.domain.Contents.STRING;
+import static me.goudham.domain.Contents.TEXT;
 
 class ClipboardUtils {
 
@@ -20,8 +20,8 @@ class ClipboardUtils {
         MyClipboardContent<?> myClipboardContent = new MyClipboardContent<>();
 
         try {
-            if (STRING.isAvailable(clipboard)) {
-                myClipboardContent.setOldContent(contents.getTransferData(STRING.getDataFlavor()));
+            if (TEXT.isAvailable(clipboard)) {
+                myClipboardContent.setOldContent(contents.getTransferData(TEXT.getDataFlavor()));
             } else if (IMAGE.isAvailable(clipboard)) {
                 BufferedImage bufferedImage = convertToBufferedImage((Image) contents.getTransferData(IMAGE.getDataFlavor()));
                 myClipboardContent.setOldContent(new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight()));
@@ -37,8 +37,8 @@ class ClipboardUtils {
         OldClipboardContent oldClipboardContent = null;
 
         try {
-            if (oldContents.isDataFlavorSupported(STRING.getDataFlavor())) {
-                oldClipboardContent = new OldClipboardContent((String) oldContents.getTransferData(STRING.getDataFlavor()));
+            if (oldContents.isDataFlavorSupported(TEXT.getDataFlavor())) {
+                oldClipboardContent = new OldClipboardContent((String) oldContents.getTransferData(TEXT.getDataFlavor()));
             } else if (oldContents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
                 oldClipboardContent = new OldClipboardContent(convertToBufferedImage((Image) oldContents.getTransferData(IMAGE.getDataFlavor())));
             }

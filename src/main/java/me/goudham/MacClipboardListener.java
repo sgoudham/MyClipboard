@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import me.goudham.domain.MyClipboardContent;
 
 import static me.goudham.domain.Contents.IMAGE;
-import static me.goudham.domain.Contents.STRING;
+import static me.goudham.domain.Contents.TEXT;
 
 class MacClipboardListener extends ClipboardListener {
 
@@ -23,7 +23,7 @@ class MacClipboardListener extends ClipboardListener {
      */
     void checkText(Transferable newClipboardContents, MyClipboardContent<?>[] myClipboardContents) {
         if (isTextMonitored()) {
-            if (STRING.isAvailable(clipboard)) {
+            if (TEXT.isAvailable(clipboard)) {
                 String newStringContent = getStringContent(newClipboardContents);
                 String oldStringContent = (String) myClipboardContents[0].getOldContent();
                 if (!newStringContent.equals(oldStringContent)) {
@@ -41,7 +41,7 @@ class MacClipboardListener extends ClipboardListener {
      * @param myClipboardContents {@link MyClipboardContent[]} of Unknown {@link Class} containing previous contents
      */
     void checkImages(Transferable newClipboardContents, MyClipboardContent<?>[] myClipboardContents) {
-        if (isImagesMonitored()) {
+        if (isImageMonitored()) {
             if (IMAGE.isAvailable(clipboard)) {
                 BufferedImage bufferedImageContent = getImageContent(newClipboardContents);
                 Dimension newDimensionContent = new Dimension(bufferedImageContent.getWidth(), bufferedImageContent.getHeight());

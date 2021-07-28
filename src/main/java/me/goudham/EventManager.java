@@ -35,9 +35,9 @@ class EventManager {
      *
      * @param stringContent {@link String} to be consumed
      */
-    void notifyStringEvent(OldClipboardContent oldClipboardContent, String stringContent) {
+    void notifyTextEvent(OldClipboardContent oldClipboardContent, String stringContent) {
         for (ClipboardEvent clipboardEvent : eventListeners) {
-            clipboardEvent.onCopyString(oldClipboardContent, stringContent);
+            clipboardEvent.onCopyText(oldClipboardContent, stringContent);
         }
     }
 
