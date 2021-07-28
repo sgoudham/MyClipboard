@@ -1,6 +1,7 @@
 package me.goudham;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import me.goudham.domain.OldClipboardContent;
@@ -33,6 +34,7 @@ class EventManager {
     /**
      * Produces {@link String} change notifications to all consumers listening
      *
+     * @param oldClipboardContent The previous clipboard contents
      * @param stringContent {@link String} to be consumed
      */
     void notifyTextEvent(OldClipboardContent oldClipboardContent, String stringContent) {
@@ -44,11 +46,24 @@ class EventManager {
     /**
      * Produces {@link BufferedImage} change notifications to all consumers listening
      *
+     * @param oldClipboardContent The previous clipboard contents
      * @param imageContent {@link BufferedImage} to be consumed
      */
     void notifyImageEvent(OldClipboardContent oldClipboardContent, BufferedImage imageContent) {
         for (ClipboardEvent clipboardEvent : eventListeners) {
             clipboardEvent.onCopyImage(oldClipboardContent, imageContent);
+        }
+    }
+
+    /**
+     * Produces {@link List} of {@link File} change notifications to all consumers listening
+     *
+     * @param oldClipboardContent The previous clipboard contents
+     * @param fileListContent {@link List} of {@link File} to be consumed
+     */
+    void notifyFilesEvent(OldClipboardContent oldClipboardContent, List<File> fileListContent) {
+        for (ClipboardEvent clipboardEvent : eventListeners) {
+            clipboardEvent.onCopyFiles(oldClipboardContent, fileListContent);
         }
     }
 }
