@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import me.goudham.domain.MyClipboardContent;
+import me.goudham.domain.OldClipboardContent;
 
 import static me.goudham.domain.Contents.IMAGE;
 import static me.goudham.domain.Contents.TEXT;
@@ -25,9 +26,11 @@ class MacClipboardListener extends ClipboardListener {
         if (isTextMonitored()) {
             if (TEXT.isAvailable(clipboard)) {
                 String newStringContent = getStringContent(newClipboardContents);
-                String oldStringContent = (String) myClipboardContents[0].getOldContent();
-                if (!newStringContent.equals(oldStringContent)) {
-//                    getEventManager().notifyStringEvent(newStringContent);
+                if (newStringContent == null) return;
+
+                if (!newStringContent.equals(myClipboardContents[0].getOldContent())) {
+                    OldClipboardContent oldClipboardContent = ClipboardUtils.getOldClipboardContent(myClipboardContents[0].getOldContent());
+                    getEventManager().notifyTextEvent(oldClipboardContent, newStringContent);
                     myClipboardContents[0].setOldContent(newStringContent);
                 }
             }
