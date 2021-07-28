@@ -49,7 +49,9 @@ abstract class ClipboardListener {
         BufferedImage bufferedImage = null;
 
         try {
-            bufferedImage = ClipboardUtils.convertToBufferedImage((Image) clipboardContents.getTransferData(IMAGE.getDataFlavor()));
+            if (clipboardContents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
+                bufferedImage = ClipboardUtils.convertToBufferedImage((Image) clipboardContents.getTransferData(IMAGE.getDataFlavor()));
+            }
         } catch (UnsupportedFlavorException | IOException exp) {
             exp.printStackTrace();
         }
