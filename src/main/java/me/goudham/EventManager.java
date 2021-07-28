@@ -18,7 +18,7 @@ class EventManager {
      *
      * @param clipboardEvent The {@link ClipboardEvent} to be added
      */
-    void subscribe(ClipboardEvent clipboardEvent) {
+    void addEventListener(ClipboardEvent clipboardEvent) {
         eventListeners.add(clipboardEvent);
     }
 
@@ -27,7 +27,7 @@ class EventManager {
      *
      * @param clipboardEvent The {@link ClipboardEvent} to be removed
      */
-    void unsubscribe(ClipboardEvent clipboardEvent) {
+    void removeEventListener(ClipboardEvent clipboardEvent) {
         eventListeners.remove(clipboardEvent);
     }
 

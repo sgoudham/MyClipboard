@@ -50,8 +50,8 @@ public class MyClipboard {
      * @param clipboardEvent The {@link ClipboardEvent} to be added
      * @see EventManager
      */
-    public void subscribe(ClipboardEvent clipboardEvent) {
-        clipboardListener.getEventManager().subscribe(clipboardEvent);
+    public void addEventListener(ClipboardEvent clipboardEvent) {
+        clipboardListener.getEventManager().addEventListener(clipboardEvent);
     }
 
     /**
@@ -60,8 +60,8 @@ public class MyClipboard {
      * @param clipboardEvent The {@link ClipboardEvent} to be removed
      * @see EventManager
      */
-    public void unsubscribe(ClipboardEvent clipboardEvent) {
-        clipboardListener.getEventManager().unsubscribe(clipboardEvent);
+    public void removeEventListener(ClipboardEvent clipboardEvent) {
+        clipboardListener.getEventManager().removeEventListener(clipboardEvent);
     }
 
 
