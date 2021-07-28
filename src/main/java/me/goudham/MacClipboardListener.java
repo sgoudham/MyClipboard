@@ -44,6 +44,8 @@ class MacClipboardListener extends ClipboardListener {
         if (isImageMonitored()) {
             if (IMAGE.isAvailable(clipboard)) {
                 BufferedImage bufferedImageContent = getImageContent(newClipboardContents);
+                if (bufferedImageContent == null) return;
+
                 Dimension newDimensionContent = new Dimension(bufferedImageContent.getWidth(), bufferedImageContent.getHeight());
                 if (!newDimensionContent.equals(myClipboardContents[0].getOldContent())) {
 //                    getEventManager().notifyImageEvent(bufferedImageContent);
