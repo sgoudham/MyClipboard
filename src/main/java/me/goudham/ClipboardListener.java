@@ -31,7 +31,9 @@ abstract class ClipboardListener {
         String newContent = null;
 
         try {
-            newContent = (String) clipboardContents.getTransferData(TEXT.getDataFlavor());
+            if (clipboardContents.isDataFlavorSupported(TEXT.getDataFlavor())) {
+                newContent = (String) clipboardContents.getTransferData(TEXT.getDataFlavor());
+            }
         } catch (UnsupportedFlavorException | IOException exp) {
             exp.printStackTrace();
         }
@@ -63,7 +65,9 @@ abstract class ClipboardListener {
         List<File> fileList = null;
 
         try {
-            fileList = (List<File>) clipboardContents.getTransferData(FILELIST.getDataFlavor());
+            if (clipboardContents.isDataFlavorSupported(FILELIST.getDataFlavor())) {
+                fileList = (List<File>) clipboardContents.getTransferData(FILELIST.getDataFlavor());
+            }
         } catch (UnsupportedFlavorException | IOException exp) {
             exp.printStackTrace();
         }
