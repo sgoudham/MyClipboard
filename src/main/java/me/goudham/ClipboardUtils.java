@@ -54,6 +54,20 @@ class ClipboardUtils {
         return oldClipboardContent;
     }
 
+    static OldClipboardContent getOldClipboardContent(Object object) {
+        OldClipboardContent oldClipboardContent = null;
+
+        if (object instanceof String) {
+            oldClipboardContent = new OldClipboardContent((String) object);
+        } else if (object instanceof BufferedImage) {
+            oldClipboardContent = new OldClipboardContent((BufferedImage) object);
+        } else if (object instanceof List) {
+            oldClipboardContent = new OldClipboardContent((List<File>) object);
+        }
+
+        return oldClipboardContent;
+    }
+
     static BufferedImage convertToBufferedImage(Image image) {
         BufferedImage newImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
