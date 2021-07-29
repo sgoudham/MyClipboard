@@ -27,12 +27,13 @@ class MacClipboardListener extends ClipboardListener {
      */
     void checkText(Transferable newClipboardContents, MyClipboardContent<?>[] myClipboardContents) {
         if (isTextMonitored()) {
-            if (TEXT.isAvailable(clipboard)) {
+            if (TEXT.isAvailable(clipboard) && !FILELIST.isAvailable(clipboard)) {
                 String newStringContent = getStringContent(newClipboardContents);
                 if (newStringContent == null) return;
 
-                if (!newStringContent.equals(myClipboardContents[0].getOldContent())) {
-                    OldClipboardContent oldClipboardContent = ClipboardUtils.getOldClipboardContent(myClipboardContents[0].getOldContent());
+                Object oldContent = myClipboardContents[0].getOldContent();
+                if (!newStringContent.equals(oldContent)) {
+                    OldClipboardContent oldClipboardContent = ClipboardUtils.getOldClipboardContent(oldContent);
                     getEventManager().notifyTextEvent(oldClipboardContent, newStringContent);
                     myClipboardContents[0].setOldContent(newStringContent);
                 }
