@@ -27,7 +27,10 @@ class ClipboardUtils {
                 myClipboardContent.setOldContent(contents.getTransferData(TEXT.getDataFlavor()));
             } else if (IMAGE.isAvailable(clipboard)) {
                 BufferedImage bufferedImage = convertToBufferedImage((Image) contents.getTransferData(IMAGE.getDataFlavor()));
-                myClipboardContent.setOldContent(new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight()));
+                myClipboardContent.setOldContent(bufferedImage);
+                myClipboardContent.setOldDimensionContent(new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight()));
+            } else if (FILELIST.isAvailable(clipboard)) {
+                myClipboardContent.setOldContent(contents.getTransferData(FILELIST.getDataFlavor()));
             }
         } catch (UnsupportedFlavorException | IOException exp) {
             exp.printStackTrace();
