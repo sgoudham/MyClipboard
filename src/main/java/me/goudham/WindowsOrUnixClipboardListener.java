@@ -2,6 +2,7 @@ package me.goudham;
 
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,33 +18,33 @@ import static me.goudham.domain.Contents.IMAGE;
 import static me.goudham.domain.Contents.TEXT;
 
 class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnable, ClipboardOwner {
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    WindowsOrUnixClipboardListener() { }
+    WindowsOrUnixClipboardListener() {}
 
     @Override
     public void lostOwnership(Clipboard oldClipboard, Transferable oldClipboardContents) {
         try {
             sleep(200);
-        } catch (InterruptedException ignored) {
+            Transferable newClipboardContents = oldClipboard.getContents(currentThread());
+            processContents(oldClipboard, oldClipboardContents, newClipboardContents);
+            regainOwnership(oldClipboard, newClipboardContents);
+        } catch (IllegalStateException | InterruptedException err) {
+            err.printStackTrace();
+            executorService.submit(this);
         }
-
-        Transferable newClipboardContents = oldClipboard.getContents(currentThread());
-        processContents(oldClipboard, oldClipboardContents, newClipboardContents);
-        regainOwnership(oldClipboard, newClipboardContents);
     }
 
     /**
-     *
-     *
-     * @param oldClipboard The clipboard that is no longer owned
+     * @param oldClipboard         The clipboard that is no longer owned
      * @param oldClipboardContents The old contents of the clipboard
      * @param newClipboardContents The new contents of the clipboard
      */
-    public void processContents(Clipboard oldClipboard, Transferable oldClipboardContents, Transferable newClipboardContents) {
+    void processContents(Clipboard oldClipboard, Transferable oldClipboardContents, Transferable newClipboardContents) {
         OldClipboardContent oldClipboardContent = ClipboardUtils.getOldClipboardContent(oldClipboardContents);
 
         if (isTextMonitored()) {
-            if (TEXT.isAvailable(oldClipboard)) {
+            if (TEXT.isAvailable(oldClipboard) && !FILELIST.isAvailable(oldClipboard)) {
                 String stringContent = getStringContent(newClipboardContents);
                 getEventManager().notifyTextEvent(oldClipboardContent, stringContent);
             }
@@ -64,33 +65,48 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         }
     }
 
-    public void regainOwnership(Clipboard clipboard, Transferable newClipboardContents) {
+    void regainOwnership(Clipboard clipboard, Transferable newClipboardContents) {
+        clipboard.setContents(newClipboardContents, this);
+    }
+
+    void setStringContent(String stringContent) {
+        clipboard.setContents(new StringSelection(stringContent), this);
+    }
+
+    @Override
+    void startListening() {
+        execute();
+    }
+
+    @Override
+    void stopListening() {
+        executorService.shutdown();
+        executorService = Executors.newSingleThreadExecutor();
         try {
-            clipboard.setContents(newClipboardContents, this);
-        } catch (IllegalStateException ise) {
-            try {
-                sleep(200);
-            } catch (InterruptedException ie) {
-                ie.printStackTrace();
-            }
-            regainOwnership(clipboard, newClipboardContents);
+            sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void run() {
-        Transferable currentClipboardContents = clipboard.getContents(null);
-        processContents(clipboard, currentClipboardContents, currentClipboardContents);
-        regainOwnership(clipboard, currentClipboardContents);
+        try {
+            Transferable currentClipboardContents = clipboard.getContents(null);
+            processContents(clipboard, currentClipboardContents, currentClipboardContents);
+            regainOwnership(clipboard, currentClipboardContents);
+        } catch (IllegalStateException err) {
+            err.printStackTrace();
+            executorService.submit(this);
+        }
     }
 
     /**
      * Entry point for {@link WindowsOrUnixClipboardListener}
-     * <p>Retrieves a thread from {@link Executors#newCachedThreadPool()} and executes code in the background</p>
+     * <p>Retrieves a thread from {@link Executors#newSingleThreadExecutor()} and executes code in the background</p>
      */
     @Override
     public void execute() {
-        ExecutorService executorService = Executors.newCachedThreadPool();
         executorService.submit(this);
     }
 }
