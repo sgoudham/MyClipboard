@@ -30,13 +30,6 @@ public class TransferableImage implements Transferable {
 
 	@Override
 	public boolean isDataFlavorSupported(DataFlavor flavor) {
-		DataFlavor[] flavors = getTransferDataFlavors();
-		for (DataFlavor dataFlavor : flavors) {
-			if (flavor.equals(dataFlavor)) {
-				return true;
-			}
-		}
-
-		return false;
+		return flavor == DataFlavor.imageFlavor;
 	}
 }
