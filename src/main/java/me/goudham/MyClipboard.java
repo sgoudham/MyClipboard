@@ -1,7 +1,10 @@
 package me.goudham;
 
-import me.goudham.exception.UnsupportedSystemException;
+import java.awt.Image;
+import java.io.File;
+import java.util.List;
 import me.goudham.event.ClipboardEvent;
+import me.goudham.exception.UnsupportedSystemException;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +23,6 @@ public class MyClipboard {
      */
     private MyClipboard(@NotNull ClipboardListener clipboardListener) {
        this.clipboardListener = clipboardListener;
-       this.clipboardListener.execute();
     }
 
     /**
@@ -44,6 +46,38 @@ public class MyClipboard {
         return new MyClipboard(clipboardListener);
     }
 
+    public void startListening() {
+        clipboardListener.startListening();
+    }
+
+    public void stopListening() {
+        clipboardListener.stopListening();
+    }
+
+    public void insert(String stringContent) {
+        clipboardListener.insert(stringContent);
+    }
+
+    public void insert(Image imageContent) {
+        clipboardListener.insert(imageContent);
+    }
+
+    public void insert(List<File> fileContent) {
+        clipboardListener.insert(fileContent);
+    }
+
+    public void insertAndNotify(String stringContent) {
+        clipboardListener.insertAndNotify(stringContent);
+    }
+
+    public void insertAndNotify(Image imageContent) {
+        clipboardListener.insertAndNotify(imageContent);
+    }
+
+    public void insertAndNotify(List<File> fileContent) {
+        clipboardListener.insertAndNotify(fileContent);
+    }
+
     /**
      * Adds a {@link ClipboardEvent} to the underlying {@link ClipboardListener}
      *
@@ -63,7 +97,6 @@ public class MyClipboard {
     public void removeEventListener(ClipboardEvent clipboardEvent) {
         clipboardListener.getEventManager().removeEventListener(clipboardEvent);
     }
-
 
     public void toggleTextMonitored() {
         clipboardListener.toggleTextMonitored();

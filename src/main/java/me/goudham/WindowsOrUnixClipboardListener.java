@@ -1,5 +1,6 @@
 package me.goudham;
 
+import java.awt.Image;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
@@ -10,15 +11,21 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import me.goudham.domain.OldClipboardContent;
+import me.goudham.domain.TransferableFileList;
+import me.goudham.domain.TransferableImage;
 
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
+import static me.goudham.ClipboardUtils.getFileContent;
+import static me.goudham.ClipboardUtils.getImageContent;
+import static me.goudham.ClipboardUtils.getStringContent;
 import static me.goudham.domain.Contents.FILELIST;
 import static me.goudham.domain.Contents.IMAGE;
 import static me.goudham.domain.Contents.TEXT;
 
 class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnable, ClipboardOwner {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private boolean listening = false;
 
     WindowsOrUnixClipboardListener() {}
 
@@ -66,27 +73,83 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
     }
 
     void regainOwnership(Clipboard clipboard, Transferable newClipboardContents) {
-        clipboard.setContents(newClipboardContents, this);
-    }
+        try {
+            clipboard.setContents(newClipboardContents, this);
+        } catch (Throwable ignored) {
 
-    void setStringContent(String stringContent) {
-        clipboard.setContents(new StringSelection(stringContent), this);
+        }
     }
 
     @Override
     void startListening() {
-        execute();
+        if (!listening) {
+            listening = true;
+            execute();
+        }
     }
 
     @Override
     void stopListening() {
-        executorService.shutdown();
-        executorService = Executors.newSingleThreadExecutor();
-        try {
-            sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (listening) {
+            executorService.shutdown();
+            executorService = Executors.newSingleThreadExecutor();
+
+            try {
+                sleep(200);
+            } catch (InterruptedException ie) {
+                ie.printStackTrace();
+            }
+
+            listening = false;
         }
+    }
+
+    @Override
+    void insert(String stringContent) {
+        try {
+            sleep(200);
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
+        clipboard.setContents(new StringSelection(stringContent), this);
+    }
+
+    @Override
+    void insert(Image imageContent) {
+        try {
+            sleep(200);
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
+        clipboard.setContents(new TransferableImage(imageContent), this);
+    }
+
+    @Override
+    void insert(List<File> fileContent) {
+        try {
+            sleep(200);
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
+        clipboard.setContents(new TransferableFileList(fileContent), this);
+    }
+
+    @Override
+    void insertAndNotify(String stringContent) {
+        insert(stringContent);
+        run();
+    }
+
+    @Override
+    void insertAndNotify(Image imageContent) {
+        insert(imageContent);
+        run();
+    }
+
+    @Override
+    void insertAndNotify(List<File> fileContent) {
+        insert(fileContent);
+        run();
     }
 
     @Override
