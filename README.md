@@ -38,5 +38,32 @@ system clipboard has changed. To query the system clipboard contents, we need to
 # Contributing
 TODO
 
+# Installation
+
+Latest Stable Version: ![maven-central]
+<p>Be sure to replace the <strong>VERSION</strong> key below with the one of the versions shown above!</p>
+
+**Maven**
+```xml
+<!-- https://mvnrepository.com/artifact/me.goudham/MyClipboard -->
+<dependency>
+    <groupId>me.goudham</groupId>
+    <artifactId>MyClipboard</artifactId>
+    <version>VERSION</version>
+</dependency>
+```
+
+**Gradle**
+```gradle
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/me.goudham/MyClipboard
+    implementation group: 'me.goudham', name: 'MyClipboard', version: 'VERSION'
+}
+```
+
 # License 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsgoudham%2FMyClipboard.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsgoudham%2FMyClipboard?ref=badge_large)
