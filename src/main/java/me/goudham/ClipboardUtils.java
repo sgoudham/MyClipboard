@@ -19,6 +19,66 @@ import static me.goudham.domain.Contents.TEXT;
 
 class ClipboardUtils {
 
+    /**
+     * Try to unmarshal {@link Transferable} into {@link String}
+     *
+     * @param clipboardContents The {@link Transferable} to be converted into {@link String}
+     * @return {@link String} representation of {@code clipboardContents}
+     */
+    static String getStringContent(Transferable clipboardContents) {
+        String newContent = null;
+
+        try {
+            if (clipboardContents.isDataFlavorSupported(TEXT.getDataFlavor())) {
+                newContent = (String) clipboardContents.getTransferData(TEXT.getDataFlavor());
+            }
+        } catch (UnsupportedFlavorException | IOException exp) {
+            exp.printStackTrace();
+        }
+
+        return newContent;
+    }
+
+    /**
+     * Try to unmarshal {@link Transferable} into {@link BufferedImage}
+     *
+     * @param clipboardContents The {@link Transferable} to be converted into {@link BufferedImage}
+     * @return {@link BufferedImage} representation of {@code clipboardContents}
+     */
+    static BufferedImage getImageContent(Transferable clipboardContents) {
+        BufferedImage bufferedImage = null;
+
+        try {
+            if (clipboardContents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
+                bufferedImage = ClipboardUtils.convertToBufferedImage((Image) clipboardContents.getTransferData(IMAGE.getDataFlavor()));
+            }
+        } catch (UnsupportedFlavorException | IOException exp) {
+            exp.printStackTrace();
+        }
+
+        return bufferedImage;
+    }
+
+    /**
+     * Try to unmarshal {@link Transferable} into {@link List} of {@link File}
+     *
+     * @param clipboardContents The {@link Transferable} to be converted into {@link List} of {@link File}
+     * @return {@link List} of {@link File} representation of {@code clipboardContents}
+     */
+    static List<File> getFileContent(Transferable clipboardContents) {
+        List<File> fileList = null;
+
+        try {
+            if (clipboardContents.isDataFlavorSupported(FILELIST.getDataFlavor())) {
+                fileList = (List<File>) clipboardContents.getTransferData(FILELIST.getDataFlavor());
+            }
+        } catch (UnsupportedFlavorException | IOException exp) {
+            exp.printStackTrace();
+        }
+
+        return fileList;
+    }
+
     static MyClipboardContent<?> getClipboardContents(Transferable contents, Clipboard clipboard) {
         MyClipboardContent<?> myClipboardContent = new MyClipboardContent<>();
 
