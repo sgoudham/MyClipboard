@@ -3,16 +3,8 @@ package me.goudham;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
-import static me.goudham.domain.Contents.FILELIST;
-import static me.goudham.domain.Contents.IMAGE;
-import static me.goudham.domain.Contents.TEXT;
 
 abstract class ClipboardListener {
     final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -22,58 +14,28 @@ abstract class ClipboardListener {
     private boolean fileListMonitored = true;
 
     /**
-     * Try to unmarshal {@link Transferable} into {@link String}
+     * Main entry point of execution for both {@link MacClipboardListener} and {@link WindowsOrUnixClipboardListener}
      *
-     * @param clipboardContents The {@link Transferable} to be converted into {@link String}
-     * @return {@link String} representation of {@code clipboardContents}
+     * @see MacClipboardListener
+     * @see WindowsOrUnixClipboardListener
      */
-    String getStringContent(Transferable clipboardContents) {
-        String newContent = null;
+    abstract void execute();
 
-        try {
-            if (clipboardContents.isDataFlavorSupported(TEXT.getDataFlavor())) {
-                newContent = (String) clipboardContents.getTransferData(TEXT.getDataFlavor());
-            }
-        } catch (UnsupportedFlavorException | IOException exp) {
-            exp.printStackTrace();
-        }
+    abstract void startListening();
 
-        return newContent;
-    }
+    abstract void stopListening();
 
-    /**
-     * Try to unmarshal {@link Transferable} into {@link BufferedImage}
-     *
-     * @param clipboardContents The {@link Transferable} to be converted into {@link BufferedImage}
-     * @return {@link BufferedImage} representation of {@code clipboardContents}
-     */
-    BufferedImage getImageContent(Transferable clipboardContents) {
-        BufferedImage bufferedImage = null;
+    abstract void insert(String stringContent);
 
-        try {
-            if (clipboardContents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
-                bufferedImage = ClipboardUtils.convertToBufferedImage((Image) clipboardContents.getTransferData(IMAGE.getDataFlavor()));
-            }
-        } catch (UnsupportedFlavorException | IOException exp) {
-            exp.printStackTrace();
-        }
+    abstract void insert(Image imageContent);
 
-        return bufferedImage;
-    }
+    abstract void insert(List<File> fileContent);
 
-    List<File> getFileContent(Transferable clipboardContents) {
-        List<File> fileList = null;
+    abstract void insertAndNotify(String stringContent);
 
-        try {
-            if (clipboardContents.isDataFlavorSupported(FILELIST.getDataFlavor())) {
-                fileList = (List<File>) clipboardContents.getTransferData(FILELIST.getDataFlavor());
-            }
-        } catch (UnsupportedFlavorException | IOException exp) {
-            exp.printStackTrace();
-        }
+    abstract void insertAndNotify(Image imageContent);
 
-        return fileList;
-    }
+    abstract void insertAndNotify(List<File> fileContent);
 
     void toggleTextMonitored() {
         this.textMonitored = !textMonitored;
@@ -114,12 +76,4 @@ abstract class ClipboardListener {
     void setEventManager(EventManager eventManager) {
         this.eventManager = eventManager;
     }
-
-    /**
-     * Main entry point of execution for both {@link MacClipboardListener} and {@link WindowsOrUnixClipboardListener}
-     *
-     * @see MacClipboardListener
-     * @see WindowsOrUnixClipboardListener
-     */
-    abstract void execute();
 }
