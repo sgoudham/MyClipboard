@@ -1,6 +1,7 @@
 package me.goudham;
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -11,6 +12,9 @@ import java.util.concurrent.TimeUnit;
 import me.goudham.domain.MyClipboardContent;
 import me.goudham.domain.OldClipboardContent;
 
+import static me.goudham.ClipboardUtils.getFileContent;
+import static me.goudham.ClipboardUtils.getImageContent;
+import static me.goudham.ClipboardUtils.getStringContent;
 import static me.goudham.domain.Contents.FILELIST;
 import static me.goudham.domain.Contents.IMAGE;
 import static me.goudham.domain.Contents.TEXT;
@@ -103,5 +107,45 @@ class MacClipboardListener extends ClipboardListener {
             checkImages(newClipboardContents, myClipboardContents);
             checkFiles(newClipboardContents, myClipboardContents);
         }, 0, 350, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    void insert(String stringComponent) {
+
+    }
+
+    @Override
+    void insert(Image imageContent) {
+
+    }
+
+    @Override
+    void insert(List<File> fileContent) {
+
+    }
+
+    @Override
+    void insertAndNotify(String stringContent) {
+
+    }
+
+    @Override
+    void insertAndNotify(Image imageContent) {
+
+    }
+
+    @Override
+    void insertAndNotify(List<File> fileContent) {
+
+    }
+
+    @Override
+    void startListening() {
+
+    }
+
+    @Override
+    void stopListening() {
+
     }
 }
