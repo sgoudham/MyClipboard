@@ -132,7 +132,7 @@ class ClipboardUtils {
     }
 
     static BufferedImage convertToBufferedImage(Image image) {
-        BufferedImage newImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage newImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
 
         Graphics2D graphics = newImage.createGraphics();
         graphics.drawImage(image, 0, 0, null);
