@@ -76,7 +76,7 @@ class MacClipboardListener extends ClipboardListener {
      * @param myClipboardContents  {@link MyClipboardContent[]} of Unknown {@link Class} containing previous contents
      */
     void checkFiles(Transferable newClipboardContents, MyClipboardContent<?>[] myClipboardContents) {
-        if (isFileListMonitored()) {
+        if (isFileMonitored()) {
             if (FILELIST.isAvailable(clipboard)) {
                 List<File> fileListContent = getFileContent(newClipboardContents);
                 if (fileListContent == null) return;

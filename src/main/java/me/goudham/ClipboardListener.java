@@ -11,7 +11,7 @@ abstract class ClipboardListener {
     private EventManager eventManager = new EventManager();
     private boolean imageMonitored = true;
     private boolean textMonitored = true;
-    private boolean fileListMonitored = true;
+    private boolean fileMonitored = true;
 
     /**
      * Main entry point of execution for both {@link MacClipboardListener} and {@link WindowsOrUnixClipboardListener}
@@ -45,6 +45,10 @@ abstract class ClipboardListener {
         this.imageMonitored = !imageMonitored;
     }
 
+    void toggleFileMonitored() {
+        this.fileMonitored = !fileMonitored;
+    }
+
     boolean isImageMonitored() {
         return imageMonitored;
     }
@@ -57,16 +61,16 @@ abstract class ClipboardListener {
         return textMonitored;
     }
 
-    public boolean isFileListMonitored() {
-        return fileListMonitored;
-    }
-
-    public void setFileListMonitored(boolean fileListMonitored) {
-        this.fileListMonitored = fileListMonitored;
-    }
-
     void setTextMonitored(boolean textMonitored) {
         this.textMonitored = textMonitored;
+    }
+
+    boolean isFileMonitored() {
+        return fileMonitored;
+    }
+
+    void setFileMonitored(boolean fileMonitored) {
+        this.fileMonitored = fileMonitored;
     }
 
     EventManager getEventManager() {

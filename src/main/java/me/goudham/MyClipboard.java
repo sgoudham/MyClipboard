@@ -106,6 +106,10 @@ public class MyClipboard {
         clipboardListener.toggleImagesMonitored();
     }
 
+    public void toggleFilesMonitored() {
+        clipboardListener.toggleFileMonitored();
+    }
+
     public boolean isImageMonitored() {
         return clipboardListener.isImageMonitored();
     }
@@ -120,6 +124,14 @@ public class MyClipboard {
 
     public void setTextMonitored(boolean textMonitored) {
         clipboardListener.setTextMonitored(textMonitored);
+    }
+
+    public boolean isFileMonitored() {
+        return clipboardListener.isFileMonitored();
+    }
+
+    public void setFileMonitored(boolean fileMonitored) {
+        clipboardListener.setFileMonitored(fileMonitored);
     }
 
     private static boolean isMac() {

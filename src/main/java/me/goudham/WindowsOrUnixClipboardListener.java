@@ -64,7 +64,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
             }
         }
 
-        if (isFileListMonitored()) {
+        if (isFileMonitored()) {
             if (FILELIST.isAvailable(oldClipboard)) {
                 List<File> fileList = getFileContent(newClipboardContents);
                 getEventManager().notifyFilesEvent(oldClipboardContent, fileList);
