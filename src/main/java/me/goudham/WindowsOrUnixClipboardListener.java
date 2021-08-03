@@ -73,11 +73,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
     }
 
     void regainOwnership(Clipboard clipboard, Transferable newClipboardContents) {
-        try {
-            clipboard.setContents(newClipboardContents, this);
-        } catch (Throwable ignored) {
-
-        }
+        clipboard.setContents(newClipboardContents, this);
     }
 
     @Override
@@ -111,6 +107,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
+
         clipboard.setContents(new StringSelection(stringContent), this);
     }
 
@@ -121,6 +118,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
+
         clipboard.setContents(new TransferableImage(imageContent), this);
     }
 
@@ -131,6 +129,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
+
         clipboard.setContents(new TransferableFileList(fileContent), this);
     }
 
