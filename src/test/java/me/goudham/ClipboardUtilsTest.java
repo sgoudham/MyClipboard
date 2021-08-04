@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 
-import static me.goudham.domain.Contents.TEXT;
+import static me.goudham.Contents.TEXT;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.times;
@@ -21,10 +21,10 @@ import static org.mockito.Mockito.when;
 class ClipboardUtilsTest {
 
     @Mock
-    Transferable transferableMock;
+    private Transferable transferableMock;
 
     @Mock
-    Logger logger;
+    private Logger logger;
 
     @BeforeEach
     void setUp() {
