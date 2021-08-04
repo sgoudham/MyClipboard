@@ -1,5 +1,6 @@
 package me.goudham;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -53,21 +54,36 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         if (isTextMonitored()) {
             if (TEXT.isAvailable(oldClipboard) && !FILELIST.isAvailable(oldClipboard)) {
                 String stringContent = getStringContent(newClipboardContents);
-                getEventManager().notifyTextEvent(oldClipboardContent, stringContent);
+                if (!stringContent.equals(oldClipboardContent.getOldText())) {
+                    getEventManager().notifyTextEvent(oldClipboardContent, stringContent);
+                }
             }
         }
 
         if (isImageMonitored()) {
             if (IMAGE.isAvailable(oldClipboard)) {
                 BufferedImage bufferedImage = getImageContent(newClipboardContents);
-                getEventManager().notifyImageEvent(oldClipboardContent, bufferedImage);
+                BufferedImage oldBufferedImage = oldClipboardContent.getOldImage();
+                if (bufferedImage != oldBufferedImage) {
+                    if (oldBufferedImage != null) {
+                        Dimension imageDimension = new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
+                        Dimension oldImageDimension = new Dimension(oldBufferedImage.getWidth(), oldBufferedImage.getHeight());
+                        if (!imageDimension.equals(oldImageDimension)) {
+                            getEventManager().notifyImageEvent(oldClipboardContent, bufferedImage);
+                        }
+                    } else {
+                        getEventManager().notifyImageEvent(oldClipboardContent, bufferedImage);
+                    }
+                }
             }
         }
 
         if (isFileMonitored()) {
             if (FILELIST.isAvailable(oldClipboard)) {
                 List<File> fileList = getFileContent(newClipboardContents);
-                getEventManager().notifyFilesEvent(oldClipboardContent, fileList);
+                if (!fileList.equals(oldClipboardContent.getOldFiles())) {
+                    getEventManager().notifyFilesEvent(oldClipboardContent, fileList);
+                }
             }
         }
     }
@@ -108,7 +124,12 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
             ie.printStackTrace();
         }
 
-        clipboard.setContents(new StringSelection(stringContent), this);
+        try {
+            clipboard.setContents(new StringSelection(stringContent), this);
+        } catch (IllegalStateException ise) {
+            ise.printStackTrace();
+            executorService.submit(this);
+        }
     }
 
     @Override
@@ -119,7 +140,12 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
             ie.printStackTrace();
         }
 
-        clipboard.setContents(new TransferableImage(imageContent), this);
+        try {
+            clipboard.setContents(new TransferableImage(imageContent), this);
+        } catch (IllegalStateException ise) {
+            ise.printStackTrace();
+            executorService.submit(this);
+        }
     }
 
     @Override
@@ -130,32 +156,39 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
             ie.printStackTrace();
         }
 
-        clipboard.setContents(new TransferableFileList(fileContent), this);
+        try {
+            clipboard.setContents(new TransferableFileList(fileContent), this);
+        } catch (IllegalStateException ise) {
+            ise.printStackTrace();
+            executorService.submit(this);
+        }
     }
 
     @Override
     void insertAndNotify(String stringContent) {
+        Transferable currentClipboardContents = clipboard.getContents(this);
         insert(stringContent);
-        run();
+        lostOwnership(clipboard, currentClipboardContents);
     }
 
     @Override
     void insertAndNotify(Image imageContent) {
+        Transferable currentClipboardContents = clipboard.getContents(this);
         insert(imageContent);
-        run();
+        lostOwnership(clipboard, currentClipboardContents);
     }
 
     @Override
     void insertAndNotify(List<File> fileContent) {
+        Transferable currentClipboardContents = clipboard.getContents(this);
         insert(fileContent);
-        run();
+        lostOwnership(clipboard, currentClipboardContents);
     }
 
     @Override
     public void run() {
         try {
             Transferable currentClipboardContents = clipboard.getContents(null);
-            processContents(clipboard, currentClipboardContents, currentClipboardContents);
             regainOwnership(clipboard, currentClipboardContents);
         } catch (IllegalStateException err) {
             err.printStackTrace();
