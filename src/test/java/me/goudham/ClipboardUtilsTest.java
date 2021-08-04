@@ -54,7 +54,7 @@ class ClipboardUtilsTest {
     @Test
     void failToGetStringContent() throws IOException, UnsupportedFlavorException {
         String expectedStringContent = null;
-        String expectedExceptionMessage = "Exception Thrown When Receiving String Content";
+        String expectedExceptionMessage = "Exception Thrown When Retrieving String Content";
         Throwable expectedException = new UnsupportedFlavorException(TEXT.getDataFlavor());
 
         when(transferableMock.isDataFlavorSupported(TEXT.getDataFlavor())).thenReturn(true);
@@ -80,7 +80,7 @@ class ClipboardUtilsTest {
     @Test
     void failToGetImageContent() throws IOException, UnsupportedFlavorException {
         BufferedImage expectedImageContent = null;
-        String expectedExceptionMessage = "Exception Thrown When Receiving Image Content";
+        String expectedExceptionMessage = "Exception Thrown When Retrieving Image Content";
         Throwable expectedException = new UnsupportedFlavorException(IMAGE.getDataFlavor());
 
         when(transferableMock.isDataFlavorSupported(IMAGE.getDataFlavor())).thenReturn(true);
@@ -106,7 +106,7 @@ class ClipboardUtilsTest {
     @Test
     void failToGetFileContent() throws IOException, UnsupportedFlavorException {
         List<File> expectedFileContent = null;
-        String expectedExceptionMessage = "Exception Thrown When Receiving File Content";
+        String expectedExceptionMessage = "Exception Thrown When Retrieving File Content";
         Throwable expectedException = new UnsupportedFlavorException(FILELIST.getDataFlavor());
 
         when(transferableMock.isDataFlavorSupported(FILELIST.getDataFlavor())).thenReturn(true);

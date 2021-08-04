@@ -37,7 +37,7 @@ class ClipboardUtils {
                 newContent = (String) clipboardContents.getTransferData(TEXT.getDataFlavor());
             }
         } catch (UnsupportedFlavorException | IOException exp) {
-            logger.info("Exception Thrown When Receiving String Content", exp);
+            logger.info("Exception Thrown When Retrieving String Content", exp);
         }
 
         return newContent;
@@ -57,7 +57,7 @@ class ClipboardUtils {
                 bufferedImage = convertToBufferedImage((Image) clipboardContents.getTransferData(IMAGE.getDataFlavor()));
             }
         } catch (UnsupportedFlavorException | IOException exp) {
-            logger.info("Exception Thrown When Receiving Image Content", exp);
+            logger.info("Exception Thrown When Retrieving Image Content", exp);
         }
 
         return bufferedImage;
@@ -77,7 +77,7 @@ class ClipboardUtils {
                 fileList = (List<File>) clipboardContents.getTransferData(FILELIST.getDataFlavor());
             }
         } catch (UnsupportedFlavorException | IOException exp) {
-            logger.info("Exception Thrown When Receiving File Content", exp);
+            logger.info("Exception Thrown When Retrieving File Content", exp);
         }
 
         return fileList;
