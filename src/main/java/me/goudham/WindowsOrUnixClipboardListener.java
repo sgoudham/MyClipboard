@@ -12,17 +12,15 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import me.goudham.domain.OldClipboardContent;
-import me.goudham.domain.TransferableFileList;
-import me.goudham.domain.TransferableImage;
 
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import static me.goudham.ClipboardUtils.getFileContent;
 import static me.goudham.ClipboardUtils.getImageContent;
 import static me.goudham.ClipboardUtils.getStringContent;
-import static me.goudham.domain.Contents.FILELIST;
-import static me.goudham.domain.Contents.IMAGE;
-import static me.goudham.domain.Contents.TEXT;
+import static me.goudham.Contents.FILELIST;
+import static me.goudham.Contents.IMAGE;
+import static me.goudham.Contents.TEXT;
 
 class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnable, ClipboardOwner {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();

@@ -10,19 +10,15 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import me.goudham.domain.MyClipboardContent;
 import me.goudham.domain.OldClipboardContent;
-import me.goudham.domain.OldImage;
-import me.goudham.domain.TransferableFileList;
-import me.goudham.domain.TransferableImage;
 
 import static java.lang.Thread.sleep;
 import static me.goudham.ClipboardUtils.getFileContent;
 import static me.goudham.ClipboardUtils.getImageContent;
 import static me.goudham.ClipboardUtils.getStringContent;
-import static me.goudham.domain.Contents.FILELIST;
-import static me.goudham.domain.Contents.IMAGE;
-import static me.goudham.domain.Contents.TEXT;
+import static me.goudham.Contents.FILELIST;
+import static me.goudham.Contents.IMAGE;
+import static me.goudham.Contents.TEXT;
 
 class MacClipboardListener extends ClipboardListener implements Runnable {
     ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();

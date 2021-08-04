@@ -10,15 +10,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import me.goudham.domain.MyClipboardContent;
 import me.goudham.domain.OldClipboardContent;
-import me.goudham.domain.OldImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static me.goudham.domain.Contents.FILELIST;
-import static me.goudham.domain.Contents.IMAGE;
-import static me.goudham.domain.Contents.TEXT;
+import static me.goudham.Contents.FILELIST;
+import static me.goudham.Contents.IMAGE;
+import static me.goudham.Contents.TEXT;
 
 class ClipboardUtils {
     protected static Logger logger = LoggerFactory.getLogger(ClipboardUtils.class);

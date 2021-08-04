@@ -3,8 +3,12 @@ package me.goudham;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,5 +105,61 @@ abstract class ClipboardListener {
 
     void setEventManager(EventManager eventManager) {
         this.eventManager = eventManager;
+    }
+
+    static class TransferableFileList implements Transferable {
+
+        private final List<File> fileList;
+
+        public TransferableFileList(@NotNull List<File> fileList) {
+            this.fileList = fileList;
+        }
+
+        @Override
+        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
+            if (flavor.equals(DataFlavor.javaFileListFlavor)) {
+                return fileList;
+            } else {
+                throw new UnsupportedFlavorException(flavor);
+            }
+        }
+
+        @Override
+        public DataFlavor[] getTransferDataFlavors() {
+            return new DataFlavor[] { DataFlavor.javaFileListFlavor };
+        }
+
+        @Override
+        public boolean isDataFlavorSupported(DataFlavor flavor) {
+            return flavor == DataFlavor.javaFileListFlavor;
+        }
+    }
+
+    static class TransferableImage implements Transferable {
+
+        private final Image image;
+
+        public TransferableImage(@NotNull Image image) {
+            this.image = image;
+        }
+
+        @Override
+        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
+            if (flavor.equals(DataFlavor.imageFlavor)) {
+                return image;
+            } else {
+                throw new UnsupportedFlavorException(flavor);
+            }
+        }
+
+        @Override
+        public DataFlavor[] getTransferDataFlavors() {
+            return new DataFlavor[] { DataFlavor.imageFlavor };
+        }
+
+        @Override
+        public boolean isDataFlavorSupported(DataFlavor flavor) {
+            return flavor == DataFlavor.imageFlavor;
+        }
     }
 }

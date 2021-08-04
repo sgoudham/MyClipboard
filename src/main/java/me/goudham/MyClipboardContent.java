@@ -1,11 +1,11 @@
-package me.goudham.domain;
+package me.goudham;
 
 import java.util.Objects;
 
-public class MyClipboardContent<T> {
+class MyClipboardContent<T> {
     private T oldContent;
 
-    public MyClipboardContent() {
+    MyClipboardContent() {
     }
 
     public void setOldContent(Object oldContent) {

@@ -1,14 +1,14 @@
-package me.goudham.domain;
+package me.goudham;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-public class OldImage {
+class OldImage {
     private BufferedImage oldBufferedImage;
     private Dimension oldDimension;
 
-    public OldImage(BufferedImage oldBufferedImage, Dimension oldDimension) {
+    OldImage(BufferedImage oldBufferedImage, Dimension oldDimension) {
         this.oldBufferedImage = oldBufferedImage;
         this.oldDimension = oldDimension;
     }
