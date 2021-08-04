@@ -19,7 +19,9 @@ import static me.goudham.Contents.IMAGE;
 import static me.goudham.Contents.TEXT;
 
 class ClipboardUtils {
-    protected static Logger logger = LoggerFactory.getLogger(ClipboardUtils.class);
+    private static Logger logger = LoggerFactory.getLogger(ClipboardUtils.class);
+
+    ClipboardUtils() {}
 
     /**
      * Try to unmarshal {@link Transferable} into {@link String}
@@ -27,7 +29,7 @@ class ClipboardUtils {
      * @param clipboardContents The {@link Transferable} to be converted into {@link String}
      * @return {@link String} representation of {@code clipboardContents}
      */
-    static String getStringContent(Transferable clipboardContents) {
+    String getStringContent(Transferable clipboardContents) {
         String newContent = null;
 
         try {
@@ -35,7 +37,6 @@ class ClipboardUtils {
                 newContent = (String) clipboardContents.getTransferData(TEXT.getDataFlavor());
             }
         } catch (UnsupportedFlavorException | IOException exp) {
-            exp.printStackTrace();
             logger.info("Exception Thrown When Receiving String Content", exp);
         }
 
@@ -48,15 +49,15 @@ class ClipboardUtils {
      * @param clipboardContents The {@link Transferable} to be converted into {@link BufferedImage}
      * @return {@link BufferedImage} representation of {@code clipboardContents}
      */
-    static BufferedImage getImageContent(Transferable clipboardContents) {
+    BufferedImage getImageContent(Transferable clipboardContents) {
         BufferedImage bufferedImage = null;
 
         try {
             if (clipboardContents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
-                bufferedImage = ClipboardUtils.convertToBufferedImage((Image) clipboardContents.getTransferData(IMAGE.getDataFlavor()));
+                bufferedImage = convertToBufferedImage((Image) clipboardContents.getTransferData(IMAGE.getDataFlavor()));
             }
         } catch (UnsupportedFlavorException | IOException exp) {
-            exp.printStackTrace();
+            logger.info("Exception Thrown When Receiving Image Content", exp);
         }
 
         return bufferedImage;
@@ -68,7 +69,7 @@ class ClipboardUtils {
      * @param clipboardContents The {@link Transferable} to be converted into {@link List} of {@link File}
      * @return {@link List} of {@link File} representation of {@code clipboardContents}
      */
-    static List<File> getFileContent(Transferable clipboardContents) {
+    List<File> getFileContent(Transferable clipboardContents) {
         List<File> fileList = null;
 
         try {
@@ -76,13 +77,13 @@ class ClipboardUtils {
                 fileList = (List<File>) clipboardContents.getTransferData(FILELIST.getDataFlavor());
             }
         } catch (UnsupportedFlavorException | IOException exp) {
-            exp.printStackTrace();
+            logger.info("Exception Thrown When Receiving File Content", exp);
         }
 
         return fileList;
     }
 
-    static MyClipboardContent<?> getClipboardContents(Transferable contents, Clipboard clipboard) {
+    MyClipboardContent<?> getClipboardContents(Transferable contents, Clipboard clipboard) {
         MyClipboardContent<?> myClipboardContent = new MyClipboardContent<>();
 
         try {
@@ -102,7 +103,7 @@ class ClipboardUtils {
         return myClipboardContent;
     }
 
-    static OldClipboardContent getOldClipboardContent(Transferable oldContents) {
+    OldClipboardContent getOldClipboardContent(Transferable oldContents) {
         OldClipboardContent oldClipboardContent = null;
 
         try {
@@ -120,7 +121,7 @@ class ClipboardUtils {
         return oldClipboardContent;
     }
 
-    static OldClipboardContent getOldClipboardContent(Object object) {
+    OldClipboardContent getOldClipboardContent(Object object) {
         OldClipboardContent oldClipboardContent = null;
 
         if (object instanceof String) {
@@ -134,7 +135,7 @@ class ClipboardUtils {
         return oldClipboardContent;
     }
 
-    static BufferedImage convertToBufferedImage(Image image) {
+    BufferedImage convertToBufferedImage(Image image) {
         BufferedImage newImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
 
         Graphics2D graphics = newImage.createGraphics();
@@ -142,5 +143,13 @@ class ClipboardUtils {
         graphics.dispose();
 
         return newImage;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        ClipboardUtils.logger = logger;
     }
 }

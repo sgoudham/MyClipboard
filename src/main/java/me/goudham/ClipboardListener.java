@@ -13,12 +13,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 abstract class ClipboardListener {
-    final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-    final Logger logger = LoggerFactory.getLogger(getClass());
-    private EventManager eventManager = new EventManager();
+    Clipboard clipboard;
+    Logger logger;
+    EventManager eventManager;
+    ClipboardUtils clipboardUtils;
     private boolean imageMonitored = true;
     private boolean textMonitored = true;
     private boolean fileMonitored = true;
+
+    ClipboardListener() {
+        clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        logger = LoggerFactory.getLogger(getClass());
+        eventManager = new EventManager();
+        clipboardUtils = new ClipboardUtils();
+    }
 
     /**
      * Main entry point of execution for the correct {@link ClipboardListener}
@@ -75,6 +83,38 @@ abstract class ClipboardListener {
         this.fileMonitored = !fileMonitored;
     }
 
+    Clipboard getClipboard() {
+        return clipboard;
+    }
+
+    void setClipboard(Clipboard clipboard) {
+        this.clipboard = clipboard;
+    }
+
+    Logger getLogger() {
+        return logger;
+    }
+
+    void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+
+    EventManager getEventManager() {
+        return eventManager;
+    }
+
+    void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
+    }
+
+    ClipboardUtils getClipboardUtils() {
+        return clipboardUtils;
+    }
+
+    void setClipboardUtils(ClipboardUtils clipboardUtils) {
+        this.clipboardUtils = clipboardUtils;
+    }
+
     boolean isImageMonitored() {
         return imageMonitored;
     }
@@ -97,14 +137,6 @@ abstract class ClipboardListener {
 
     void setFileMonitored(boolean fileMonitored) {
         this.fileMonitored = fileMonitored;
-    }
-
-    EventManager getEventManager() {
-        return eventManager;
-    }
-
-    void setEventManager(EventManager eventManager) {
-        this.eventManager = eventManager;
     }
 
     static class TransferableFileList implements Transferable {

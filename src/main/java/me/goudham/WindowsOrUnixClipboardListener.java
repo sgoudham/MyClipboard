@@ -15,9 +15,6 @@ import me.goudham.domain.OldClipboardContent;
 
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
-import static me.goudham.ClipboardUtils.getFileContent;
-import static me.goudham.ClipboardUtils.getImageContent;
-import static me.goudham.ClipboardUtils.getStringContent;
 import static me.goudham.Contents.FILELIST;
 import static me.goudham.Contents.IMAGE;
 import static me.goudham.Contents.TEXT;
@@ -26,7 +23,9 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private boolean listening = false;
 
-    WindowsOrUnixClipboardListener() {}
+    WindowsOrUnixClipboardListener() {
+        super();
+    }
 
     @Override
     public void lostOwnership(Clipboard oldClipboard, Transferable oldClipboardContents) {
@@ -47,11 +46,11 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
      * @param newClipboardContents The new contents of the clipboard
      */
     void processContents(Clipboard oldClipboard, Transferable oldClipboardContents, Transferable newClipboardContents) {
-        OldClipboardContent oldClipboardContent = ClipboardUtils.getOldClipboardContent(oldClipboardContents);
+        OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(oldClipboardContents);
 
         if (isTextMonitored()) {
             if (TEXT.isAvailable(oldClipboard) && !FILELIST.isAvailable(oldClipboard)) {
-                String stringContent = getStringContent(newClipboardContents);
+                String stringContent = clipboardUtils.getStringContent(newClipboardContents);
                 if (!stringContent.equals(oldClipboardContent.getOldText())) {
                     getEventManager().notifyTextEvent(oldClipboardContent, stringContent);
                 }
@@ -60,7 +59,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
 
         if (isImageMonitored()) {
             if (IMAGE.isAvailable(oldClipboard)) {
-                BufferedImage bufferedImage = getImageContent(newClipboardContents);
+                BufferedImage bufferedImage = clipboardUtils.getImageContent(newClipboardContents);
                 BufferedImage oldBufferedImage = oldClipboardContent.getOldImage();
                 if (bufferedImage != oldBufferedImage) {
                     if (oldBufferedImage != null) {
@@ -78,7 +77,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
 
         if (isFileMonitored()) {
             if (FILELIST.isAvailable(oldClipboard)) {
-                List<File> fileList = getFileContent(newClipboardContents);
+                List<File> fileList = clipboardUtils.getFileContent(newClipboardContents);
                 if (!fileList.equals(oldClipboardContent.getOldFiles())) {
                     getEventManager().notifyFilesEvent(oldClipboardContent, fileList);
                 }
