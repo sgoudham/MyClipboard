@@ -46,10 +46,22 @@ public class MyClipboard {
         return new MyClipboard(clipboardListener);
     }
 
+    /**
+     * Allows the correct {@link ClipboardListener} to start listening for clipboard changes
+     *
+     * @see WindowsOrUnixClipboardListener#startListening()
+     * @see MacClipboardListener#startListening()
+     */
     public void startListening() {
         clipboardListener.startListening();
     }
 
+    /**
+     * Stops the correct {@link ClipboardListener} to stop listening for clipboard changes
+     *
+     * @see WindowsOrUnixClipboardListener#stopListening()
+     * @see MacClipboardListener#stopListening()
+     */
     public void stopListening() {
         clipboardListener.stopListening();
     }
