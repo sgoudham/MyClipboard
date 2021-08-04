@@ -12,6 +12,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import me.goudham.domain.MyClipboardContent;
 import me.goudham.domain.OldClipboardContent;
+import me.goudham.domain.OldImage;
 import me.goudham.domain.TransferableFileList;
 import me.goudham.domain.TransferableImage;
 
@@ -53,7 +54,6 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
             }
 
             myClipboardContents[0].setOldContent(newStringContent);
-            myClipboardContents[0].setOldDimensionContent(newStringContent);
         }
     }
 
@@ -68,16 +68,16 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
             BufferedImage bufferedImageContent = getImageContent(newClipboardContents);
             if (bufferedImageContent == null) return;
             Dimension newDimensionContent = new Dimension(bufferedImageContent.getWidth(), bufferedImageContent.getHeight());
+            OldImage newImageContent = new OldImage(bufferedImageContent, newDimensionContent);
 
             if (isImageMonitored()) {
-                if (!newDimensionContent.equals(myClipboardContents[0].getOldDimensionContent())) {
+                if (!newImageContent.equals(myClipboardContents[0].getOldContent())) {
                     OldClipboardContent oldClipboardContent = ClipboardUtils.getOldClipboardContent(myClipboardContents[0].getOldContent());
                     getEventManager().notifyImageEvent(oldClipboardContent, bufferedImageContent);
                 }
             }
 
-            myClipboardContents[0].setOldContent(bufferedImageContent);
-            myClipboardContents[0].setOldDimensionContent(newDimensionContent);
+            myClipboardContents[0].setOldContent(newImageContent);
         }
     }
 
@@ -100,7 +100,6 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
                 }
             }
 
-            myClipboardContents[0].setOldContent(fileListContent);
             myClipboardContents[0].setOldContent(fileListContent);
         }
     }
