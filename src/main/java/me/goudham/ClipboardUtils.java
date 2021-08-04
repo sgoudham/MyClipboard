@@ -12,12 +12,16 @@ import java.io.IOException;
 import java.util.List;
 import me.goudham.domain.MyClipboardContent;
 import me.goudham.domain.OldClipboardContent;
+import me.goudham.domain.OldImage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static me.goudham.domain.Contents.FILELIST;
 import static me.goudham.domain.Contents.IMAGE;
 import static me.goudham.domain.Contents.TEXT;
 
 class ClipboardUtils {
+    protected static Logger logger = LoggerFactory.getLogger(ClipboardUtils.class);
 
     /**
      * Try to unmarshal {@link Transferable} into {@link String}
@@ -34,6 +38,7 @@ class ClipboardUtils {
             }
         } catch (UnsupportedFlavorException | IOException exp) {
             exp.printStackTrace();
+            logger.info("Exception Thrown When Receiving String Content", exp);
         }
 
         return newContent;
@@ -87,8 +92,8 @@ class ClipboardUtils {
                 myClipboardContent.setOldContent(contents.getTransferData(TEXT.getDataFlavor()));
             } else if (IMAGE.isAvailable(clipboard)) {
                 BufferedImage bufferedImage = convertToBufferedImage((Image) contents.getTransferData(IMAGE.getDataFlavor()));
-                myClipboardContent.setOldContent(bufferedImage);
-                myClipboardContent.setOldDimensionContent(new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight()));
+                Dimension imageDimension = new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
+                myClipboardContent.setOldContent(new OldImage(bufferedImage, imageDimension));
             } else if (FILELIST.isAvailable(clipboard)) {
                 myClipboardContent.setOldContent(contents.getTransferData(FILELIST.getDataFlavor()));
             }
@@ -122,8 +127,8 @@ class ClipboardUtils {
 
         if (object instanceof String) {
             oldClipboardContent = new OldClipboardContent((String) object);
-        } else if (object instanceof BufferedImage) {
-            oldClipboardContent = new OldClipboardContent((BufferedImage) object);
+        } else if (object instanceof OldImage) {
+            oldClipboardContent = new OldClipboardContent(((OldImage) object).getOldBufferedImage());
         } else if (object instanceof List) {
             oldClipboardContent = new OldClipboardContent((List<File>) object);
         }
