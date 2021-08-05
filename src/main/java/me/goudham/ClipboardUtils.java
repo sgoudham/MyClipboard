@@ -126,7 +126,7 @@ class ClipboardUtils {
                 oldClipboardContent = new OldClipboardContent((List<File>) oldContents.getTransferData(FILELIST.getDataFlavor()));
             }
         } catch (UnsupportedFlavorException | IOException exp) {
-            exp.printStackTrace();
+            logger.error("Exception Thrown When Retrieving Clipboard Contents", exp);
         }
 
         return oldClipboardContent;
