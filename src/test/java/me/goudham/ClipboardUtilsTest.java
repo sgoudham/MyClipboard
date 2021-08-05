@@ -62,7 +62,7 @@ class ClipboardUtilsTest {
 
         String actualStringContent = sut.getStringContent(transferableMock);
 
-        verify(logger, times(1)).info(expectedExceptionMessage, expectedException);
+        verify(logger, times(1)).error(expectedExceptionMessage, expectedException);
         assertThat(actualStringContent, is(expectedStringContent));
     }
 
@@ -88,7 +88,7 @@ class ClipboardUtilsTest {
 
         BufferedImage actualImageContent = sut.getImageContent(transferableMock);
 
-        verify(logger, times(1)).info(expectedExceptionMessage, expectedException);
+        verify(logger, times(1)).error(expectedExceptionMessage, expectedException);
         assertThat(actualImageContent, is(expectedImageContent));
     }
 
@@ -114,7 +114,7 @@ class ClipboardUtilsTest {
 
         List<File> actualFileContent = sut.getFileContent(transferableMock);
 
-        verify(logger, times(1)).info(expectedExceptionMessage, expectedException);
+        verify(logger, times(1)).error(expectedExceptionMessage, expectedException);
         assertThat(actualFileContent, is(expectedFileContent));
     }
 }
