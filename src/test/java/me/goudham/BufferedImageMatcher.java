@@ -16,6 +16,8 @@ class BufferedImageMatcher implements Matcher<BufferedImage> {
 
     @Override
     public boolean matches(Object argument) {
+        if (argument == null) return true;
+
         BufferedImage actual = (BufferedImage) argument;
 
         assertEquals(expected.getWidth(), actual.getWidth());
