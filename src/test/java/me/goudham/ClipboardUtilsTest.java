@@ -1,5 +1,7 @@
 package me.goudham;
 
+import java.awt.Dimension;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -7,8 +9,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Stream;
+import me.goudham.domain.OldClipboardContent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
@@ -116,5 +123,57 @@ class ClipboardUtilsTest {
 
         verify(logger, times(1)).error(expectedExceptionMessage, expectedException);
         assertThat(actualFileContent, is(expectedFileContent));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideArgumentsForRetrievingClipboardContents")
+    void successfullyRetrieveOldClipboardContents(MyClipboardContent<?> expectedMyClipboardContent, Object expectedContent, DataFlavor dataFlavor) throws IOException, UnsupportedFlavorException {
+        when(transferableMock.isDataFlavorSupported(dataFlavor)).thenReturn(true);
+        when(transferableMock.getTransferData(dataFlavor)).thenReturn(expectedContent);
+
+        MyClipboardContent<?> actualMyClipboardContent = sut.getClipboardContents(transferableMock);
+
+        assertThat(actualMyClipboardContent.getOldContent(), is(expectedMyClipboardContent.getOldContent()));
+        verifyNoInteractions(logger);
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideArgumentsForOldClipboardContents")
+    void successfullyMarshallClipboardContentsIntoOldClipboardContent(Object expectedOldContent, String expectedString, BufferedImage expectedImage, List<File> expectedFiles) {
+        OldClipboardContent actualOldClipboardContent = sut.getOldClipboardContent(expectedOldContent);
+
+        assertThat(actualOldClipboardContent.getOldText(), is(expectedString));
+        assertThat(actualOldClipboardContent.getOldImage(), is(expectedImage));
+        assertThat(actualOldClipboardContent.getOldFiles(), is(expectedFiles));
+        verifyNoInteractions(logger);
+    }
+
+    static Stream<Arguments> provideArgumentsForOldClipboardContents() {
+        String string = "testString";
+        BufferedImage bufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        Dimension dimension = new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
+        OldImage oldImage = new OldImage(bufferedImage, dimension);
+        List<File> files = List.of(new File("testFile"));
+
+        return Stream.of(
+                Arguments.of(string, string, null, null),
+                Arguments.of(oldImage, null, bufferedImage, null),
+                Arguments.of(files, null, null, files)
+        );
+    }
+
+
+    static Stream<Arguments> provideArgumentsForRetrievingClipboardContents() {
+        String string = "testString";
+        BufferedImage bufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        Dimension dimension = new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
+        OldImage oldImage = new OldImage(bufferedImage, dimension);
+        List<File> files = List.of(new File("testFile"));
+
+        return Stream.of(
+                Arguments.of(new MyClipboardContent<>(string), string, TEXT.getDataFlavor()),
+                Arguments.of(new MyClipboardContent<>(oldImage), bufferedImage, IMAGE.getDataFlavor()),
+                Arguments.of(new MyClipboardContent<>(files), files, FILELIST.getDataFlavor())
+        );
     }
 }
