@@ -83,17 +83,23 @@ class ClipboardUtils {
         return fileList;
     }
 
-    MyClipboardContent<?> getClipboardContents(Transferable contents, Clipboard clipboard) {
+    /**
+     * Store contents from the given {@link Transferable} into {@link MyClipboardContent}
+     *
+     * @param contents The {@link Transferable} which holds the clipboard contents
+     * @return {@link MyClipboardContent} containing clipboard contents
+     */
+    MyClipboardContent<?> getClipboardContents(Transferable contents) {
         MyClipboardContent<?> myClipboardContent = new MyClipboardContent<>();
 
         try {
-            if (TEXT.isAvailable(clipboard)) {
+            if (contents.isDataFlavorSupported(TEXT.getDataFlavor())) {
                 myClipboardContent.setOldContent(contents.getTransferData(TEXT.getDataFlavor()));
-            } else if (IMAGE.isAvailable(clipboard)) {
+            } else if (contents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
                 BufferedImage bufferedImage = convertToBufferedImage((Image) contents.getTransferData(IMAGE.getDataFlavor()));
                 Dimension imageDimension = new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
                 myClipboardContent.setOldContent(new OldImage(bufferedImage, imageDimension));
-            } else if (FILELIST.isAvailable(clipboard)) {
+            } else if (contents.isDataFlavorSupported(FILELIST.getDataFlavor())) {
                 myClipboardContent.setOldContent(contents.getTransferData(FILELIST.getDataFlavor()));
             }
         } catch (UnsupportedFlavorException | IOException exp) {
