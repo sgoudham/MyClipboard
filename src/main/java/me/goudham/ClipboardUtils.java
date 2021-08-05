@@ -108,6 +108,12 @@ class ClipboardUtils {
         return myClipboardContent;
     }
 
+    /**
+     * Store contents from the given {@link Transferable} into {@link OldClipboardContent}
+     *
+     * @param oldContents The given {@link Transferable} which holds the clipboard contents
+     * @return {@link OldClipboardContent} containing old clipboard contents
+     */
     OldClipboardContent getOldClipboardContent(Transferable oldContents) {
         OldClipboardContent oldClipboardContent = null;
 
@@ -126,6 +132,12 @@ class ClipboardUtils {
         return oldClipboardContent;
     }
 
+    /**
+     * Store contents from the given {@link Object} into {@link OldClipboardContent}
+     *
+     * @param object The given {@link Object} which holds the clipboard contents
+     * @return {@link OldClipboardContent} containing old clipboard contents
+     */
     OldClipboardContent getOldClipboardContent(Object object) {
         OldClipboardContent oldClipboardContent = null;
 
@@ -140,6 +152,12 @@ class ClipboardUtils {
         return oldClipboardContent;
     }
 
+    /**
+     * Utility method for converting {@link Image} into {@link BufferedImage}
+     *
+     * @param image The given {@link Image} to convert
+     * @return The converted {@link BufferedImage}
+     */
     BufferedImage convertToBufferedImage(Image image) {
         BufferedImage newImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
 
