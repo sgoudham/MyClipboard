@@ -138,6 +138,20 @@ class ClipboardUtilsTest {
     }
 
     @ParameterizedTest
+    @MethodSource("provideArgumentsForOldClipboardContentsWhenContentIsTransferable")
+    void successfullyMarshallClipboardContentsIntoOldClipboardContentWhenContentIsTransferable(Object expectedContent, DataFlavor dataFlavor, String expectedString, BufferedImage expectedImage, List<File> expectedFiles) throws IOException, UnsupportedFlavorException {
+        when(transferableMock.isDataFlavorSupported(dataFlavor)).thenReturn(true);
+        when(transferableMock.getTransferData(dataFlavor)).thenReturn(expectedContent);
+
+        OldClipboardContent actualOldClipboardContent = sut.getOldClipboardContent(transferableMock);
+
+        assertThat(actualOldClipboardContent.getOldText(), is(expectedString));
+        assertThat(actualOldClipboardContent.getOldFiles(), is(expectedFiles));
+        assertThat(actualOldClipboardContent.getOldImage(), is(new BufferedImageMatcher(expectedImage)));
+        verifyNoInteractions(logger);
+    }
+
+    @ParameterizedTest
     @MethodSource("provideArgumentsForOldClipboardContents")
     void successfullyMarshallClipboardContentsIntoOldClipboardContent(Object expectedOldContent, String expectedString, BufferedImage expectedImage, List<File> expectedFiles) {
         OldClipboardContent actualOldClipboardContent = sut.getOldClipboardContent(expectedOldContent);
@@ -146,6 +160,18 @@ class ClipboardUtilsTest {
         assertThat(actualOldClipboardContent.getOldImage(), is(expectedImage));
         assertThat(actualOldClipboardContent.getOldFiles(), is(expectedFiles));
         verifyNoInteractions(logger);
+    }
+
+    static Stream<Arguments> provideArgumentsForOldClipboardContentsWhenContentIsTransferable() {
+        String string = "testString";
+        BufferedImage bufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        List<File> files = List.of(new File("testFile"));
+
+        return Stream.of(
+                Arguments.of(string, TEXT.getDataFlavor(), string, null, null),
+                Arguments.of(bufferedImage, IMAGE.getDataFlavor(), null, bufferedImage, null),
+                Arguments.of(files, FILELIST.getDataFlavor(), null, null, files)
+        );
     }
 
     static Stream<Arguments> provideArgumentsForOldClipboardContents() {
