@@ -8,6 +8,10 @@ class MyClipboardContent<T> {
     MyClipboardContent() {
     }
 
+    MyClipboardContent(Object oldContent) {
+        this.oldContent = (T) oldContent;
+    }
+
     public void setOldContent(Object oldContent) {
         this.oldContent = (T) oldContent;
     }
