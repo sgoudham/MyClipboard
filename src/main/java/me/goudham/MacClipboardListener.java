@@ -24,8 +24,6 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
 
     MacClipboardListener() {
         super();
-        Transferable oldClipboardContents = clipboard.getContents(null);
-        myClipboardContents = new MyClipboardContent[] { clipboardUtils.getClipboardContents(oldClipboardContents) };
     }
 
     /**
@@ -188,6 +186,8 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
      */
     @Override
     void execute() {
+        Transferable oldClipboardContents = clipboard.getContents(null);
+        myClipboardContents = new MyClipboardContent[] { clipboardUtils.getClipboardContents(oldClipboardContents) };
         scheduledExecutorService.scheduleAtFixedRate(this, 0, 200, TimeUnit.MILLISECONDS);
     }
 }
