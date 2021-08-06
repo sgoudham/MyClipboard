@@ -5,16 +5,16 @@ import java.io.File;
 import java.util.List;
 import me.goudham.event.ClipboardEvent;
 import me.goudham.exception.UnsupportedSystemException;
-import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Entry Class for User to interact with the System Clipboard
- *
+ * <p>
  * The abstract class {@link ClipboardListener} is responsible for handling all operations
  */
 public class MyClipboard {
-    private final @NotNull ClipboardListener clipboardListener;
+    private @NotNull ClipboardListener clipboardListener;
+    private static SystemUtils systemUtils = new SystemUtils();
 
     /**
      * Creates an instance of {@link MyClipboard}
@@ -22,7 +22,7 @@ public class MyClipboard {
      * @param clipboardListener The underlying {@link ClipboardListener}
      */
     private MyClipboard(@NotNull ClipboardListener clipboardListener) {
-       this.clipboardListener = clipboardListener;
+        this.clipboardListener = clipboardListener;
     }
 
     /**
@@ -35,12 +35,12 @@ public class MyClipboard {
     public static MyClipboard getSystemClipboard() throws UnsupportedSystemException {
         ClipboardListener clipboardListener;
 
-        if (isMac()) {
+        if (systemUtils.isMac()) {
             clipboardListener = new MacClipboardListener();
-        } else if (isWindows() || isUnix()) {
+        } else if (systemUtils.isWindows() || systemUtils.isUnix()) {
             clipboardListener = new WindowsOrUnixClipboardListener();
         } else {
-            throw new UnsupportedSystemException("Your Operating System: " + System.getProperty("os.name") + "is not supported");
+            throw new UnsupportedSystemException("Your Operating System: '" + System.getProperty("os.name") + "' is not supported");
         }
 
         return new MyClipboard(clipboardListener);
@@ -146,15 +146,19 @@ public class MyClipboard {
         clipboardListener.setFileMonitored(fileMonitored);
     }
 
-    private static boolean isMac() {
-        return SystemUtils.IS_OS_MAC;
+    public @NotNull ClipboardListener getClipboardListener() {
+        return clipboardListener;
     }
 
-    private static boolean isUnix() {
-        return SystemUtils.IS_OS_UNIX || SystemUtils.IS_OS_LINUX;
+    public void setClipboardListener(@NotNull ClipboardListener clipboardListener) {
+        this.clipboardListener = clipboardListener;
     }
 
-    private static boolean isWindows() {
-        return SystemUtils.IS_OS_WINDOWS;
+    protected static SystemUtils getSystemUtils() {
+        return systemUtils;
+    }
+
+    protected static void setSystemUtils(SystemUtils systemUtils) {
+        MyClipboard.systemUtils = systemUtils;
     }
 }
