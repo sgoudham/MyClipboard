@@ -5,6 +5,5 @@ RUN apt-get update && apt-get install -y \
     gpg \
     xvfb \
     libxrender1 libxtst6 libxi6 libxext6
-RUN export MAVEN_OPTS="-Djava.awt.headless=true"
 RUN /usr/bin/Xvfb :99 &
 RUN export DISPLAY=:99
