@@ -34,8 +34,8 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
             Transferable newClipboardContents = oldClipboard.getContents(currentThread());
             processContents(oldClipboard, oldClipboardContents, newClipboardContents);
             regainOwnership(oldClipboard, newClipboardContents);
-        } catch (IllegalStateException | InterruptedException err) {
-            err.printStackTrace();
+        } catch (IllegalStateException | InterruptedException exp) {
+            logger.error("Exception Thrown When Processing Clipboard Changes", exp);
             executorService.submit(this);
         }
     }
@@ -106,7 +106,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
             try {
                 sleep(200);
             } catch (InterruptedException ie) {
-                ie.printStackTrace();
+                logger.error("Exception Thrown As Thread Cannot Sleep", ie);
             }
 
             listening = false;
@@ -118,13 +118,13 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         try {
             sleep(200);
         } catch (InterruptedException ie) {
-            ie.printStackTrace();
+            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
         }
 
         try {
             clipboard.setContents(new StringSelection(stringContent), this);
         } catch (IllegalStateException ise) {
-            ise.printStackTrace();
+            logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
             executorService.submit(this);
         }
     }
@@ -134,13 +134,13 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         try {
             sleep(200);
         } catch (InterruptedException ie) {
-            ie.printStackTrace();
+            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
         }
 
         try {
             clipboard.setContents(new TransferableImage(imageContent), this);
         } catch (IllegalStateException ise) {
-            ise.printStackTrace();
+            logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
             executorService.submit(this);
         }
     }
@@ -150,13 +150,13 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         try {
             sleep(200);
         } catch (InterruptedException ie) {
-            ie.printStackTrace();
+            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
         }
 
         try {
             clipboard.setContents(new TransferableFileList(fileContent), this);
         } catch (IllegalStateException ise) {
-            ise.printStackTrace();
+            logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
             executorService.submit(this);
         }
     }
@@ -187,8 +187,8 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         try {
             Transferable currentClipboardContents = clipboard.getContents(null);
             regainOwnership(clipboard, currentClipboardContents);
-        } catch (IllegalStateException err) {
-            err.printStackTrace();
+        } catch (IllegalStateException ise) {
+            logger.error("Exception Thrown When Retrieving Clipboard Contents", ise);
             executorService.submit(this);
         }
     }
