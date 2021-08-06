@@ -20,8 +20,6 @@ import static me.goudham.Contents.TEXT;
 class ClipboardUtils {
     private static Logger logger = LoggerFactory.getLogger(ClipboardUtils.class);
 
-    ClipboardUtils() {}
-
     /**
      * Try to unmarshal {@link Transferable} into {@link String}
      *
