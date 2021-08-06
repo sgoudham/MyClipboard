@@ -113,7 +113,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
             try {
                 sleep(200);
             } catch (InterruptedException ie) {
-                ie.printStackTrace();
+                logger.error("Exception Thrown As Thread Cannot Sleep", ie);
             }
 
             listening = false;
@@ -140,7 +140,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
         try {
             sleep(200);
         } catch (InterruptedException ie) {
-            ie.printStackTrace();
+            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
         }
 
         clipboard.setContents(new StringSelection(stringContent), null);
@@ -151,7 +151,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
         try {
             sleep(200);
         } catch (InterruptedException ie) {
-            ie.printStackTrace();
+            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
         }
 
         clipboard.setContents(new TransferableImage(imageContent), null);
@@ -162,7 +162,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
         try {
             sleep(200);
         } catch (InterruptedException ie) {
-            ie.printStackTrace();
+            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
         }
 
         clipboard.setContents(new TransferableFileList(fileContent), null);
@@ -176,7 +176,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
             checkImages(newClipboardContents, myClipboardContents);
             checkFiles(newClipboardContents, myClipboardContents);
         } catch (IllegalStateException ise) {
-            ise.printStackTrace();
+            logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
         }
     }
 
