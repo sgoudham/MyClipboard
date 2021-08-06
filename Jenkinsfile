@@ -30,8 +30,10 @@ pipeline {
             }
         }
         stage("Test") {
-            steps {
-                sh "mvn test"
+            wrap([$class: 'Xvfb']) {
+                steps {
+                    sh "mvn test"
+                }
             }
             post {
                 success {
