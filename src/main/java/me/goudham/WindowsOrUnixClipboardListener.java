@@ -52,7 +52,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
             if (TEXT.isAvailable(oldClipboard) && !FILELIST.isAvailable(oldClipboard)) {
                 String stringContent = clipboardUtils.getStringContent(newClipboardContents);
                 if (!stringContent.equals(oldClipboardContent.getOldText())) {
-                    getEventManager().notifyTextEvent(oldClipboardContent, stringContent);
+                    eventManager.notifyTextEvent(oldClipboardContent, stringContent);
                 }
             }
         }
@@ -66,10 +66,10 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
                         Dimension imageDimension = new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
                         Dimension oldImageDimension = new Dimension(oldBufferedImage.getWidth(), oldBufferedImage.getHeight());
                         if (!imageDimension.equals(oldImageDimension)) {
-                            getEventManager().notifyImageEvent(oldClipboardContent, bufferedImage);
+                            eventManager.notifyImageEvent(oldClipboardContent, bufferedImage);
                         }
                     } else {
-                        getEventManager().notifyImageEvent(oldClipboardContent, bufferedImage);
+                        eventManager.notifyImageEvent(oldClipboardContent, bufferedImage);
                     }
                 }
             }
@@ -79,7 +79,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
             if (FILELIST.isAvailable(oldClipboard)) {
                 List<File> fileList = clipboardUtils.getFileContent(newClipboardContents);
                 if (!fileList.equals(oldClipboardContent.getOldFiles())) {
-                    getEventManager().notifyFilesEvent(oldClipboardContent, fileList);
+                    eventManager.notifyFilesEvent(oldClipboardContent, fileList);
                 }
             }
         }

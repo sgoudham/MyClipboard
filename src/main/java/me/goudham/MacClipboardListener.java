@@ -41,7 +41,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
                 Object oldContent = myClipboardContents[0].getOldContent();
                 if (!newStringContent.equals(oldContent)) {
                     OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(oldContent);
-                    getEventManager().notifyTextEvent(oldClipboardContent, newStringContent);
+                    eventManager.notifyTextEvent(oldClipboardContent, newStringContent);
                 }
             }
 
@@ -65,7 +65,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
             if (isImageMonitored()) {
                 if (!newImageContent.equals(myClipboardContents[0].getOldContent())) {
                     OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(myClipboardContents[0].getOldContent());
-                    getEventManager().notifyImageEvent(oldClipboardContent, bufferedImageContent);
+                    eventManager.notifyImageEvent(oldClipboardContent, bufferedImageContent);
                 }
             }
 
@@ -88,7 +88,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
             if (isFileMonitored()) {
                 if (!fileListContent.equals(myClipboardContents[0].getOldContent())) {
                     OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(myClipboardContents[0].getOldContent());
-                    getEventManager().notifyFilesEvent(oldClipboardContent, fileListContent);
+                    eventManager.notifyFilesEvent(oldClipboardContent, fileListContent);
                 }
             }
 
