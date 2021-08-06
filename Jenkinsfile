@@ -12,24 +12,24 @@ pipeline {
         GPG_OWNER_TRUST = credentials('8703bbe8-c099-481f-8337-1dce32d51771')
     }
 
-    wrap([$class: 'Xvfb']) {
-        stages {
-            stage("Import GPG Keys") {
-                when {
-                    branch 'release'
-                }
-                steps {
-                    sh 'gpg --batch --import $GPG_SECRET_KEY'
-                    sh 'gpg --import-ownertrust $GPG_OWNER_TRUST'
+    stages {
+        stage("Import GPG Keys") {
+            when {
+                branch 'release'
+            }
+            steps {
+                sh 'gpg --batch --import $GPG_SECRET_KEY'
+                sh 'gpg --import-ownertrust $GPG_OWNER_TRUST'
+            }
+        }
+        stage("Build") {
+            steps {
+                withCredentials([file(credentialsId: '076a36e8-d448-46fc-af11-7e7181a6cb99', variable: 'MAVEN_SETTINGS')]) {
+                    sh 'mvn -s $MAVEN_SETTINGS -B -DskipTests clean package'
                 }
             }
-            stage("Build") {
-                steps {
-                    withCredentials([file(credentialsId: '076a36e8-d448-46fc-af11-7e7181a6cb99', variable: 'MAVEN_SETTINGS')]) {
-                        sh 'mvn -s $MAVEN_SETTINGS -B -DskipTests clean package'
-                    }
-                }
-            }
+        }
+        wrap([$class: 'Xvfb']) {
             stage("Test") {
                 steps {
                     sh "mvn test"
@@ -46,20 +46,20 @@ pipeline {
                     }
                 }
             }
-            stage("Deploy To OSSRH") {
-                when {
-                    branch 'release'
+        }
+        stage("Deploy To OSSRH") {
+            when {
+                branch 'release'
+            }
+            steps {
+                withCredentials([file(credentialsId: '076a36e8-d448-46fc-af11-7e7181a6cb99', variable: 'MAVEN_SETTINGS')]) {
+                    sh 'mvn -s $MAVEN_SETTINGS -B -DskipTests clean deploy'
                 }
-                steps {
-                    withCredentials([file(credentialsId: '076a36e8-d448-46fc-af11-7e7181a6cb99', variable: 'MAVEN_SETTINGS')]) {
-                        sh 'mvn -s $MAVEN_SETTINGS -B -DskipTests clean deploy'
-                    }
-                }
-                post {
-                    success {
-                        echo "Archiving Artifacts"
-                        archiveArtifacts artifacts: 'target/*.jar'
-                    }
+            }
+            post {
+                success {
+                    echo "Archiving Artifacts"
+                    archiveArtifacts artifacts: 'target/*.jar'
                 }
             }
         }
