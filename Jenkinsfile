@@ -31,7 +31,7 @@ pipeline {
         }
         stage("Test") {
             steps {
-                wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
+                wrap([$class: 'Xvnc']) {
                     sh "mvn test"
                 }
             }
