@@ -4,5 +4,5 @@ MAINTAINER Goudham Suresh
 RUN apt-get update && apt-get install -y \
     gpg \
     xvfb
-RUN Xvfb :99 &
+RUN /usr/bin/Xvfb :99 &
 RUN export DISPLAY=:99
