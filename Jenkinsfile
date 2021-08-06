@@ -32,7 +32,7 @@ pipeline {
         stage("Test") {
             steps {
                 wrap([$class: 'Xvfb']) {
-                    sh "mvn test"
+                    sh "mvn test -Djava.awt.headless=true"
                 }
             }
             post {
