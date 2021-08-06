@@ -3,4 +3,6 @@ MAINTAINER Goudham Suresh
 
 RUN apt-get update && apt-get install -y \
     gpg \
-    tightvncserver
+    xvfb
+RUN Xvfb :99 &
+RUN export DISPLAY=:99
