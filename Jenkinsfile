@@ -29,6 +29,12 @@ pipeline {
                 }
             }
         }
+        stage("Start Server") {
+            steps {
+                sh "vncserver"
+                sh "vncserver -kill :1"
+            }
+        }
         stage("Test") {
             steps {
                 wrap([$class: 'Xvnc']) {
