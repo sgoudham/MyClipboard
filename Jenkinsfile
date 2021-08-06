@@ -29,21 +29,21 @@ pipeline {
                 }
             }
         }
-        wrap([$class: 'Xvfb']) {
-            stage("Test") {
-                steps {
+        stage("Test") {
+            steps {
+                wrap([$class: 'Xvfb']) {
                     sh "mvn test"
                 }
-                post {
-                    success {
-                        echo "Generating Test Report..."
-                        publishCoverage adapters: [jacocoAdapter('target/site/jacoco/jacoco.xml')]
+            }
+            post {
+                success {
+                    echo "Generating Test Report..."
+                    publishCoverage adapters: [jacocoAdapter('target/site/jacoco/jacoco.xml')]
 
-                        echo "Sending Report to CodeCov..."
-                        sh '''#!/bin/bash
-                              bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN || echo "Codecov did not collect coverage reports"
-                           '''
-                    }
+                    echo "Sending Report to CodeCov..."
+                    sh '''#!/bin/bash
+                          bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN || echo "Codecov did not collect coverage reports"
+                       '''
                 }
             }
         }
