@@ -31,7 +31,7 @@ pipeline {
         }
         stage("Test") {
             steps {
-                sh "mvn test -Djava.awt.headless=true"
+                sh "mvn test"
             }
             post {
                 success {
