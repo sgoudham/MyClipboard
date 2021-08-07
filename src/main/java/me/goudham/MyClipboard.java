@@ -3,7 +3,9 @@ package me.goudham;
 import java.awt.Image;
 import java.io.File;
 import java.util.List;
-import me.goudham.event.ClipboardEvent;
+import me.goudham.event.FileEvent;
+import me.goudham.event.ImageEvent;
+import me.goudham.event.TextEvent;
 import me.goudham.exception.UnsupportedSystemException;
 import org.jetbrains.annotations.NotNull;
 
@@ -91,23 +93,63 @@ public class MyClipboard {
     }
 
     /**
-     * Adds a {@link ClipboardEvent} to the underlying {@link ClipboardListener}
+     * Adds a {@link TextEvent} to the underlying {@link ClipboardListener}
      *
-     * @param clipboardEvent The {@link ClipboardEvent} to be added
-     * @see EventManager
+     * @param textEvent The {@link TextEvent} to be added
+     * @see EventManager#addEventListener(TextEvent) 
      */
-    public void addEventListener(ClipboardEvent clipboardEvent) {
-        clipboardListener.getEventManager().addEventListener(clipboardEvent);
+    public void addEventListener(TextEvent textEvent) {
+        clipboardListener.getEventManager().addEventListener(textEvent);
     }
 
     /**
-     * Removes a {@link ClipboardEvent} from the underlying {@link ClipboardListener}
+     * Adds a {@link ImageEvent} to the underlying {@link ClipboardListener}
      *
-     * @param clipboardEvent The {@link ClipboardEvent} to be removed
-     * @see EventManager
+     * @param imageEvent The {@link ImageEvent} to be added
+     * @see EventManager#addEventListener(ImageEvent) 
      */
-    public void removeEventListener(ClipboardEvent clipboardEvent) {
-        clipboardListener.getEventManager().removeEventListener(clipboardEvent);
+    public void addEventListener(ImageEvent imageEvent) {
+        clipboardListener.getEventManager().addEventListener(imageEvent);
+    }
+
+    /**
+     * Adds a {@link FileEvent} to the underlying {@link ClipboardListener}
+     *
+     * @param fileEvent The {@link FileEvent} to be added
+     * @see EventManager#addEventListener(FileEvent) 
+     */
+    public void addEventListener(FileEvent fileEvent) {
+        clipboardListener.getEventManager().addEventListener(fileEvent);
+    }
+
+    /**
+     * Removes a {@link TextEvent} from the underlying {@link ClipboardListener}
+     *
+     * @param textEvent The {@link TextEvent} to be removed
+     * @see EventManager#removeEventListener(TextEvent) 
+     */
+    public void removeEventListener(TextEvent textEvent) {
+        clipboardListener.getEventManager().removeEventListener(textEvent);
+    }
+
+    /**
+     * Removes a {@link ImageEvent} from the underlying {@link ClipboardListener}
+     *
+     * @param imageEvent The {@link ImageEvent} to be removed
+     * @see EventManager#removeEventListener(ImageEvent) 
+     */
+    public void removeEventListener(ImageEvent imageEvent) {
+        clipboardListener.getEventManager().removeEventListener(imageEvent);
+    }
+
+    /**
+     * Removes a {@link FileEvent} from the underlying {@link ClipboardListener}
+     *
+     * @param fileEvent The {@link FileEvent} to be removed
+     * @see EventManager#removeEventListener(FileEvent)
+     */
+    public void removeEventListener(FileEvent fileEvent) {
+        clipboardListener.getEventManager().removeEventListener(fileEvent);
     }
 
     public void toggleTextMonitored() {
