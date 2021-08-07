@@ -6,6 +6,7 @@ class MyClipboardContent<T> {
     private T oldContent;
 
     MyClipboardContent() {
+
     }
 
     MyClipboardContent(Object oldContent) {
