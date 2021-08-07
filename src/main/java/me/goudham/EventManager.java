@@ -5,41 +5,81 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import me.goudham.domain.OldClipboardContent;
-import me.goudham.event.ClipboardEvent;
+import me.goudham.event.FileEvent;
+import me.goudham.event.ImageEvent;
+import me.goudham.event.TextEvent;
 
 /**
  * Stores all eventListeners and produces notifications that are to be consumed by users using {@link MyClipboard}
  */
 class EventManager {
-    List<ClipboardEvent> eventListeners = new ArrayList<>();
+    List<TextEvent> textEventListener = new ArrayList<>();
+    List<ImageEvent> imageEventListener = new ArrayList<>();
+    List<FileEvent> fileEventListener = new ArrayList<>();
 
     /**
-     * Adds a {@link ClipboardEvent} to the {@code eventListeners}
+     * Adds a {@link TextEvent} to the {@code textEventListener}
      *
-     * @param clipboardEvent The {@link ClipboardEvent} to be added
+     * @param textEvent The {@link TextEvent} to be added
      */
-    void addEventListener(ClipboardEvent clipboardEvent) {
-        eventListeners.add(clipboardEvent);
+    void addEventListener(TextEvent textEvent) {
+        textEventListener.add(textEvent);
     }
 
     /**
-     * Removes a {@link ClipboardEvent} from the {@code eventListeners}
+     * Adds a {@link ImageEvent} to the {@code imageEventListener}
      *
-     * @param clipboardEvent The {@link ClipboardEvent} to be removed
+     * @param imageEvent The {@link ImageEvent} to be added
      */
-    void removeEventListener(ClipboardEvent clipboardEvent) {
-        eventListeners.remove(clipboardEvent);
+    void addEventListener(ImageEvent imageEvent) {
+        imageEventListener.add(imageEvent);
+    }
+
+    /**
+     * Adds a {@link FileEvent} to the {@code fileEventListener}
+     *
+     * @param fileEvent The {@link FileEvent} to be added
+     */
+    void addEventListener(FileEvent fileEvent) {
+        fileEventListener.add(fileEvent);
+    }
+
+    /**
+     * Removes a {@link TextEvent} from the {@code textEventListener}
+     *
+     * @param textEvent The {@link TextEvent} to be removed
+     */
+    void removeEventListener(TextEvent textEvent) {
+        textEventListener.remove(textEvent);
+    }
+
+    /**
+     * Removes a {@link ImageEvent} from the {@code imageEventListener}
+     *
+     * @param imageEvent The {@link ImageEvent} to be removed
+     */
+    void removeEventListener(ImageEvent imageEvent) {
+        imageEventListener.remove(imageEvent);
+    }
+
+    /**
+     * Removes a {@link FileEvent} from the {@code fileEventListener}
+     *
+     * @param fileEvent The {@link FileEvent} to be removed
+     */
+    void removeEventListener(FileEvent fileEvent) {
+        fileEventListener.remove(fileEvent);
     }
 
     /**
      * Produces {@link String} change notifications to all consumers listening
      *
      * @param oldClipboardContent The previous clipboard contents
-     * @param stringContent {@link String} to be consumed
+     * @param stringContent       {@link String} to be consumed
      */
     void notifyTextEvent(OldClipboardContent oldClipboardContent, String stringContent) {
-        for (ClipboardEvent clipboardEvent : eventListeners) {
-            clipboardEvent.onCopyText(oldClipboardContent, stringContent);
+        for (TextEvent textEvent : textEventListener) {
+            textEvent.onCopyText(oldClipboardContent, stringContent);
         }
     }
 
@@ -47,11 +87,11 @@ class EventManager {
      * Produces {@link BufferedImage} change notifications to all consumers listening
      *
      * @param oldClipboardContent The previous clipboard contents
-     * @param imageContent {@link BufferedImage} to be consumed
+     * @param imageContent        {@link BufferedImage} to be consumed
      */
     void notifyImageEvent(OldClipboardContent oldClipboardContent, BufferedImage imageContent) {
-        for (ClipboardEvent clipboardEvent : eventListeners) {
-            clipboardEvent.onCopyImage(oldClipboardContent, imageContent);
+        for (ImageEvent imageEvent : imageEventListener) {
+            imageEvent.onCopyImage(oldClipboardContent, imageContent);
         }
     }
 
@@ -59,11 +99,11 @@ class EventManager {
      * Produces {@link List} of {@link File} change notifications to all consumers listening
      *
      * @param oldClipboardContent The previous clipboard contents
-     * @param fileListContent {@link List} of {@link File} to be consumed
+     * @param fileContent         {@link List} of {@link File} to be consumed
      */
-    void notifyFilesEvent(OldClipboardContent oldClipboardContent, List<File> fileListContent) {
-        for (ClipboardEvent clipboardEvent : eventListeners) {
-            clipboardEvent.onCopyFiles(oldClipboardContent, fileListContent);
+    void notifyFilesEvent(OldClipboardContent oldClipboardContent, List<File> fileContent) {
+        for (FileEvent fileEvent : fileEventListener) {
+            fileEvent.onCopyFiles(oldClipboardContent, fileContent);
         }
     }
 }
