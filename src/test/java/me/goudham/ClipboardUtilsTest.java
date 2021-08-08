@@ -1,6 +1,5 @@
 package me.goudham;
 
-import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
@@ -75,25 +74,26 @@ class ClipboardUtilsTest {
 
     @Test
     void successfullyGetImageContent() {
-        BufferedImage expectedImageContent = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-        Transferable expectedTransferable = new ClipboardListener.TransferableImage(expectedImageContent);
+        BufferedImage expectedBufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        MyBufferedImage expectedImageContent = new MyBufferedImage(expectedBufferedImage);
+        Transferable expectedTransferable = new ClipboardListener.TransferableImage(expectedBufferedImage);
 
-        BufferedImage actualImageContent = sut.getImageContent(expectedTransferable);
+        MyBufferedImage actualImageContent = sut.getImageContent(expectedTransferable);
 
-        assertThat(actualImageContent, new BufferedImageMatcher(expectedImageContent));
+        assertThat(actualImageContent, is(expectedImageContent));
         verifyNoInteractions(logger);
     }
 
     @Test
     void failToGetImageContent() throws IOException, UnsupportedFlavorException {
-        BufferedImage expectedImageContent = null;
+        MyBufferedImage expectedImageContent = null;
         String expectedExceptionMessage = "Exception Thrown When Retrieving Image Content";
         Throwable expectedException = new UnsupportedFlavorException(IMAGE.getDataFlavor());
 
         when(transferableMock.isDataFlavorSupported(IMAGE.getDataFlavor())).thenReturn(true);
         when(transferableMock.getTransferData(IMAGE.getDataFlavor())).thenThrow(expectedException);
 
-        BufferedImage actualImageContent = sut.getImageContent(transferableMock);
+        MyBufferedImage actualImageContent = sut.getImageContent(transferableMock);
 
         verify(logger, times(1)).error(expectedExceptionMessage, expectedException);
         assertThat(actualImageContent, is(expectedImageContent));
@@ -177,13 +177,12 @@ class ClipboardUtilsTest {
     static Stream<Arguments> provideArgumentsForOldClipboardContents() {
         String string = "testString";
         BufferedImage bufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-        Dimension dimension = new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
-        OldImage oldImage = new OldImage(bufferedImage, dimension);
+        MyBufferedImage myBufferedImage = new MyBufferedImage(bufferedImage);
         List<File> files = List.of(new File("testFile"));
 
         return Stream.of(
                 Arguments.of(string, string, null, null),
-                Arguments.of(oldImage, null, bufferedImage, null),
+                Arguments.of(myBufferedImage, null, bufferedImage, null),
                 Arguments.of(files, null, null, files)
         );
     }
@@ -192,13 +191,12 @@ class ClipboardUtilsTest {
     static Stream<Arguments> provideArgumentsForRetrievingClipboardContents() {
         String string = "testString";
         BufferedImage bufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-        Dimension dimension = new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
-        OldImage oldImage = new OldImage(bufferedImage, dimension);
+        MyBufferedImage myBufferedImage = new MyBufferedImage(bufferedImage);
         List<File> files = List.of(new File("testFile"));
 
         return Stream.of(
                 Arguments.of(new MyClipboardContent<>(string), string, TEXT.getDataFlavor()),
-                Arguments.of(new MyClipboardContent<>(oldImage), bufferedImage, IMAGE.getDataFlavor()),
+                Arguments.of(new MyClipboardContent<>(myBufferedImage), bufferedImage, IMAGE.getDataFlavor()),
                 Arguments.of(new MyClipboardContent<>(files), files, FILELIST.getDataFlavor())
         );
     }

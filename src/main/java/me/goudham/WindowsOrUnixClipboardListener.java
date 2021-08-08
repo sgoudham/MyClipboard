@@ -1,12 +1,10 @@
 package me.goudham;
 
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -59,18 +57,10 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
 
         if (isImageMonitored()) {
             if (IMAGE.isAvailable(oldClipboard)) {
-                BufferedImage bufferedImage = clipboardUtils.getImageContent(newClipboardContents);
-                BufferedImage oldBufferedImage = oldClipboardContent.getOldImage();
-                if (bufferedImage != oldBufferedImage) {
-                    if (oldBufferedImage != null) {
-                        Dimension imageDimension = new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
-                        Dimension oldImageDimension = new Dimension(oldBufferedImage.getWidth(), oldBufferedImage.getHeight());
-                        if (!imageDimension.equals(oldImageDimension)) {
-                            eventManager.notifyImageEvent(oldClipboardContent, bufferedImage);
-                        }
-                    } else {
-                        eventManager.notifyImageEvent(oldClipboardContent, bufferedImage);
-                    }
+                MyBufferedImage bufferedImage = clipboardUtils.getImageContent(newClipboardContents);
+                MyBufferedImage oldBufferedImage = new MyBufferedImage(oldClipboardContent.getOldImage());
+                if (!bufferedImage.equals(oldBufferedImage)) {
+                    eventManager.notifyImageEvent(oldClipboardContent, bufferedImage.getBufferedImage());
                 }
             }
         }

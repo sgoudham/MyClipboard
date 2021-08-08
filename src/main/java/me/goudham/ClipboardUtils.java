@@ -1,6 +1,5 @@
 package me.goudham;
 
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.datatransfer.Transferable;
@@ -41,23 +40,24 @@ class ClipboardUtils {
     }
 
     /**
-     * Try to unmarshal {@link Transferable} into {@link BufferedImage}
+     * Try to unmarshal {@link Transferable} into {@link MyBufferedImage#getBufferedImage()}
      *
-     * @param clipboardContents The {@link Transferable} to be converted into {@link BufferedImage}
-     * @return {@link BufferedImage} representation of {@code clipboardContents}
+     * @param clipboardContents The {@link Transferable} to be converted into {@link MyBufferedImage}
+     * @return {@link MyBufferedImage} representation of {@code clipboardContents}
      */
-    BufferedImage getImageContent(Transferable clipboardContents) {
-        BufferedImage bufferedImage = null;
+    MyBufferedImage getImageContent(Transferable clipboardContents) {
+        MyBufferedImage myBufferedImage = null;
 
         try {
             if (clipboardContents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
-                bufferedImage = convertToBufferedImage((Image) clipboardContents.getTransferData(IMAGE.getDataFlavor()));
+                BufferedImage bufferedImage = convertToBufferedImage((Image) clipboardContents.getTransferData(IMAGE.getDataFlavor()));
+                myBufferedImage = new MyBufferedImage(bufferedImage);
             }
         } catch (UnsupportedFlavorException | IOException exp) {
             logger.error("Exception Thrown When Retrieving Image Content", exp);
         }
 
-        return bufferedImage;
+        return myBufferedImage;
     }
 
     /**
@@ -94,8 +94,7 @@ class ClipboardUtils {
                 myClipboardContent.setOldContent(contents.getTransferData(TEXT.getDataFlavor()));
             } else if (contents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
                 BufferedImage bufferedImage = convertToBufferedImage((Image) contents.getTransferData(IMAGE.getDataFlavor()));
-                Dimension imageDimension = new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
-                myClipboardContent.setOldContent(new OldImage(bufferedImage, imageDimension));
+                myClipboardContent.setOldContent(new MyBufferedImage(bufferedImage));
             } else if (contents.isDataFlavorSupported(FILELIST.getDataFlavor())) {
                 myClipboardContent.setOldContent(contents.getTransferData(FILELIST.getDataFlavor()));
             }
@@ -141,8 +140,8 @@ class ClipboardUtils {
 
         if (object instanceof String) {
             oldClipboardContent = new OldClipboardContent((String) object);
-        } else if (object instanceof OldImage) {
-            oldClipboardContent = new OldClipboardContent(((OldImage) object).getOldBufferedImage());
+        } else if (object instanceof MyBufferedImage) {
+            oldClipboardContent = new OldClipboardContent(((MyBufferedImage) object).getBufferedImage());
         } else if (object instanceof List) {
             oldClipboardContent = new OldClipboardContent((List<File>) object);
         }

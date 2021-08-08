@@ -1,10 +1,8 @@
 package me.goudham;
 
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -57,19 +55,17 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
      */
     void checkImages(Transferable newClipboardContents, MyClipboardContent<?>[] myClipboardContents) {
         if (IMAGE.isAvailable(clipboard)) {
-            BufferedImage bufferedImageContent = clipboardUtils.getImageContent(newClipboardContents);
-            if (bufferedImageContent == null) return;
-            Dimension newDimensionContent = new Dimension(bufferedImageContent.getWidth(), bufferedImageContent.getHeight());
-            OldImage newImageContent = new OldImage(bufferedImageContent, newDimensionContent);
+            MyBufferedImage bufferedImageContent = clipboardUtils.getImageContent(newClipboardContents);
+            if (bufferedImageContent.getBufferedImage() == null) return;
 
             if (isImageMonitored()) {
-                if (!newImageContent.equals(myClipboardContents[0].getOldContent())) {
+                if (!bufferedImageContent.equals(myClipboardContents[0].getOldContent())) {
                     OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(myClipboardContents[0].getOldContent());
-                    eventManager.notifyImageEvent(oldClipboardContent, bufferedImageContent);
+                    eventManager.notifyImageEvent(oldClipboardContent, bufferedImageContent.getBufferedImage());
                 }
             }
 
-            myClipboardContents[0].setOldContent(newImageContent);
+            myClipboardContents[0].setOldContent(bufferedImageContent);
         }
     }
 
