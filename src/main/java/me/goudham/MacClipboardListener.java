@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import me.goudham.domain.ClipboardContent;
+import me.goudham.domain.MyBufferedImage;
 
 import static java.lang.Thread.sleep;
 import static me.goudham.Contents.FILE;

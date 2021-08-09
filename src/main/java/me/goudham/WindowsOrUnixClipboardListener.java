@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import me.goudham.domain.ClipboardContent;
+import me.goudham.domain.MyBufferedImage;
 
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;

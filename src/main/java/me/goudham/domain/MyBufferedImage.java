@@ -1,4 +1,4 @@
-package me.goudham;
+package me.goudham.domain;
 
 import java.awt.image.BufferedImage;
 import java.util.Objects;
