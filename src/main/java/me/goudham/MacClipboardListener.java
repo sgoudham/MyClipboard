@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import me.goudham.domain.OldClipboardContent;
+import me.goudham.strategy.CopyStrategy;
 
 import static java.lang.Thread.sleep;
 import static me.goudham.Contents.FILELIST;
@@ -116,52 +117,66 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
         }
     }
 
+//    @Override
+//    void insert(String stringContent) {
+//        insertAndNotify(stringContent);
+//    }
+//
+//    @Override
+//    void insert(Image imageContent) {
+//        insertAndNotify(imageContent);
+//    }
+//
+//    @Override
+//    void insert(List<File> fileContent) {
+//        insertAndNotify(fileContent);
+//    }
+//
+//    @Override
+//    void insertAndNotify(String stringContent) {
+//        try {
+//            sleep(200);
+//        } catch (InterruptedException ie) {
+//            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
+//        }
+//
+//        clipboard.setContents(new StringSelection(stringContent), null);
+//    }
+//
+//    @Override
+//    void insertAndNotify(Image imageContent) {
+//        try {
+//            sleep(200);
+//        } catch (InterruptedException ie) {
+//            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
+//        }
+//
+//        clipboard.setContents(new TransferableImage(imageContent), null);
+//    }
+//
+//    @Override
+//    void insertAndNotify(List<File> fileContent) {
+//        try {
+//            sleep(200);
+//        } catch (InterruptedException ie) {
+//            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
+//        }
+//
+//        clipboard.setContents(new TransferableFileList(fileContent), null);
+//    }
+
     @Override
-    void insert(String stringContent) {
-        insertAndNotify(stringContent);
+    void insert(Object data) {
+        Class<? extends CopyStrategy> supportedClass = supportedStrategies.get(data.getClass());
+        CopyStrategy supportedStrategy = strategies.get(supportedClass);
+        supportedStrategy.macInsert(clipboard, data);
     }
 
     @Override
-    void insert(Image imageContent) {
-        insertAndNotify(imageContent);
-    }
-
-    @Override
-    void insert(List<File> fileContent) {
-        insertAndNotify(fileContent);
-    }
-
-    @Override
-    void insertAndNotify(String stringContent) {
-        try {
-            sleep(200);
-        } catch (InterruptedException ie) {
-            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
-        }
-
-        clipboard.setContents(new StringSelection(stringContent), null);
-    }
-
-    @Override
-    void insertAndNotify(Image imageContent) {
-        try {
-            sleep(200);
-        } catch (InterruptedException ie) {
-            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
-        }
-
-        clipboard.setContents(new TransferableImage(imageContent), null);
-    }
-
-    @Override
-    void insertAndNotify(List<File> fileContent) {
-        try {
-            sleep(200);
-        } catch (InterruptedException ie) {
-            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
-        }
-
-        clipboard.setContents(new TransferableFileList(fileContent), null);
+    void insertAndNotify(Object data) {
+        Class<? extends CopyStrategy> supportedClass = supportedStrategies.get(data.getClass());
+        CopyStrategy supportedStrategy = strategies.get(supportedClass);
+        supportedStrategy.macInsertAndNotify(clipboard, data);
     }
 
     @Override

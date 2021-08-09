@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import me.goudham.domain.OldClipboardContent;
+import me.goudham.strategy.CopyStrategy;
 
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
@@ -103,16 +104,82 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         }
     }
 
+//    @Override
+//    void insert(String stringContent) {
+//        try {
+//            sleep(200);
+//        } catch (InterruptedException ie) {
+//            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
+//        }
+//
+//        try {
+//            clipboard.setContents(new StringSelection(stringContent), this);
+//        } catch (IllegalStateException ise) {
+//            logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
+//            executorService.submit(this);
+//        }
+//    }
+//
+//    @Override
+//    void insert(Image imageContent) {
+//        try {
+//            sleep(200);
+//        } catch (InterruptedException ie) {
+//            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
+//        }
+//
+//        try {
+//            clipboard.setContents(new TransferableImage(imageContent), this);
+//        } catch (IllegalStateException ise) {
+//            logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
+//            executorService.submit(this);
+//        }
+//    }
+//
+//    @Override
+//    void insert(List<File> fileContent) {
+//        try {
+//            sleep(200);
+//        } catch (InterruptedException ie) {
+//            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
+//        }
+//
+//        try {
+//            clipboard.setContents(new TransferableFileList(fileContent), this);
+//        } catch (IllegalStateException ise) {
+//            logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
+//            executorService.submit(this);
+//        }
+//    }
+//
+//    @Override
+//    void insertAndNotify(String stringContent) {
+//        Transferable currentClipboardContents = clipboard.getContents(this);
+//        insert(stringContent);
+//        lostOwnership(clipboard, currentClipboardContents);
+//    }
+//
+//    @Override
+//    void insertAndNotify(Image imageContent) {
+//        Transferable currentClipboardContents = clipboard.getContents(this);
+//        insert(imageContent);
+//        lostOwnership(clipboard, currentClipboardContents);
+//    }
+//
+//    @Override
+//    void insertAndNotify(List<File> fileContent) {
+//        Transferable currentClipboardContents = clipboard.getContents(this);
+//        insert(fileContent);
+//        lostOwnership(clipboard, currentClipboardContents);
+//    }
+
     @Override
-    void insert(String stringContent) {
-        try {
-            sleep(200);
-        } catch (InterruptedException ie) {
-            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
-        }
+    void insert(Object data) {
+        Class<? extends CopyStrategy> supportedClass = supportedStrategies.get(data.getClass());
+        CopyStrategy supportedStrategy = strategies.get(supportedClass);
 
         try {
-            clipboard.setContents(new StringSelection(stringContent), this);
+            supportedStrategy.windowsOrUnixInsert(clipboard, this, data);
         } catch (IllegalStateException ise) {
             logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
             executorService.submit(this);
@@ -120,56 +187,16 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
     }
 
     @Override
-    void insert(Image imageContent) {
-        try {
-            sleep(200);
-        } catch (InterruptedException ie) {
-            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
-        }
+    void insertAndNotify(Object data) {
+        Class<? extends CopyStrategy> supportedClass = supportedStrategies.get(data.getClass());
+        CopyStrategy supportedStrategy = strategies.get(supportedClass);
 
         try {
-            clipboard.setContents(new TransferableImage(imageContent), this);
+            supportedStrategy.windowsOrUnixInsertAndNotify(clipboard, this, data);
         } catch (IllegalStateException ise) {
             logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
             executorService.submit(this);
         }
-    }
-
-    @Override
-    void insert(List<File> fileContent) {
-        try {
-            sleep(200);
-        } catch (InterruptedException ie) {
-            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
-        }
-
-        try {
-            clipboard.setContents(new TransferableFileList(fileContent), this);
-        } catch (IllegalStateException ise) {
-            logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
-            executorService.submit(this);
-        }
-    }
-
-    @Override
-    void insertAndNotify(String stringContent) {
-        Transferable currentClipboardContents = clipboard.getContents(this);
-        insert(stringContent);
-        lostOwnership(clipboard, currentClipboardContents);
-    }
-
-    @Override
-    void insertAndNotify(Image imageContent) {
-        Transferable currentClipboardContents = clipboard.getContents(this);
-        insert(imageContent);
-        lostOwnership(clipboard, currentClipboardContents);
-    }
-
-    @Override
-    void insertAndNotify(List<File> fileContent) {
-        Transferable currentClipboardContents = clipboard.getContents(this);
-        insert(fileContent);
-        lostOwnership(clipboard, currentClipboardContents);
     }
 
     @Override

@@ -7,7 +7,10 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import me.goudham.strategy.CopyStrategy;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +20,17 @@ abstract class ClipboardListener {
     Logger logger;
     EventManager eventManager;
     ClipboardUtils clipboardUtils;
+    Map<Class<?>, Class<? extends CopyStrategy>> supportedStrategies;
+    Map<Class<? extends CopyStrategy>, CopyStrategy> strategies;
     private boolean imageMonitored = true;
     private boolean textMonitored = true;
     private boolean fileMonitored = true;
 
+
     ClipboardListener() {
+        supportedStrategies = new HashMap<>();
+        strategies = new HashMap<>();
+
         clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         logger = LoggerFactory.getLogger(getClass());
         eventManager = new EventManager();
@@ -52,24 +61,20 @@ abstract class ClipboardListener {
      */
     abstract void stopListening();
 
-    /**
-     * Insert the given {@link String} into the system clipboard
-     *
-     * @param stringContent The given {@link String} to insert
-     * @see WindowsOrUnixClipboardListener#insert(String)
-     * @see MacClipboardListener#insert(String)
-     */
-    abstract void insert(String stringContent);
+    abstract void insert(Object data);
 
-    abstract void insert(Image imageContent);
+    abstract void insertAndNotify(Object data);
 
-    abstract void insert(List<File> fileContent);
+    void addSupport(Class<?> clazz, CopyStrategy copyStrategy) {
+        supportedStrategies.put(clazz, copyStrategy.getClass());
+        strategies.put(copyStrategy.getClass(), copyStrategy);
+    }
 
-    abstract void insertAndNotify(String stringContent);
-
-    abstract void insertAndNotify(Image imageContent);
-
-    abstract void insertAndNotify(List<File> fileContent);
+    void removeSupport(Class<?> clazz) {
+        Class<? extends CopyStrategy> supportedClass = supportedStrategies.get(clazz);
+        strategies.remove(supportedClass);
+        supportedStrategies.remove(clazz);
+    }
 
     void toggleTextMonitored() {
         this.textMonitored = !textMonitored;

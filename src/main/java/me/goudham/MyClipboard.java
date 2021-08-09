@@ -1,12 +1,10 @@
 package me.goudham;
 
-import java.awt.Image;
-import java.io.File;
-import java.util.List;
 import me.goudham.event.FileEvent;
 import me.goudham.event.ImageEvent;
 import me.goudham.event.TextEvent;
 import me.goudham.exception.UnsupportedSystemException;
+import me.goudham.strategy.CopyStrategy;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -68,28 +66,12 @@ public class MyClipboard {
         clipboardListener.stopListening();
     }
 
-    public void insert(String stringContent) {
-        clipboardListener.insert(stringContent);
+    public void insert(Object data) {
+       clipboardListener.insert(data);
     }
 
-    public void insert(Image imageContent) {
-        clipboardListener.insert(imageContent);
-    }
-
-    public void insert(List<File> fileContent) {
-        clipboardListener.insert(fileContent);
-    }
-
-    public void insertAndNotify(String stringContent) {
-        clipboardListener.insertAndNotify(stringContent);
-    }
-
-    public void insertAndNotify(Image imageContent) {
-        clipboardListener.insertAndNotify(imageContent);
-    }
-
-    public void insertAndNotify(List<File> fileContent) {
-        clipboardListener.insertAndNotify(fileContent);
+    public void insertAndNotify(Object data) {
+        clipboardListener.insertAndNotify(data);
     }
 
     /**
@@ -150,6 +132,14 @@ public class MyClipboard {
      */
     public void removeEventListener(FileEvent fileEvent) {
         clipboardListener.getEventManager().removeEventListener(fileEvent);
+    }
+
+    void addSupport(Class<?> clazz, CopyStrategy copyStrategy) {
+        clipboardListener.addSupport(clazz, copyStrategy);
+    }
+
+    void removeSupport(Class<?> clazz) {
+        clipboardListener.removeSupport(clazz);
     }
 
     public void toggleTextMonitored() {
