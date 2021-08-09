@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 import me.goudham.domain.ClipboardContent;
 import me.goudham.domain.GenericClipboardContent;
 import me.goudham.domain.MyBufferedImage;
+import me.goudham.domain.TransferableFile;
+import me.goudham.domain.TransferableImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -78,7 +80,7 @@ class ClipboardUtilsTest {
     void successfullyGetImageContent() {
         BufferedImage expectedBufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         MyBufferedImage expectedImageContent = new MyBufferedImage(expectedBufferedImage);
-        Transferable expectedTransferable = new ClipboardListener.TransferableImage(expectedBufferedImage);
+        Transferable expectedTransferable = new TransferableImage(expectedBufferedImage);
 
         MyBufferedImage actualImageContent = sut.getImageContent(expectedTransferable);
 
@@ -104,7 +106,7 @@ class ClipboardUtilsTest {
     @Test
     void successfullyGetFileContent() {
         List<File> expectedFileContent = List.of(new File("testFile"));
-        Transferable expectedTransferable = new ClipboardListener.TransferableFileList(expectedFileContent);
+        Transferable expectedTransferable = new TransferableFile(expectedFileContent);
 
         List<File> actualFileContent = sut.getFileContent(expectedTransferable);
 

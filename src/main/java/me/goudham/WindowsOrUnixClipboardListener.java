@@ -11,6 +11,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import me.goudham.domain.ClipboardContent;
 import me.goudham.domain.MyBufferedImage;
+import me.goudham.domain.TransferableFile;
+import me.goudham.domain.TransferableImage;
 
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
@@ -145,7 +147,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         }
 
         try {
-            clipboard.setContents(new TransferableFileList(fileContent), this);
+            clipboard.setContents(new TransferableFile(fileContent), this);
         } catch (IllegalStateException ise) {
             logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
             executorService.submit(this);

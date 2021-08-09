@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 import me.goudham.domain.ClipboardContent;
 import me.goudham.domain.GenericClipboardContent;
 import me.goudham.domain.MyBufferedImage;
+import me.goudham.domain.TransferableFile;
+import me.goudham.domain.TransferableImage;
 
 import static java.lang.Thread.sleep;
 import static me.goudham.Contents.FILE;
@@ -163,7 +165,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
             logger.error("Exception Thrown As Thread Cannot Sleep", ie);
         }
 
-        clipboard.setContents(new TransferableFileList(fileContent), null);
+        clipboard.setContents(new TransferableFile(fileContent), null);
     }
 
     @Override
