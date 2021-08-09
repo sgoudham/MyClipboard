@@ -17,7 +17,7 @@ import static me.goudham.Contents.TEXT;
 
 class MacClipboardListener extends ClipboardListener implements Runnable {
     ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-    MyClipboardContent<?>[] myClipboardContents;
+    GenericClipboardContent<?>[] genericClipboardContents;
     private boolean listening = false;
 
     MacClipboardListener() {
@@ -28,22 +28,22 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
      * Checks if {@link String} is within the clipboard and changed
      *
      * @param newClipboardContents {@link Transferable} containing new clipboard contents
-     * @param myClipboardContents  {@link MyClipboardContent[]} of Unknown {@link Class} containing previous contents
+     * @param genericClipboardContents  {@link GenericClipboardContent[]} of Unknown {@link Class} containing previous contents
      */
-    void checkText(Transferable newClipboardContents, MyClipboardContent<?>[] myClipboardContents) {
+    void checkText(Transferable newClipboardContents, GenericClipboardContent<?>[] genericClipboardContents) {
         if (TEXT.isAvailable(clipboard) && !FILE.isAvailable(clipboard)) {
             String newStringContent = clipboardUtils.getStringContent(newClipboardContents);
             if (newStringContent == null) return;
 
             if (isTextMonitored()) {
-                Object oldContent = myClipboardContents[0].getOldContent();
+                Object oldContent = genericClipboardContents[0].getOldContent();
                 if (!newStringContent.equals(oldContent)) {
                     OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(oldContent);
                     eventManager.notifyTextEvent(oldClipboardContent, newStringContent);
                 }
             }
 
-            myClipboardContents[0].setOldContent(newStringContent);
+            genericClipboardContents[0].setOldContent(newStringContent);
         }
     }
 
@@ -51,21 +51,21 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
      * Checks if {@link java.awt.Image} is within the clipboard and changed
      *
      * @param newClipboardContents {@link Transferable} containing new clipboard contents
-     * @param myClipboardContents  {@link MyClipboardContent[]} of Unknown {@link Class} containing previous contents
+     * @param genericClipboardContents  {@link GenericClipboardContent[]} of Unknown {@link Class} containing previous contents
      */
-    void checkImages(Transferable newClipboardContents, MyClipboardContent<?>[] myClipboardContents) {
+    void checkImages(Transferable newClipboardContents, GenericClipboardContent<?>[] genericClipboardContents) {
         if (IMAGE.isAvailable(clipboard)) {
             MyBufferedImage bufferedImageContent = clipboardUtils.getImageContent(newClipboardContents);
             if (bufferedImageContent.getBufferedImage() == null) return;
 
             if (isImageMonitored()) {
-                if (!bufferedImageContent.equals(myClipboardContents[0].getOldContent())) {
-                    OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(myClipboardContents[0].getOldContent());
+                if (!bufferedImageContent.equals(genericClipboardContents[0].getOldContent())) {
+                    OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(genericClipboardContents[0].getOldContent());
                     eventManager.notifyImageEvent(oldClipboardContent, bufferedImageContent.getBufferedImage());
                 }
             }
 
-            myClipboardContents[0].setOldContent(bufferedImageContent);
+            genericClipboardContents[0].setOldContent(bufferedImageContent);
         }
     }
 
@@ -74,21 +74,21 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
      * Checks if {@link java.util.List} of {@link java.io.File} is within the clipboard and changed
      *
      * @param newClipboardContents {@link Transferable} containing new clipboard contents
-     * @param myClipboardContents  {@link MyClipboardContent[]} of Unknown {@link Class} containing previous contents
+     * @param genericClipboardContents  {@link GenericClipboardContent[]} of Unknown {@link Class} containing previous contents
      */
-    void checkFiles(Transferable newClipboardContents, MyClipboardContent<?>[] myClipboardContents) {
+    void checkFiles(Transferable newClipboardContents, GenericClipboardContent<?>[] genericClipboardContents) {
         if (FILE.isAvailable(clipboard)) {
             List<File> fileListContent = clipboardUtils.getFileContent(newClipboardContents);
             if (fileListContent == null) return;
 
             if (isFileMonitored()) {
-                if (!fileListContent.equals(myClipboardContents[0].getOldContent())) {
-                    OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(myClipboardContents[0].getOldContent());
+                if (!fileListContent.equals(genericClipboardContents[0].getOldContent())) {
+                    OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(genericClipboardContents[0].getOldContent());
                     eventManager.notifyFilesEvent(oldClipboardContent, fileListContent);
                 }
             }
 
-            myClipboardContents[0].setOldContent(fileListContent);
+            genericClipboardContents[0].setOldContent(fileListContent);
         }
     }
 
@@ -168,9 +168,9 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
     public void run() {
         try {
             Transferable newClipboardContents = clipboard.getContents(null);
-            checkText(newClipboardContents, myClipboardContents);
-            checkImages(newClipboardContents, myClipboardContents);
-            checkFiles(newClipboardContents, myClipboardContents);
+            checkText(newClipboardContents, genericClipboardContents);
+            checkImages(newClipboardContents, genericClipboardContents);
+            checkFiles(newClipboardContents, genericClipboardContents);
         } catch (IllegalStateException ise) {
             logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
         }
@@ -183,7 +183,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
     @Override
     void execute() {
         Transferable oldClipboardContents = clipboard.getContents(null);
-        myClipboardContents = new MyClipboardContent[] { clipboardUtils.getClipboardContents(oldClipboardContents) };
+        genericClipboardContents = new GenericClipboardContent[] { clipboardUtils.getClipboardContents(oldClipboardContents) };
         scheduledExecutorService.scheduleAtFixedRate(this, 0, 200, TimeUnit.MILLISECONDS);
     }
 }

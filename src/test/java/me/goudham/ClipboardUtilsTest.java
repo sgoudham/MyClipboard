@@ -127,13 +127,13 @@ class ClipboardUtilsTest {
 
     @ParameterizedTest
     @MethodSource("provideArgumentsForRetrievingClipboardContents")
-    void successfullyRetrieveOldClipboardContents(MyClipboardContent<?> expectedMyClipboardContent, Object expectedContent, DataFlavor dataFlavor) throws IOException, UnsupportedFlavorException {
+    void successfullyRetrieveOldClipboardContents(GenericClipboardContent<?> expectedGenericClipboardContent, Object expectedContent, DataFlavor dataFlavor) throws IOException, UnsupportedFlavorException {
         when(transferableMock.isDataFlavorSupported(dataFlavor)).thenReturn(true);
         when(transferableMock.getTransferData(dataFlavor)).thenReturn(expectedContent);
 
-        MyClipboardContent<?> actualMyClipboardContent = sut.getClipboardContents(transferableMock);
+        GenericClipboardContent<?> actualGenericClipboardContent = sut.getClipboardContents(transferableMock);
 
-        assertThat(actualMyClipboardContent.getOldContent(), is(expectedMyClipboardContent.getOldContent()));
+        assertThat(actualGenericClipboardContent.getOldContent(), is(expectedGenericClipboardContent.getOldContent()));
         verifyNoInteractions(logger);
     }
 
@@ -195,9 +195,9 @@ class ClipboardUtilsTest {
         List<File> files = List.of(new File("testFile"));
 
         return Stream.of(
-                Arguments.of(new MyClipboardContent<>(string), string, TEXT.getDataFlavor()),
-                Arguments.of(new MyClipboardContent<>(myBufferedImage), bufferedImage, IMAGE.getDataFlavor()),
-                Arguments.of(new MyClipboardContent<>(files), files, FILE.getDataFlavor())
+                Arguments.of(new GenericClipboardContent<>(string), string, TEXT.getDataFlavor()),
+                Arguments.of(new GenericClipboardContent<>(myBufferedImage), bufferedImage, IMAGE.getDataFlavor()),
+                Arguments.of(new GenericClipboardContent<>(files), files, FILE.getDataFlavor())
         );
     }
 }

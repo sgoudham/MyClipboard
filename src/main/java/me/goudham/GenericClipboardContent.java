@@ -2,14 +2,14 @@ package me.goudham;
 
 import java.util.Objects;
 
-class MyClipboardContent<T> {
+class GenericClipboardContent<T> {
     private T oldContent;
 
-    MyClipboardContent() {
+    GenericClipboardContent() {
 
     }
 
-    MyClipboardContent(Object oldContent) {
+    GenericClipboardContent(Object oldContent) {
         this.oldContent = (T) oldContent;
     }
 
@@ -25,7 +25,7 @@ class MyClipboardContent<T> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MyClipboardContent<?> that = (MyClipboardContent<?>) o;
+        GenericClipboardContent<?> that = (GenericClipboardContent<?>) o;
         return Objects.equals(oldContent, that.oldContent);
     }
 

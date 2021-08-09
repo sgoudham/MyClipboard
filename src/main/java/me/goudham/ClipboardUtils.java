@@ -81,28 +81,28 @@ class ClipboardUtils {
     }
 
     /**
-     * Store contents from the given {@link Transferable} into {@link MyClipboardContent}
+     * Store contents from the given {@link Transferable} into {@link GenericClipboardContent}
      *
      * @param contents The {@link Transferable} which holds the clipboard contents
-     * @return {@link MyClipboardContent} containing clipboard contents
+     * @return {@link GenericClipboardContent} containing clipboard contents
      */
-    MyClipboardContent<?> getClipboardContents(Transferable contents) {
-        MyClipboardContent<?> myClipboardContent = new MyClipboardContent<>();
+    GenericClipboardContent<?> getClipboardContents(Transferable contents) {
+        GenericClipboardContent<?> genericClipboardContent = new GenericClipboardContent<>();
 
         try {
             if (contents.isDataFlavorSupported(TEXT.getDataFlavor())) {
-                myClipboardContent.setOldContent(contents.getTransferData(TEXT.getDataFlavor()));
+                genericClipboardContent.setOldContent(contents.getTransferData(TEXT.getDataFlavor()));
             } else if (contents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
                 BufferedImage bufferedImage = convertToBufferedImage((Image) contents.getTransferData(IMAGE.getDataFlavor()));
-                myClipboardContent.setOldContent(new MyBufferedImage(bufferedImage));
+                genericClipboardContent.setOldContent(new MyBufferedImage(bufferedImage));
             } else if (contents.isDataFlavorSupported(FILE.getDataFlavor())) {
-                myClipboardContent.setOldContent(contents.getTransferData(FILE.getDataFlavor()));
+                genericClipboardContent.setOldContent(contents.getTransferData(FILE.getDataFlavor()));
             }
         } catch (UnsupportedFlavorException | IOException exp) {
             logger.error("Exception Thrown When Retrieving Clipboard Contents", exp);
         }
 
-        return myClipboardContent;
+        return genericClipboardContent;
     }
 
     /**
