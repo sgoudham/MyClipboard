@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import me.goudham.domain.OldClipboardContent;
+import me.goudham.domain.ClipboardContent;
 
 import static java.lang.Thread.sleep;
 import static me.goudham.Contents.FILE;
@@ -38,8 +38,8 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
             if (isTextMonitored()) {
                 Object oldContent = genericClipboardContents[0].getOldContent();
                 if (!newStringContent.equals(oldContent)) {
-                    OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(oldContent);
-                    eventManager.notifyTextEvent(oldClipboardContent, newStringContent);
+                    ClipboardContent clipboardContent = clipboardUtils.getOldClipboardContent(oldContent);
+                    eventManager.notifyTextEvent(clipboardContent, newStringContent);
                 }
             }
 
@@ -60,8 +60,8 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
 
             if (isImageMonitored()) {
                 if (!bufferedImageContent.equals(genericClipboardContents[0].getOldContent())) {
-                    OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(genericClipboardContents[0].getOldContent());
-                    eventManager.notifyImageEvent(oldClipboardContent, bufferedImageContent.getBufferedImage());
+                    ClipboardContent clipboardContent = clipboardUtils.getOldClipboardContent(genericClipboardContents[0].getOldContent());
+                    eventManager.notifyImageEvent(clipboardContent, bufferedImageContent.getBufferedImage());
                 }
             }
 
@@ -83,8 +83,8 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
 
             if (isFileMonitored()) {
                 if (!fileListContent.equals(genericClipboardContents[0].getOldContent())) {
-                    OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(genericClipboardContents[0].getOldContent());
-                    eventManager.notifyFilesEvent(oldClipboardContent, fileListContent);
+                    ClipboardContent clipboardContent = clipboardUtils.getOldClipboardContent(genericClipboardContents[0].getOldContent());
+                    eventManager.notifyFilesEvent(clipboardContent, fileListContent);
                 }
             }
 

@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import me.goudham.domain.OldClipboardContent;
+import me.goudham.domain.ClipboardContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,47 +106,47 @@ class ClipboardUtils {
     }
 
     /**
-     * Store contents from the given {@link Transferable} into {@link OldClipboardContent}
+     * Store contents from the given {@link Transferable} into {@link ClipboardContent}
      *
      * @param oldContents The given {@link Transferable} which holds the clipboard contents
-     * @return {@link OldClipboardContent} containing old clipboard contents
+     * @return {@link ClipboardContent} containing old clipboard contents
      */
-    OldClipboardContent getOldClipboardContent(Transferable oldContents) {
-        OldClipboardContent oldClipboardContent = null;
+    ClipboardContent getOldClipboardContent(Transferable oldContents) {
+        ClipboardContent clipboardContent = null;
 
         try {
             if (oldContents.isDataFlavorSupported(TEXT.getDataFlavor())) {
-                oldClipboardContent = new OldClipboardContent((String) oldContents.getTransferData(TEXT.getDataFlavor()));
+                clipboardContent = new ClipboardContent((String) oldContents.getTransferData(TEXT.getDataFlavor()));
             } else if (oldContents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
-                oldClipboardContent = new OldClipboardContent(convertToBufferedImage((Image) oldContents.getTransferData(IMAGE.getDataFlavor())));
+                clipboardContent = new ClipboardContent(convertToBufferedImage((Image) oldContents.getTransferData(IMAGE.getDataFlavor())));
             } else if (oldContents.isDataFlavorSupported(FILE.getDataFlavor())) {
-                oldClipboardContent = new OldClipboardContent((List<File>) oldContents.getTransferData(FILE.getDataFlavor()));
+                clipboardContent = new ClipboardContent((List<File>) oldContents.getTransferData(FILE.getDataFlavor()));
             }
         } catch (UnsupportedFlavorException | IOException exp) {
             logger.error("Exception Thrown When Retrieving Clipboard Contents", exp);
         }
 
-        return oldClipboardContent;
+        return clipboardContent;
     }
 
     /**
-     * Store contents from the given {@link Object} into {@link OldClipboardContent}
+     * Store contents from the given {@link Object} into {@link ClipboardContent}
      *
      * @param object The given {@link Object} which holds the clipboard contents
-     * @return {@link OldClipboardContent} containing old clipboard contents
+     * @return {@link ClipboardContent} containing old clipboard contents
      */
-    OldClipboardContent getOldClipboardContent(Object object) {
-        OldClipboardContent oldClipboardContent = null;
+    ClipboardContent getOldClipboardContent(Object object) {
+        ClipboardContent clipboardContent = null;
 
         if (object instanceof String) {
-            oldClipboardContent = new OldClipboardContent((String) object);
+            clipboardContent = new ClipboardContent((String) object);
         } else if (object instanceof MyBufferedImage) {
-            oldClipboardContent = new OldClipboardContent(((MyBufferedImage) object).getBufferedImage());
+            clipboardContent = new ClipboardContent(((MyBufferedImage) object).getBufferedImage());
         } else if (object instanceof List) {
-            oldClipboardContent = new OldClipboardContent((List<File>) object);
+            clipboardContent = new ClipboardContent((List<File>) object);
         }
 
-        return oldClipboardContent;
+        return clipboardContent;
     }
 
     /**

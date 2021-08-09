@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import me.goudham.domain.OldClipboardContent;
+import me.goudham.domain.ClipboardContent;
 import me.goudham.event.FileEvent;
 import me.goudham.event.ImageEvent;
 import me.goudham.event.TextEvent;
@@ -74,36 +74,36 @@ class EventManager {
     /**
      * Produces {@link String} change notifications to all consumers listening
      *
-     * @param oldClipboardContent The previous clipboard contents
+     * @param clipboardContent The previous clipboard contents
      * @param stringContent       {@link String} to be consumed
      */
-    void notifyTextEvent(OldClipboardContent oldClipboardContent, String stringContent) {
+    void notifyTextEvent(ClipboardContent clipboardContent, String stringContent) {
         for (TextEvent textEvent : textEventListener) {
-            textEvent.onCopyText(oldClipboardContent, stringContent);
+            textEvent.onCopyText(clipboardContent, stringContent);
         }
     }
 
     /**
      * Produces {@link BufferedImage} change notifications to all consumers listening
      *
-     * @param oldClipboardContent The previous clipboard contents
+     * @param clipboardContent The previous clipboard contents
      * @param imageContent        {@link BufferedImage} to be consumed
      */
-    void notifyImageEvent(OldClipboardContent oldClipboardContent, BufferedImage imageContent) {
+    void notifyImageEvent(ClipboardContent clipboardContent, BufferedImage imageContent) {
         for (ImageEvent imageEvent : imageEventListener) {
-            imageEvent.onCopyImage(oldClipboardContent, imageContent);
+            imageEvent.onCopyImage(clipboardContent, imageContent);
         }
     }
 
     /**
      * Produces {@link List} of {@link File} change notifications to all consumers listening
      *
-     * @param oldClipboardContent The previous clipboard contents
+     * @param clipboardContent The previous clipboard contents
      * @param fileContent         {@link List} of {@link File} to be consumed
      */
-    void notifyFilesEvent(OldClipboardContent oldClipboardContent, List<File> fileContent) {
+    void notifyFilesEvent(ClipboardContent clipboardContent, List<File> fileContent) {
         for (FileEvent fileEvent : fileEventListener) {
-            fileEvent.onCopyFiles(oldClipboardContent, fileContent);
+            fileEvent.onCopyFiles(clipboardContent, fileContent);
         }
     }
 }

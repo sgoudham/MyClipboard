@@ -1,7 +1,7 @@
 package me.goudham.event;
 
-import me.goudham.domain.OldClipboardContent;
+import me.goudham.domain.ClipboardContent;
 
 public interface TextEvent extends ClipboardEvent {
-    void onCopyText(OldClipboardContent oldContent, String newContent);
+    void onCopyText(ClipboardContent oldContent, String newContent);
 }

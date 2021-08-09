@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
-import me.goudham.domain.OldClipboardContent;
+import me.goudham.domain.ClipboardContent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -143,22 +143,22 @@ class ClipboardUtilsTest {
         when(transferableMock.isDataFlavorSupported(dataFlavor)).thenReturn(true);
         when(transferableMock.getTransferData(dataFlavor)).thenReturn(expectedContent);
 
-        OldClipboardContent actualOldClipboardContent = sut.getOldClipboardContent(transferableMock);
+        ClipboardContent actualClipboardContent = sut.getOldClipboardContent(transferableMock);
 
-        assertThat(actualOldClipboardContent.getOldText(), is(expectedString));
-        assertThat(actualOldClipboardContent.getOldFiles(), is(expectedFiles));
-        assertThat(actualOldClipboardContent.getOldImage(), is(new BufferedImageMatcher(expectedImage)));
+        assertThat(actualClipboardContent.getText(), is(expectedString));
+        assertThat(actualClipboardContent.getFiles(), is(expectedFiles));
+        assertThat(actualClipboardContent.getBufferedImage(), is(new BufferedImageMatcher(expectedImage)));
         verifyNoInteractions(logger);
     }
 
     @ParameterizedTest
     @MethodSource("provideArgumentsForOldClipboardContents")
     void successfullyMarshallClipboardContentsIntoOldClipboardContent(Object expectedOldContent, String expectedString, BufferedImage expectedImage, List<File> expectedFiles) {
-        OldClipboardContent actualOldClipboardContent = sut.getOldClipboardContent(expectedOldContent);
+        ClipboardContent actualClipboardContent = sut.getOldClipboardContent(expectedOldContent);
 
-        assertThat(actualOldClipboardContent.getOldText(), is(expectedString));
-        assertThat(actualOldClipboardContent.getOldImage(), is(expectedImage));
-        assertThat(actualOldClipboardContent.getOldFiles(), is(expectedFiles));
+        assertThat(actualClipboardContent.getText(), is(expectedString));
+        assertThat(actualClipboardContent.getBufferedImage(), is(expectedImage));
+        assertThat(actualClipboardContent.getFiles(), is(expectedFiles));
         verifyNoInteractions(logger);
     }
 
