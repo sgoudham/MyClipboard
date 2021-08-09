@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import me.goudham.domain.ClipboardContent;
+import me.goudham.domain.GenericClipboardContent;
 import me.goudham.domain.MyBufferedImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,16 +89,16 @@ class ClipboardUtils {
      * @return {@link GenericClipboardContent} containing clipboard contents
      */
     GenericClipboardContent<?> getClipboardContents(Transferable contents) {
-        GenericClipboardContent<?> genericClipboardContent = new GenericClipboardContent<>();
+        GenericClipboardContent<?> genericClipboardContent = null;
 
         try {
             if (contents.isDataFlavorSupported(TEXT.getDataFlavor())) {
-                genericClipboardContent.setOldContent(contents.getTransferData(TEXT.getDataFlavor()));
+                genericClipboardContent = new GenericClipboardContent<>(contents.getTransferData(TEXT.getDataFlavor()));
             } else if (contents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
                 BufferedImage bufferedImage = convertToBufferedImage((Image) contents.getTransferData(IMAGE.getDataFlavor()));
-                genericClipboardContent.setOldContent(new MyBufferedImage(bufferedImage));
+                genericClipboardContent = new GenericClipboardContent<>(new MyBufferedImage(bufferedImage));
             } else if (contents.isDataFlavorSupported(FILE.getDataFlavor())) {
-                genericClipboardContent.setOldContent(contents.getTransferData(FILE.getDataFlavor()));
+                genericClipboardContent = new GenericClipboardContent<>(contents.getTransferData(FILE.getDataFlavor()));
             }
         } catch (UnsupportedFlavorException | IOException exp) {
             logger.error("Exception Thrown When Retrieving Clipboard Contents", exp);

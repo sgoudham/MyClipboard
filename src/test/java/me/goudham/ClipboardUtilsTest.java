@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
 import me.goudham.domain.ClipboardContent;
+import me.goudham.domain.GenericClipboardContent;
 import me.goudham.domain.MyBufferedImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

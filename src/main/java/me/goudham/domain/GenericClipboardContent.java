@@ -1,15 +1,11 @@
-package me.goudham;
+package me.goudham.domain;
 
 import java.util.Objects;
 
-class GenericClipboardContent<T> {
+public class GenericClipboardContent<T> {
     private T oldContent;
 
-    GenericClipboardContent() {
-
-    }
-
-    GenericClipboardContent(Object oldContent) {
+    public GenericClipboardContent(Object oldContent) {
         this.oldContent = (T) oldContent;
     }
 
