@@ -12,7 +12,7 @@ import me.goudham.domain.OldClipboardContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static me.goudham.Contents.FILELIST;
+import static me.goudham.Contents.FILE;
 import static me.goudham.Contents.IMAGE;
 import static me.goudham.Contents.TEXT;
 
@@ -70,8 +70,8 @@ class ClipboardUtils {
         List<File> fileList = null;
 
         try {
-            if (clipboardContents.isDataFlavorSupported(FILELIST.getDataFlavor())) {
-                fileList = (List<File>) clipboardContents.getTransferData(FILELIST.getDataFlavor());
+            if (clipboardContents.isDataFlavorSupported(FILE.getDataFlavor())) {
+                fileList = (List<File>) clipboardContents.getTransferData(FILE.getDataFlavor());
             }
         } catch (UnsupportedFlavorException | IOException exp) {
             logger.error("Exception Thrown When Retrieving File Content", exp);
@@ -95,8 +95,8 @@ class ClipboardUtils {
             } else if (contents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
                 BufferedImage bufferedImage = convertToBufferedImage((Image) contents.getTransferData(IMAGE.getDataFlavor()));
                 myClipboardContent.setOldContent(new MyBufferedImage(bufferedImage));
-            } else if (contents.isDataFlavorSupported(FILELIST.getDataFlavor())) {
-                myClipboardContent.setOldContent(contents.getTransferData(FILELIST.getDataFlavor()));
+            } else if (contents.isDataFlavorSupported(FILE.getDataFlavor())) {
+                myClipboardContent.setOldContent(contents.getTransferData(FILE.getDataFlavor()));
             }
         } catch (UnsupportedFlavorException | IOException exp) {
             logger.error("Exception Thrown When Retrieving Clipboard Contents", exp);
@@ -119,8 +119,8 @@ class ClipboardUtils {
                 oldClipboardContent = new OldClipboardContent((String) oldContents.getTransferData(TEXT.getDataFlavor()));
             } else if (oldContents.isDataFlavorSupported(IMAGE.getDataFlavor())) {
                 oldClipboardContent = new OldClipboardContent(convertToBufferedImage((Image) oldContents.getTransferData(IMAGE.getDataFlavor())));
-            } else if (oldContents.isDataFlavorSupported(FILELIST.getDataFlavor())) {
-                oldClipboardContent = new OldClipboardContent((List<File>) oldContents.getTransferData(FILELIST.getDataFlavor()));
+            } else if (oldContents.isDataFlavorSupported(FILE.getDataFlavor())) {
+                oldClipboardContent = new OldClipboardContent((List<File>) oldContents.getTransferData(FILE.getDataFlavor()));
             }
         } catch (UnsupportedFlavorException | IOException exp) {
             logger.error("Exception Thrown When Retrieving Clipboard Contents", exp);

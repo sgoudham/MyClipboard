@@ -16,7 +16,7 @@ enum Contents {
             return clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor);
         }
     },
-    FILELIST(DataFlavor.javaFileListFlavor) {
+    FILE(DataFlavor.javaFileListFlavor) {
         @Override
         public boolean isAvailable(Clipboard clipboard) {
             return clipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor);

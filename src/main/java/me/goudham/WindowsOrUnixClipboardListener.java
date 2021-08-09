@@ -13,7 +13,7 @@ import me.goudham.domain.OldClipboardContent;
 
 import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
-import static me.goudham.Contents.FILELIST;
+import static me.goudham.Contents.FILE;
 import static me.goudham.Contents.IMAGE;
 import static me.goudham.Contents.TEXT;
 
@@ -47,7 +47,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         OldClipboardContent oldClipboardContent = clipboardUtils.getOldClipboardContent(oldClipboardContents);
 
         if (isTextMonitored()) {
-            if (TEXT.isAvailable(oldClipboard) && !FILELIST.isAvailable(oldClipboard)) {
+            if (TEXT.isAvailable(oldClipboard) && !FILE.isAvailable(oldClipboard)) {
                 String stringContent = clipboardUtils.getStringContent(newClipboardContents);
                 if (!stringContent.equals(oldClipboardContent.getOldText())) {
                     eventManager.notifyTextEvent(oldClipboardContent, stringContent);
@@ -66,7 +66,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         }
 
         if (isFileMonitored()) {
-            if (FILELIST.isAvailable(oldClipboard)) {
+            if (FILE.isAvailable(oldClipboard)) {
                 List<File> fileList = clipboardUtils.getFileContent(newClipboardContents);
                 if (!fileList.equals(oldClipboardContent.getOldFiles())) {
                     eventManager.notifyFilesEvent(oldClipboardContent, fileList);

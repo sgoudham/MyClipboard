@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 
-import static me.goudham.Contents.FILELIST;
+import static me.goudham.Contents.FILE;
 import static me.goudham.Contents.IMAGE;
 import static me.goudham.Contents.TEXT;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -114,10 +114,10 @@ class ClipboardUtilsTest {
     void failToGetFileContent() throws IOException, UnsupportedFlavorException {
         List<File> expectedFileContent = null;
         String expectedExceptionMessage = "Exception Thrown When Retrieving File Content";
-        Throwable expectedException = new UnsupportedFlavorException(FILELIST.getDataFlavor());
+        Throwable expectedException = new UnsupportedFlavorException(FILE.getDataFlavor());
 
-        when(transferableMock.isDataFlavorSupported(FILELIST.getDataFlavor())).thenReturn(true);
-        when(transferableMock.getTransferData(FILELIST.getDataFlavor())).thenThrow(expectedException);
+        when(transferableMock.isDataFlavorSupported(FILE.getDataFlavor())).thenReturn(true);
+        when(transferableMock.getTransferData(FILE.getDataFlavor())).thenThrow(expectedException);
 
         List<File> actualFileContent = sut.getFileContent(transferableMock);
 
@@ -170,7 +170,7 @@ class ClipboardUtilsTest {
         return Stream.of(
                 Arguments.of(string, TEXT.getDataFlavor(), string, null, null),
                 Arguments.of(bufferedImage, IMAGE.getDataFlavor(), null, bufferedImage, null),
-                Arguments.of(files, FILELIST.getDataFlavor(), null, null, files)
+                Arguments.of(files, FILE.getDataFlavor(), null, null, files)
         );
     }
 
@@ -197,7 +197,7 @@ class ClipboardUtilsTest {
         return Stream.of(
                 Arguments.of(new MyClipboardContent<>(string), string, TEXT.getDataFlavor()),
                 Arguments.of(new MyClipboardContent<>(myBufferedImage), bufferedImage, IMAGE.getDataFlavor()),
-                Arguments.of(new MyClipboardContent<>(files), files, FILELIST.getDataFlavor())
+                Arguments.of(new MyClipboardContent<>(files), files, FILE.getDataFlavor())
         );
     }
 }

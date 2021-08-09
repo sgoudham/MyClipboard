@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import me.goudham.domain.OldClipboardContent;
 
 import static java.lang.Thread.sleep;
-import static me.goudham.Contents.FILELIST;
+import static me.goudham.Contents.FILE;
 import static me.goudham.Contents.IMAGE;
 import static me.goudham.Contents.TEXT;
 
@@ -31,7 +31,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
      * @param myClipboardContents  {@link MyClipboardContent[]} of Unknown {@link Class} containing previous contents
      */
     void checkText(Transferable newClipboardContents, MyClipboardContent<?>[] myClipboardContents) {
-        if (TEXT.isAvailable(clipboard) && !FILELIST.isAvailable(clipboard)) {
+        if (TEXT.isAvailable(clipboard) && !FILE.isAvailable(clipboard)) {
             String newStringContent = clipboardUtils.getStringContent(newClipboardContents);
             if (newStringContent == null) return;
 
@@ -77,7 +77,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
      * @param myClipboardContents  {@link MyClipboardContent[]} of Unknown {@link Class} containing previous contents
      */
     void checkFiles(Transferable newClipboardContents, MyClipboardContent<?>[] myClipboardContents) {
-        if (FILELIST.isAvailable(clipboard)) {
+        if (FILE.isAvailable(clipboard)) {
             List<File> fileListContent = clipboardUtils.getFileContent(newClipboardContents);
             if (fileListContent == null) return;
 
