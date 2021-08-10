@@ -61,7 +61,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         if (isImageMonitored()) {
             if (IMAGE.isAvailable(oldClipboard)) {
                 MyBufferedImage bufferedImage = clipboardUtils.getImageContent(newClipboardContents);
-                MyBufferedImage oldBufferedImage = new MyBufferedImage(clipboardContent.getBufferedImage());
+                MyBufferedImage oldBufferedImage = new MyBufferedImage(clipboardContent.getImage());
                 if (!bufferedImage.equals(oldBufferedImage)) {
                     eventManager.notifyImageEvent(clipboardContent, bufferedImage.getBufferedImage());
                 }

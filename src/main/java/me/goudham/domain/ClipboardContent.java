@@ -6,23 +6,23 @@ import java.util.List;
 
 public class ClipboardContent {
     private String text;
-    private BufferedImage bufferedImage;
+    private BufferedImage image;
     private List<File> files;
 
     public ClipboardContent(String text) {
         this.text = text;
     }
 
-    public ClipboardContent(BufferedImage bufferedImage) {
-        this.bufferedImage = bufferedImage;
+    public ClipboardContent(BufferedImage image) {
+        this.image = image;
     }
 
     public ClipboardContent(List<File> files) {
         this.files = files;
     }
 
-    public BufferedImage getBufferedImage() {
-        return bufferedImage;
+    public BufferedImage getImage() {
+        return image;
     }
 
     public String getText() {

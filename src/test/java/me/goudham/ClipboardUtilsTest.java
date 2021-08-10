@@ -151,7 +151,7 @@ class ClipboardUtilsTest {
 
         assertThat(actualClipboardContent.getText(), is(expectedString));
         assertThat(actualClipboardContent.getFiles(), is(expectedFiles));
-        assertThat(actualClipboardContent.getBufferedImage(), is(new BufferedImageMatcher(expectedImage)));
+        assertThat(actualClipboardContent.getImage(), is(new BufferedImageMatcher(expectedImage)));
         verifyNoInteractions(logger);
     }
 
@@ -161,7 +161,7 @@ class ClipboardUtilsTest {
         ClipboardContent actualClipboardContent = sut.getOldClipboardContent(expectedOldContent);
 
         assertThat(actualClipboardContent.getText(), is(expectedString));
-        assertThat(actualClipboardContent.getBufferedImage(), is(expectedImage));
+        assertThat(actualClipboardContent.getImage(), is(expectedImage));
         assertThat(actualClipboardContent.getFiles(), is(expectedFiles));
         verifyNoInteractions(logger);
     }
