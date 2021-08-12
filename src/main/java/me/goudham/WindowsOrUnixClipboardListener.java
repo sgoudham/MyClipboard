@@ -14,7 +14,6 @@ import me.goudham.domain.MyBufferedImage;
 import me.goudham.domain.TransferableFile;
 import me.goudham.domain.TransferableImage;
 
-import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import static me.goudham.Contents.FILE;
 import static me.goudham.Contents.IMAGE;
@@ -32,7 +31,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
     public void lostOwnership(Clipboard oldClipboard, Transferable oldClipboardContents) {
         try {
             sleep(200);
-            Transferable newClipboardContents = oldClipboard.getContents(currentThread());
+            Transferable newClipboardContents = oldClipboard.getContents(null);
             processContents(oldClipboard, oldClipboardContents, newClipboardContents);
             regainOwnership(oldClipboard, newClipboardContents);
         } catch (IllegalStateException | InterruptedException exp) {
@@ -69,7 +68,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
         }
 
         if (isFileMonitored()) {
-            if (FILE.isAvailable(oldClipboard)) {
+            if (FILE.isAvailable(oldClipboard) && !IMAGE.isAvailable(oldClipboard)) {
                 List<File> fileList = clipboardUtils.getFileContent(newClipboardContents);
                 if (!fileList.equals(clipboardContent.getFiles())) {
                     eventManager.notifyFilesEvent(clipboardContent, fileList);
@@ -108,71 +107,47 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
 
     @Override
     void insert(String stringContent) {
-        try {
-            sleep(200);
-        } catch (InterruptedException ie) {
-            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
-        }
-
-        try {
-            clipboard.setContents(new StringSelection(stringContent), this);
-        } catch (IllegalStateException ise) {
-            logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
-            executorService.submit(this);
-        }
+        setContents(new StringSelection(stringContent));
     }
 
     @Override
     void insert(Image imageContent) {
-        try {
-            sleep(200);
-        } catch (InterruptedException ie) {
-            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
-        }
-
-        try {
-            clipboard.setContents(new TransferableImage(imageContent), this);
-        } catch (IllegalStateException ise) {
-            logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
-            executorService.submit(this);
-        }
+        setContents(new TransferableImage(imageContent));
     }
 
     @Override
     void insert(List<File> fileContent) {
-        try {
-            sleep(200);
-        } catch (InterruptedException ie) {
-            logger.error("Exception Thrown As Thread Cannot Sleep", ie);
-        }
-
-        try {
-            clipboard.setContents(new TransferableFile(fileContent), this);
-        } catch (IllegalStateException ise) {
-            logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
-            executorService.submit(this);
-        }
+        setContents(new TransferableFile(fileContent));
     }
 
     @Override
     void insertAndNotify(String stringContent) {
-        Transferable currentClipboardContents = clipboard.getContents(this);
+        Transferable currentClipboardContents = clipboard.getContents(null);
         insert(stringContent);
         lostOwnership(clipboard, currentClipboardContents);
     }
 
     @Override
     void insertAndNotify(Image imageContent) {
-        Transferable currentClipboardContents = clipboard.getContents(this);
+        Transferable currentClipboardContents = clipboard.getContents(null);
         insert(imageContent);
         lostOwnership(clipboard, currentClipboardContents);
     }
 
     @Override
     void insertAndNotify(List<File> fileContent) {
-        Transferable currentClipboardContents = clipboard.getContents(this);
+        Transferable currentClipboardContents = clipboard.getContents(null);
         insert(fileContent);
         lostOwnership(clipboard, currentClipboardContents);
+    }
+
+    void setContents(Transferable contents) {
+        try {
+            clipboard.setContents(contents, this);
+        } catch (IllegalStateException ise) {
+            logger.error("Exception Thrown As Clipboard Cannot Be Accessed", ise);
+            executorService.submit(this);
+        }
     }
 
     @Override
