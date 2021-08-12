@@ -2,6 +2,10 @@ package me.goudham.domain;
 
 import java.util.Objects;
 
+/**
+ * Contains clipboard contents as generics
+ * @param <T> Type of data given by the {@link java.awt.datatransfer.Clipboard}
+ */
 public class GenericClipboardContent<T> {
     private T oldContent;
 

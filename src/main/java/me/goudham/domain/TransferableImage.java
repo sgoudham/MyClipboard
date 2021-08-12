@@ -6,6 +6,13 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A {@link Transferable} which implements the capability required to transfer a
+ * {@link java.awt.image.BufferedImage}
+ * <p>
+ * This {@link Transferable} properly supports {@link DataFlavor#imageFlavor}
+ * @see DataFlavor#imageFlavor
+ */
 public class TransferableImage implements Transferable {
 
     private final Image image;

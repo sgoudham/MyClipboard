@@ -57,14 +57,52 @@ abstract class ClipboardListener {
      */
     abstract void insert(String stringContent);
 
+    /**
+     * Insert the given {@link Image} into the system clipboard
+     *
+     * @param imageContent The given {@link Image} to insert
+     * @see WindowsOrUnixClipboardListener#insert(Image)
+     * @see MacClipboardListener#insert(Image)
+     */
     abstract void insert(Image imageContent);
 
+    /**
+     * Insert the given {@link List} of {@link File} into the system clipboard
+     *
+     * @param fileContent The given {@link List} of {@link File} to insert
+     * @see WindowsOrUnixClipboardListener#insert(List)
+     * @see MacClipboardListener#insert(List)
+     */
     abstract void insert(List<File> fileContent);
 
+    /**
+     * Insert the given {@link String} into the system clipboard
+     * and notify the user about the new contents within the clipboard
+     *
+     * @param stringContent The given {@link String} to insert
+     * @see WindowsOrUnixClipboardListener#insertAndNotify(String)
+     * @see MacClipboardListener#insertAndNotify(String)
+     */
     abstract void insertAndNotify(String stringContent);
 
+    /**
+     * Insert the given {@link Image} into the system clipboard
+     * and notify the user about the new contents within the clipboard
+     *
+     * @param imageContent The given {@link Image} to insert
+     * @see WindowsOrUnixClipboardListener#insertAndNotify(Image)
+     * @see MacClipboardListener#insertAndNotify(Image)
+     */
     abstract void insertAndNotify(Image imageContent);
 
+    /**
+     * Insert the given {@link List} of {@link File} into the system clipboard
+     * and notify the user about the new contents within the clipboard
+     *
+     * @param fileContent The given {@link List} of {@link File} to insert
+     * @see WindowsOrUnixClipboardListener#insertAndNotify(List)
+     * @see MacClipboardListener#insertAndNotify(List)
+     */
     abstract void insertAndNotify(List<File> fileContent);
 
     void toggleTextMonitored() {

@@ -6,6 +6,13 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.util.List;
 
+/**
+ * A {@link Transferable} which implements the capability required to transfer a
+ * {@link List} of {@link File}
+ * <p>
+ * This {@link Transferable} properly supports {@link DataFlavor#javaFileListFlavor}
+ * @see DataFlavor#javaFileListFlavor
+ */
 public class TransferableFile implements Transferable {
 
     private final List<File> files;

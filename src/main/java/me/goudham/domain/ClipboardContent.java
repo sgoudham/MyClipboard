@@ -4,6 +4,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 
+/**
+ * Contains potential clipboard contents returned from the clipboard. Supported types are currently {@link String},
+ * {@link BufferedImage} and {@link List} of {@link File}
+ */
 public class ClipboardContent {
     private String text;
     private BufferedImage image;

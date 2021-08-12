@@ -3,6 +3,9 @@ package me.goudham.domain;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
+/**
+ * Wrapper class surrounding {@link MyBufferedImage} to ensure image equality is properly evaluated
+ */
 public class MyBufferedImage {
     private BufferedImage bufferedImage;
 
