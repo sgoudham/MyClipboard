@@ -36,4 +36,13 @@ public class ClipboardContent {
     public List<File> getFiles() {
         return files;
     }
+
+    @Override
+    public String toString() {
+        return "ClipboardContent{" +
+                "text='" + text + '\'' +
+                ", image=" + image +
+                ", files=" + files +
+                '}';
+    }
 }
