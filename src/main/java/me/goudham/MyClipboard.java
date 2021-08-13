@@ -218,10 +218,10 @@ public class MyClipboard {
     /**
      * Toggles the current value of image monitoring, the default value is set to {@code True}
      *
-     * @see ClipboardListener#toggleImagesMonitored()
+     * @see ClipboardListener#toggleImageMonitored()
      */
     public void toggleImagesMonitored() {
-        clipboardListener.toggleImagesMonitored();
+        clipboardListener.toggleImageMonitored();
     }
 
     /**

@@ -119,7 +119,7 @@ abstract class ClipboardListener {
     /**
      * Toggles the current value of image monitoring, the default value is set to {@code True}
      */
-    void toggleImagesMonitored() {
+    void toggleImageMonitored() {
         this.imageMonitored = !imageMonitored;
     }
 
