@@ -19,6 +19,9 @@ import static me.goudham.Contents.FILE;
 import static me.goudham.Contents.IMAGE;
 import static me.goudham.Contents.TEXT;
 
+/**
+ * Clipboard Listener for Windows and Unix operating systems
+ */
 class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnable, ClipboardOwner {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private boolean listening = false;

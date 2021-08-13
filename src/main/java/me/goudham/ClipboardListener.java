@@ -8,6 +8,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Abstract class containing common operations between {@link WindowsOrUnixClipboardListener} and
+ * {@link MacClipboardListener}
+ */
 abstract class ClipboardListener {
     Clipboard clipboard;
     Logger logger;
@@ -105,14 +109,23 @@ abstract class ClipboardListener {
      */
     abstract void insertAndNotify(List<File> fileContent);
 
+    /**
+     * Toggles the current value of text monitoring, the default value is set to {@code True}
+     */
     void toggleTextMonitored() {
         this.textMonitored = !textMonitored;
     }
 
+    /**
+     * Toggles the current value of image monitoring, the default value is set to {@code True}
+     */
     void toggleImagesMonitored() {
         this.imageMonitored = !imageMonitored;
     }
 
+    /**
+     * Toggles the current value of file monitoring, the default value is set to {@code True}
+     */
     void toggleFileMonitored() {
         this.fileMonitored = !fileMonitored;
     }

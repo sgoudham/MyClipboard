@@ -19,6 +19,9 @@ import static me.goudham.Contents.FILE;
 import static me.goudham.Contents.IMAGE;
 import static me.goudham.Contents.TEXT;
 
+/**
+ * Clipboard Listener for the macOS operating system
+ */
 class MacClipboardListener extends ClipboardListener implements Runnable {
     ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     GenericClipboardContent<?>[] genericClipboardContents;

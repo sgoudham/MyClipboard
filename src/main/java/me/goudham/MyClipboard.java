@@ -68,26 +68,80 @@ public class MyClipboard {
         clipboardListener.stopListening();
     }
 
+    /**
+     * Insert the given {@link String} into the system clipboard
+     * <p>
+     * Due to the underlying {@link MacClipboardListener#insert(String)} implementation, inserting
+     * clipboard contents will always result in event notifications being sent
+     *
+     * @param stringContent The given {@link String} to insert
+     * @see WindowsOrUnixClipboardListener#insert(String)
+     * @see MacClipboardListener#insert(String)
+     */
     public void insert(String stringContent) {
         clipboardListener.insert(stringContent);
     }
 
+    /**
+     * Insert the given {@link Image} into the system clipboard
+     * <p>
+     * Due to the underlying {@link MacClipboardListener#insert(Image)} implementation, inserting
+     * clipboard contents will always result in event notifications being sent
+     *
+     * @param imageContent The given {@link Image} to insert
+     * @see WindowsOrUnixClipboardListener#insert(Image)
+     * @see MacClipboardListener#insert(Image)
+     */
     public void insert(Image imageContent) {
         clipboardListener.insert(imageContent);
     }
 
+    /**
+     * Insert the given {@link List} of {@link File} into the system clipboard
+     * <p>
+     * Due to the underlying {@link MacClipboardListener#insert(List)} implementation, inserting
+     * clipboard contents will always result in event notifications being sent
+     *
+     * @param fileContent The given {@link List} of {@link File} to insert
+     * @see WindowsOrUnixClipboardListener#insert(List)
+     * @see MacClipboardListener#insert(List)
+     */
     public void insert(List<File> fileContent) {
         clipboardListener.insert(fileContent);
     }
 
+    /**
+     * Insert the given {@link String} into the system clipboard
+     * and notify the user about the new contents within the clipboard
+     *
+     * @param stringContent The given {@link String} to insert
+     * @see WindowsOrUnixClipboardListener#insertAndNotify(String)
+     * @see MacClipboardListener#insertAndNotify(String)
+     */
     public void insertAndNotify(String stringContent) {
         clipboardListener.insertAndNotify(stringContent);
     }
 
+    /**
+     * Insert the given {@link Image} into the system clipboard
+     * and notify the user about the new contents within the clipboard
+     *
+     * @param imageContent The given {@link Image} to insert
+     * @see WindowsOrUnixClipboardListener#insertAndNotify(Image)
+     * @see MacClipboardListener#insertAndNotify(Image)
+     */
     public void insertAndNotify(Image imageContent) {
         clipboardListener.insertAndNotify(imageContent);
     }
 
+    /**
+     * Insert the given {@link List} of {@link File} into the system clipboard
+     * and notify the user about the new contents within the clipboard
+     *
+     * @param fileContent The given {@link List} of {@link File} to insert
+     * @see WindowsOrUnixClipboardListener#insertAndNotify(List)
+     * @see MacClipboardListener#insertAndNotify(List)
+     */
     public void insertAndNotify(List<File> fileContent) {
         clipboardListener.insertAndNotify(fileContent);
     }
@@ -96,7 +150,7 @@ public class MyClipboard {
      * Adds a {@link TextEvent} to the underlying {@link ClipboardListener}
      *
      * @param textEvent The {@link TextEvent} to be added
-     * @see EventManager#addEventListener(TextEvent) 
+     * @see EventManager#addEventListener(TextEvent)
      */
     public void addEventListener(TextEvent textEvent) {
         clipboardListener.getEventManager().addEventListener(textEvent);
@@ -106,7 +160,7 @@ public class MyClipboard {
      * Adds a {@link ImageEvent} to the underlying {@link ClipboardListener}
      *
      * @param imageEvent The {@link ImageEvent} to be added
-     * @see EventManager#addEventListener(ImageEvent) 
+     * @see EventManager#addEventListener(ImageEvent)
      */
     public void addEventListener(ImageEvent imageEvent) {
         clipboardListener.getEventManager().addEventListener(imageEvent);
@@ -116,7 +170,7 @@ public class MyClipboard {
      * Adds a {@link FileEvent} to the underlying {@link ClipboardListener}
      *
      * @param fileEvent The {@link FileEvent} to be added
-     * @see EventManager#addEventListener(FileEvent) 
+     * @see EventManager#addEventListener(FileEvent)
      */
     public void addEventListener(FileEvent fileEvent) {
         clipboardListener.getEventManager().addEventListener(fileEvent);
@@ -126,7 +180,7 @@ public class MyClipboard {
      * Removes a {@link TextEvent} from the underlying {@link ClipboardListener}
      *
      * @param textEvent The {@link TextEvent} to be removed
-     * @see EventManager#removeEventListener(TextEvent) 
+     * @see EventManager#removeEventListener(TextEvent)
      */
     public void removeEventListener(TextEvent textEvent) {
         clipboardListener.getEventManager().removeEventListener(textEvent);
@@ -136,7 +190,7 @@ public class MyClipboard {
      * Removes a {@link ImageEvent} from the underlying {@link ClipboardListener}
      *
      * @param imageEvent The {@link ImageEvent} to be removed
-     * @see EventManager#removeEventListener(ImageEvent) 
+     * @see EventManager#removeEventListener(ImageEvent)
      */
     public void removeEventListener(ImageEvent imageEvent) {
         clipboardListener.getEventManager().removeEventListener(imageEvent);
@@ -152,14 +206,29 @@ public class MyClipboard {
         clipboardListener.getEventManager().removeEventListener(fileEvent);
     }
 
+    /**
+     * Toggles the current value of text monitoring, the default value is set to {@code True}
+     *
+     * @see ClipboardListener#toggleTextMonitored()
+     */
     public void toggleTextMonitored() {
         clipboardListener.toggleTextMonitored();
     }
 
+    /**
+     * Toggles the current value of image monitoring, the default value is set to {@code True}
+     *
+     * @see ClipboardListener#toggleImagesMonitored()
+     */
     public void toggleImagesMonitored() {
         clipboardListener.toggleImagesMonitored();
     }
 
+    /**
+     * Toggles the current value of file monitoring, the default value is set to {@code True}
+     *
+     * @see ClipboardListener#toggleFileMonitored()
+     */
     public void toggleFilesMonitored() {
         clipboardListener.toggleFileMonitored();
     }
@@ -196,11 +265,11 @@ public class MyClipboard {
         this.clipboardListener = clipboardListener;
     }
 
-    protected static SystemUtils getSystemUtils() {
+    static SystemUtils getSystemUtils() {
         return systemUtils;
     }
 
-    protected static void setSystemUtils(SystemUtils systemUtils) {
+    static void setSystemUtils(SystemUtils systemUtils) {
         MyClipboard.systemUtils = systemUtils;
     }
 }
