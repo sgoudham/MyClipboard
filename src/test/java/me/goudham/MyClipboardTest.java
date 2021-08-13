@@ -30,8 +30,8 @@ class MyClipboardTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideArgumentsForSuccessfullyRetrievingCorrectClipboardListenerForSystem")
-    void successfullyRetrieveCorrectClipboardListenerForSystem(boolean isMac, boolean isWindows, boolean isUnix, Class<?> expectedListener) throws UnsupportedSystemException {
+    @MethodSource("provideArgumentsForSuccessfullyRetrievingCorrectSystemClipboard")
+    void successfullyRetrieveCorrectSystemClipboard(boolean isMac, boolean isWindows, boolean isUnix, Class<?> expectedListener) throws UnsupportedSystemException {
         when(systemUtilsMock.isMac()).thenReturn(isMac);
         when(systemUtilsMock.isWindows()).thenReturn(isWindows);
         when(systemUtilsMock.isUnix()).thenReturn(isUnix);
@@ -42,7 +42,7 @@ class MyClipboardTest {
     }
 
     @Test
-    void failToRetrieveCorrectClipboardListenerForSystem() {
+    void failToRetrieveCorrectSystemClipboard() {
         String expectedOperatingSystem = "unknown";
         System.setProperty("os.name", expectedOperatingSystem);
         Throwable expectedException = new UnsupportedSystemException("Your Operating System: '" + System.getProperty("os.name") + "' is not supported");
@@ -57,11 +57,11 @@ class MyClipboardTest {
         assertThat(actualException.getMessage(), is(expectedException.getMessage()));
     }
 
-    static Stream<Arguments> provideArgumentsForSuccessfullyRetrievingCorrectClipboardListenerForSystem() {
+    static Stream<Arguments> provideArgumentsForSuccessfullyRetrievingCorrectSystemClipboard() {
         return Stream.of(
-                Arguments.of(false, true, false, WindowsOrUnixClipboardListener.class),
-                Arguments.of(false, false, true, WindowsOrUnixClipboardListener.class),
-                Arguments.of(true, false, false, MacClipboardListener.class)
+                Arguments.of(false, true, false, WindowsOrUnixClipboard.class),
+                Arguments.of(false, false, true, WindowsOrUnixClipboard.class),
+                Arguments.of(true, false, false, MacClipboard.class)
         );
     }
 }
