@@ -118,7 +118,7 @@ abstract class SystemClipboard {
      */
     ClipboardContent getContents() {
         Transferable clipboardContents = clipboard.getContents(null);
-        return clipboardContents == null ? null : clipboardUtils.getOldClipboardContent(clipboardContents);
+        return clipboardContents == null ? null : clipboardUtils.getClipboardContent(clipboardContents);
     }
 
     /**

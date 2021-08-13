@@ -130,12 +130,12 @@ class ClipboardUtilsTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideArgumentsForRetrievingClipboardContents")
+    @MethodSource("provideArgumentsForRetrievingGenericClipboardContents")
     void successfullyRetrieveOldClipboardContents(GenericClipboardContent<?> expectedGenericClipboardContent, Object expectedContent, DataFlavor dataFlavor) throws IOException, UnsupportedFlavorException {
         when(transferableMock.isDataFlavorSupported(dataFlavor)).thenReturn(true);
         when(transferableMock.getTransferData(dataFlavor)).thenReturn(expectedContent);
 
-        GenericClipboardContent<?> actualGenericClipboardContent = sut.getClipboardContents(transferableMock);
+        GenericClipboardContent<?> actualGenericClipboardContent = sut.getGenericClipboardContents(transferableMock);
 
         assertThat(actualGenericClipboardContent.getOldContent(), is(expectedGenericClipboardContent.getOldContent()));
         verifyNoInteractions(logger);
@@ -147,7 +147,7 @@ class ClipboardUtilsTest {
         when(transferableMock.isDataFlavorSupported(dataFlavor)).thenReturn(true);
         when(transferableMock.getTransferData(dataFlavor)).thenReturn(expectedContent);
 
-        ClipboardContent actualClipboardContent = sut.getOldClipboardContent(transferableMock);
+        ClipboardContent actualClipboardContent = sut.getClipboardContent(transferableMock);
 
         assertThat(actualClipboardContent.getText(), is(expectedString));
         assertThat(actualClipboardContent.getFiles(), is(expectedFiles));
@@ -158,7 +158,7 @@ class ClipboardUtilsTest {
     @ParameterizedTest
     @MethodSource("provideArgumentsForOldClipboardContents")
     void successfullyMarshallClipboardContentsIntoOldClipboardContent(Object expectedOldContent, String expectedString, BufferedImage expectedImage, List<File> expectedFiles) {
-        ClipboardContent actualClipboardContent = sut.getOldClipboardContent(expectedOldContent);
+        ClipboardContent actualClipboardContent = sut.getClipboardContent(expectedOldContent);
 
         assertThat(actualClipboardContent.getText(), is(expectedString));
         assertThat(actualClipboardContent.getImage(), is(expectedImage));
@@ -192,7 +192,7 @@ class ClipboardUtilsTest {
     }
 
 
-    static Stream<Arguments> provideArgumentsForRetrievingClipboardContents() {
+    static Stream<Arguments> provideArgumentsForRetrievingGenericClipboardContents() {
         String string = "testString";
         BufferedImage bufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         MyBufferedImage myBufferedImage = new MyBufferedImage(bufferedImage);

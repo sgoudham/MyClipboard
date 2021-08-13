@@ -51,7 +51,7 @@ class WindowsOrUnixClipboard extends SystemClipboard implements Runnable, Clipbo
      * @param newClipboardContents The new contents of the clipboard
      */
     void processContents(Clipboard oldClipboard, Transferable oldClipboardContents, Transferable newClipboardContents) {
-        ClipboardContent clipboardContent = clipboardUtils.getOldClipboardContent(oldClipboardContents);
+        ClipboardContent clipboardContent = clipboardUtils.getClipboardContent(oldClipboardContents);
 
         if (isTextMonitored()) {
             if (TEXT.isAvailable(oldClipboard) && !FILE.isAvailable(oldClipboard)) {

@@ -45,7 +45,7 @@ class MacClipboard extends SystemClipboard implements Runnable {
             if (isTextMonitored()) {
                 Object oldContent = genericClipboardContents[0].getOldContent();
                 if (!newStringContent.equals(oldContent)) {
-                    ClipboardContent clipboardContent = clipboardUtils.getOldClipboardContent(oldContent);
+                    ClipboardContent clipboardContent = clipboardUtils.getClipboardContent(oldContent);
                     eventManager.notifyTextEvent(clipboardContent, newStringContent);
                 }
             }
@@ -67,7 +67,7 @@ class MacClipboard extends SystemClipboard implements Runnable {
 
             if (isImageMonitored()) {
                 if (!bufferedImageContent.equals(genericClipboardContents[0].getOldContent())) {
-                    ClipboardContent clipboardContent = clipboardUtils.getOldClipboardContent(genericClipboardContents[0].getOldContent());
+                    ClipboardContent clipboardContent = clipboardUtils.getClipboardContent(genericClipboardContents[0].getOldContent());
                     eventManager.notifyImageEvent(clipboardContent, bufferedImageContent.getBufferedImage());
                 }
             }
@@ -90,7 +90,7 @@ class MacClipboard extends SystemClipboard implements Runnable {
 
             if (isFileMonitored()) {
                 if (!fileListContent.equals(genericClipboardContents[0].getOldContent())) {
-                    ClipboardContent clipboardContent = clipboardUtils.getOldClipboardContent(genericClipboardContents[0].getOldContent());
+                    ClipboardContent clipboardContent = clipboardUtils.getClipboardContent(genericClipboardContents[0].getOldContent());
                     eventManager.notifyFilesEvent(clipboardContent, fileListContent);
                 }
             }
@@ -190,7 +190,7 @@ class MacClipboard extends SystemClipboard implements Runnable {
     @Override
     void execute() {
         Transferable oldClipboardContents = clipboard.getContents(null);
-        genericClipboardContents = new GenericClipboardContent[] { clipboardUtils.getClipboardContents(oldClipboardContents) };
+        genericClipboardContents = new GenericClipboardContent[] { clipboardUtils.getGenericClipboardContents(oldClipboardContents) };
         scheduledExecutorService.scheduleAtFixedRate(this, 0, 200, TimeUnit.MILLISECONDS);
     }
 }

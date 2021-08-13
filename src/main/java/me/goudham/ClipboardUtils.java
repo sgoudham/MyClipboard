@@ -88,7 +88,7 @@ class ClipboardUtils {
      * @param contents The {@link Transferable} which holds the clipboard contents
      * @return {@link GenericClipboardContent} containing clipboard contents
      */
-    GenericClipboardContent<?> getClipboardContents(Transferable contents) {
+    GenericClipboardContent<?> getGenericClipboardContents(Transferable contents) {
         GenericClipboardContent<?> genericClipboardContent = null;
 
         try {
@@ -113,7 +113,7 @@ class ClipboardUtils {
      * @param oldContents The given {@link Transferable} which holds the clipboard contents
      * @return {@link ClipboardContent} containing old clipboard contents
      */
-    ClipboardContent getOldClipboardContent(Transferable oldContents) {
+    ClipboardContent getClipboardContent(Transferable oldContents) {
         ClipboardContent clipboardContent = null;
 
         try {
@@ -137,7 +137,7 @@ class ClipboardUtils {
      * @param object The given {@link Object} which holds the clipboard contents
      * @return {@link ClipboardContent} containing old clipboard contents
      */
-    ClipboardContent getOldClipboardContent(Object object) {
+    ClipboardContent getClipboardContent(Object object) {
         ClipboardContent clipboardContent = null;
 
         if (object instanceof String) {
