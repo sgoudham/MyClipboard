@@ -26,7 +26,7 @@ enum Contents {
     private final DataFlavor dataFlavor;
 
     Contents(DataFlavor dataFlavor) {
-       this.dataFlavor = dataFlavor;
+        this.dataFlavor = dataFlavor;
     }
 
     DataFlavor getDataFlavor() {

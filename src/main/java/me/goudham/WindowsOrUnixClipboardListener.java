@@ -44,6 +44,8 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
     }
 
     /**
+     * Detect changes from the given {@link Clipboard} and send event notifications to all users listening
+     *
      * @param oldClipboard         The clipboard that is no longer owned
      * @param oldClipboardContents The old contents of the clipboard
      * @param newClipboardContents The new contents of the clipboard

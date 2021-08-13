@@ -75,7 +75,7 @@ class EventManager {
      * Produces {@link String} change notifications to all consumers listening
      *
      * @param clipboardContent The previous clipboard contents
-     * @param stringContent       {@link String} to be consumed
+     * @param stringContent    {@link String} to be consumed
      */
     void notifyTextEvent(ClipboardContent clipboardContent, String stringContent) {
         for (TextEvent textEvent : textEventListener) {
@@ -87,7 +87,7 @@ class EventManager {
      * Produces {@link BufferedImage} change notifications to all consumers listening
      *
      * @param clipboardContent The previous clipboard contents
-     * @param imageContent        {@link BufferedImage} to be consumed
+     * @param imageContent     {@link BufferedImage} to be consumed
      */
     void notifyImageEvent(ClipboardContent clipboardContent, BufferedImage imageContent) {
         for (ImageEvent imageEvent : imageEventListener) {
@@ -99,7 +99,7 @@ class EventManager {
      * Produces {@link List} of {@link File} change notifications to all consumers listening
      *
      * @param clipboardContent The previous clipboard contents
-     * @param fileContent         {@link List} of {@link File} to be consumed
+     * @param fileContent      {@link List} of {@link File} to be consumed
      */
     void notifyFilesEvent(ClipboardContent clipboardContent, List<File> fileContent) {
         for (FileEvent fileEvent : fileEventListener) {
