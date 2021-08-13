@@ -3,8 +3,10 @@ package me.goudham;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.Transferable;
 import java.io.File;
 import java.util.List;
+import me.goudham.domain.ClipboardContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,6 +110,16 @@ abstract class ClipboardListener {
      * @see MacClipboardListener#insertAndNotify(List)
      */
     abstract void insertAndNotify(List<File> fileContent);
+
+    /**
+     * Returns the current clipboard contents, {@code null} if clipboard has no contents
+     *
+     * @return {@link ClipboardContent} containing either {@code String}, {@code BufferedImage} or {@code List<File>}
+     */
+    ClipboardContent getContents() {
+        Transferable clipboardContents = clipboard.getContents(null);
+        return clipboardContents == null ? null : clipboardUtils.getOldClipboardContent(clipboardContents);
+    }
 
     /**
      * Toggles the current value of text monitoring, the default value is set to {@code True}
