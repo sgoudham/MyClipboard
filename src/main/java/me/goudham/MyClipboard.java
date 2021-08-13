@@ -13,102 +13,102 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Entry Class for User to interact with the System Clipboard
  * <p>
- * The abstract class {@link ClipboardListener} is responsible for handling all operations
+ * The abstract class {@link SystemClipboard} is responsible for handling all operations
  */
 public class MyClipboard {
-    private @NotNull ClipboardListener clipboardListener;
+    private @NotNull SystemClipboard systemClipboard;
     private static SystemUtils systemUtils = new SystemUtils();
 
     /**
      * Creates an instance of {@link MyClipboard}
      *
-     * @param clipboardListener The underlying {@link ClipboardListener}
+     * @param systemClipboard The underlying {@link SystemClipboard}
      */
-    private MyClipboard(@NotNull ClipboardListener clipboardListener) {
-        this.clipboardListener = clipboardListener;
+    private MyClipboard(@NotNull SystemClipboard systemClipboard) {
+        this.systemClipboard = systemClipboard;
     }
 
     /**
-     * Creates an instance of {@link MyClipboard} with an instance of {@link ClipboardListener} dependent on the OS
-     * <p>A {@link WindowsOrUnixClipboardListener} or {@link MacClipboardListener} can be created</p>
+     * Creates an instance of {@link MyClipboard} with an instance of {@link SystemClipboard} dependent on the OS
+     * <p>A {@link WindowsOrUnixClipboard} or {@link MacClipboard} can be created</p>
      *
      * @return {@link MyClipboard}
      * @throws UnsupportedSystemException If {@link MyClipboard} detects an operating system which is not Mac or Windows/*Unix
      */
     public static MyClipboard getSystemClipboard() throws UnsupportedSystemException {
-        ClipboardListener clipboardListener;
+        SystemClipboard systemClipboard;
 
         if (systemUtils.isMac()) {
-            clipboardListener = new MacClipboardListener();
+            systemClipboard = new MacClipboard();
         } else if (systemUtils.isWindows() || systemUtils.isUnix()) {
-            clipboardListener = new WindowsOrUnixClipboardListener();
+            systemClipboard = new WindowsOrUnixClipboard();
         } else {
             throw new UnsupportedSystemException("Your Operating System: '" + System.getProperty("os.name") + "' is not supported");
         }
 
-        return new MyClipboard(clipboardListener);
+        return new MyClipboard(systemClipboard);
     }
 
     /**
-     * Allows the correct {@link ClipboardListener} to start listening for clipboard changes
+     * Allows the correct {@link SystemClipboard} to start listening for clipboard changes
      *
-     * @see WindowsOrUnixClipboardListener#startListening()
-     * @see MacClipboardListener#startListening()
+     * @see WindowsOrUnixClipboard#startListening()
+     * @see MacClipboard#startListening()
      */
     public void startListening() {
-        clipboardListener.startListening();
+        systemClipboard.startListening();
     }
 
     /**
-     * Stops the correct {@link ClipboardListener} to stop listening for clipboard changes
+     * Stops the correct {@link SystemClipboard} to stop listening for clipboard changes
      *
-     * @see WindowsOrUnixClipboardListener#stopListening()
-     * @see MacClipboardListener#stopListening()
+     * @see WindowsOrUnixClipboard#stopListening()
+     * @see MacClipboard#stopListening()
      */
     public void stopListening() {
-        clipboardListener.stopListening();
+        systemClipboard.stopListening();
     }
 
     /**
      * Insert the given {@link String} into the system clipboard
      * <p>
-     * Due to the underlying {@link MacClipboardListener#insert(String)} implementation, inserting
+     * Due to the underlying {@link MacClipboard#insert(String)} implementation, inserting
      * clipboard contents will always result in event notifications being sent
      *
      * @param stringContent The given {@link String} to insert
-     * @see WindowsOrUnixClipboardListener#insert(String)
-     * @see MacClipboardListener#insert(String)
+     * @see WindowsOrUnixClipboard#insert(String)
+     * @see MacClipboard#insert(String)
      */
     public void insert(String stringContent) {
-        clipboardListener.insert(stringContent);
+        systemClipboard.insert(stringContent);
     }
 
     /**
      * Insert the given {@link Image} into the system clipboard
      * <p>
-     * Due to the underlying {@link MacClipboardListener#insert(Image)} implementation, inserting
+     * Due to the underlying {@link MacClipboard#insert(Image)} implementation, inserting
      * clipboard contents will always result in event notifications being sent
      *
      * @param imageContent The given {@link Image} to insert
-     * @see WindowsOrUnixClipboardListener#insert(Image)
-     * @see MacClipboardListener#insert(Image)
+     * @see WindowsOrUnixClipboard#insert(Image)
+     * @see MacClipboard#insert(Image)
      */
     public void insert(Image imageContent) {
-        clipboardListener.insert(imageContent);
+        systemClipboard.insert(imageContent);
     }
 
     /**
      * Insert the given {@link List} of {@link File} into the system clipboard
      * <p>
-     * Due to the underlying {@link MacClipboardListener#insert(List)} implementation, inserting
+     * Due to the underlying {@link MacClipboard#insert(List)} implementation, inserting
      * clipboard contents will always result in event notifications being sent
      *
      * @param fileContent The given {@link List} of {@link File} to insert
-     * @see WindowsOrUnixClipboardListener#insert(List)
-     * @see MacClipboardListener#insert(List)
+     * @see WindowsOrUnixClipboard#insert(List)
+     * @see MacClipboard#insert(List)
      */
     public void insert(List<File> fileContent) {
-        clipboardListener.insert(fileContent);
+        systemClipboard.insert(fileContent);
     }
 
     /**
@@ -116,11 +116,11 @@ public class MyClipboard {
      * and notify the user about the new contents within the clipboard
      *
      * @param stringContent The given {@link String} to insert
-     * @see WindowsOrUnixClipboardListener#insertAndNotify(String)
-     * @see MacClipboardListener#insertAndNotify(String)
+     * @see WindowsOrUnixClipboard#insertAndNotify(String)
+     * @see MacClipboard#insertAndNotify(String)
      */
     public void insertAndNotify(String stringContent) {
-        clipboardListener.insertAndNotify(stringContent);
+        systemClipboard.insertAndNotify(stringContent);
     }
 
     /**
@@ -128,11 +128,11 @@ public class MyClipboard {
      * and notify the user about the new contents within the clipboard
      *
      * @param imageContent The given {@link Image} to insert
-     * @see WindowsOrUnixClipboardListener#insertAndNotify(Image)
-     * @see MacClipboardListener#insertAndNotify(Image)
+     * @see WindowsOrUnixClipboard#insertAndNotify(Image)
+     * @see MacClipboard#insertAndNotify(Image)
      */
     public void insertAndNotify(Image imageContent) {
-        clipboardListener.insertAndNotify(imageContent);
+        systemClipboard.insertAndNotify(imageContent);
     }
 
     /**
@@ -140,140 +140,140 @@ public class MyClipboard {
      * and notify the user about the new contents within the clipboard
      *
      * @param fileContent The given {@link List} of {@link File} to insert
-     * @see WindowsOrUnixClipboardListener#insertAndNotify(List)
-     * @see MacClipboardListener#insertAndNotify(List)
+     * @see WindowsOrUnixClipboard#insertAndNotify(List)
+     * @see MacClipboard#insertAndNotify(List)
      */
     public void insertAndNotify(List<File> fileContent) {
-        clipboardListener.insertAndNotify(fileContent);
+        systemClipboard.insertAndNotify(fileContent);
     }
 
     /**
      * Returns the current clipboard contents, {@code null} if clipboard has no contents
      *
      * @return {@link ClipboardContent} containing either {@code String}, {@code BufferedImage} or {@code List<File>}
-     * @see ClipboardListener#getContents()
+     * @see SystemClipboard#getContents()
      */
     public ClipboardContent getContents() {
-        return clipboardListener.getContents();
+        return systemClipboard.getContents();
     }
 
     /**
-     * Adds a {@link TextEvent} to the underlying {@link ClipboardListener}
+     * Adds a {@link TextEvent} to the underlying {@link SystemClipboard}
      *
      * @param textEvent The {@link TextEvent} to be added
      * @see EventManager#addEventListener(TextEvent)
      */
     public void addEventListener(TextEvent textEvent) {
-        clipboardListener.getEventManager().addEventListener(textEvent);
+        systemClipboard.getEventManager().addEventListener(textEvent);
     }
 
     /**
-     * Adds a {@link ImageEvent} to the underlying {@link ClipboardListener}
+     * Adds a {@link ImageEvent} to the underlying {@link SystemClipboard}
      *
      * @param imageEvent The {@link ImageEvent} to be added
      * @see EventManager#addEventListener(ImageEvent)
      */
     public void addEventListener(ImageEvent imageEvent) {
-        clipboardListener.getEventManager().addEventListener(imageEvent);
+        systemClipboard.getEventManager().addEventListener(imageEvent);
     }
 
     /**
-     * Adds a {@link FileEvent} to the underlying {@link ClipboardListener}
+     * Adds a {@link FileEvent} to the underlying {@link SystemClipboard}
      *
      * @param fileEvent The {@link FileEvent} to be added
      * @see EventManager#addEventListener(FileEvent)
      */
     public void addEventListener(FileEvent fileEvent) {
-        clipboardListener.getEventManager().addEventListener(fileEvent);
+        systemClipboard.getEventManager().addEventListener(fileEvent);
     }
 
     /**
-     * Removes a {@link TextEvent} from the underlying {@link ClipboardListener}
+     * Removes a {@link TextEvent} from the underlying {@link SystemClipboard}
      *
      * @param textEvent The {@link TextEvent} to be removed
      * @see EventManager#removeEventListener(TextEvent)
      */
     public void removeEventListener(TextEvent textEvent) {
-        clipboardListener.getEventManager().removeEventListener(textEvent);
+        systemClipboard.getEventManager().removeEventListener(textEvent);
     }
 
     /**
-     * Removes a {@link ImageEvent} from the underlying {@link ClipboardListener}
+     * Removes a {@link ImageEvent} from the underlying {@link SystemClipboard}
      *
      * @param imageEvent The {@link ImageEvent} to be removed
      * @see EventManager#removeEventListener(ImageEvent)
      */
     public void removeEventListener(ImageEvent imageEvent) {
-        clipboardListener.getEventManager().removeEventListener(imageEvent);
+        systemClipboard.getEventManager().removeEventListener(imageEvent);
     }
 
     /**
-     * Removes a {@link FileEvent} from the underlying {@link ClipboardListener}
+     * Removes a {@link FileEvent} from the underlying {@link SystemClipboard}
      *
      * @param fileEvent The {@link FileEvent} to be removed
      * @see EventManager#removeEventListener(FileEvent)
      */
     public void removeEventListener(FileEvent fileEvent) {
-        clipboardListener.getEventManager().removeEventListener(fileEvent);
+        systemClipboard.getEventManager().removeEventListener(fileEvent);
     }
 
     /**
      * Toggles the current value of text monitoring, the default value is set to {@code True}
      *
-     * @see ClipboardListener#toggleTextMonitored()
+     * @see SystemClipboard#toggleTextMonitored()
      */
     public void toggleTextMonitored() {
-        clipboardListener.toggleTextMonitored();
+        systemClipboard.toggleTextMonitored();
     }
 
     /**
      * Toggles the current value of image monitoring, the default value is set to {@code True}
      *
-     * @see ClipboardListener#toggleImageMonitored()
+     * @see SystemClipboard#toggleImageMonitored()
      */
     public void toggleImagesMonitored() {
-        clipboardListener.toggleImageMonitored();
+        systemClipboard.toggleImageMonitored();
     }
 
     /**
      * Toggles the current value of file monitoring, the default value is set to {@code True}
      *
-     * @see ClipboardListener#toggleFileMonitored()
+     * @see SystemClipboard#toggleFileMonitored()
      */
     public void toggleFilesMonitored() {
-        clipboardListener.toggleFileMonitored();
+        systemClipboard.toggleFileMonitored();
     }
 
     public boolean isImageMonitored() {
-        return clipboardListener.isImageMonitored();
+        return systemClipboard.isImageMonitored();
     }
 
     public void setImageMonitored(boolean imagesMonitored) {
-        clipboardListener.setImageMonitored(imagesMonitored);
+        systemClipboard.setImageMonitored(imagesMonitored);
     }
 
     public boolean isTextMonitored() {
-        return clipboardListener.isTextMonitored();
+        return systemClipboard.isTextMonitored();
     }
 
     public void setTextMonitored(boolean textMonitored) {
-        clipboardListener.setTextMonitored(textMonitored);
+        systemClipboard.setTextMonitored(textMonitored);
     }
 
     public boolean isFileMonitored() {
-        return clipboardListener.isFileMonitored();
+        return systemClipboard.isFileMonitored();
     }
 
     public void setFileMonitored(boolean fileMonitored) {
-        clipboardListener.setFileMonitored(fileMonitored);
+        systemClipboard.setFileMonitored(fileMonitored);
     }
 
-    public @NotNull ClipboardListener getClipboardListener() {
-        return clipboardListener;
+    public @NotNull SystemClipboard getClipboardListener() {
+        return systemClipboard;
     }
 
-    public void setClipboardListener(@NotNull ClipboardListener clipboardListener) {
-        this.clipboardListener = clipboardListener;
+    public void setClipboardListener(@NotNull SystemClipboard systemClipboard) {
+        this.systemClipboard = systemClipboard;
     }
 
     static SystemUtils getSystemUtils() {

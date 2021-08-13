@@ -11,10 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Abstract class containing common operations between {@link WindowsOrUnixClipboardListener} and
- * {@link MacClipboardListener}
+ * Abstract class containing common operations between {@link WindowsOrUnixClipboard} and
+ * {@link MacClipboard}
  */
-abstract class ClipboardListener {
+abstract class SystemClipboard {
     Clipboard clipboard;
     Logger logger;
     EventManager eventManager;
@@ -23,7 +23,7 @@ abstract class ClipboardListener {
     private boolean textMonitored = true;
     private boolean fileMonitored = true;
 
-    ClipboardListener() {
+    SystemClipboard() {
         clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         logger = LoggerFactory.getLogger(getClass());
         eventManager = new EventManager();
@@ -31,26 +31,26 @@ abstract class ClipboardListener {
     }
 
     /**
-     * Main entry point of execution for the correct {@link ClipboardListener}
+     * Main entry point of execution for the correct {@link SystemClipboard}
      *
-     * @see WindowsOrUnixClipboardListener#execute()
-     * @see MacClipboardListener#execute()
+     * @see WindowsOrUnixClipboard#execute()
+     * @see MacClipboard#execute()
      */
     abstract void execute();
 
     /**
-     * Allows the correct {@link ClipboardListener} to start listening for clipboard changes
+     * Allows the correct {@link SystemClipboard} to start listening for clipboard changes
      *
-     * @see WindowsOrUnixClipboardListener#startListening()
-     * @see MacClipboardListener#startListening()
+     * @see WindowsOrUnixClipboard#startListening()
+     * @see MacClipboard#startListening()
      */
     abstract void startListening();
 
     /**
-     * Stops the correct {@link ClipboardListener} to stop listening for clipboard changes
+     * Stops the correct {@link SystemClipboard} to stop listening for clipboard changes
      *
-     * @see WindowsOrUnixClipboardListener#stopListening()
-     * @see MacClipboardListener#stopListening()
+     * @see WindowsOrUnixClipboard#stopListening()
+     * @see MacClipboard#stopListening()
      */
     abstract void stopListening();
 
@@ -58,8 +58,8 @@ abstract class ClipboardListener {
      * Insert the given {@link String} into the system clipboard
      *
      * @param stringContent The given {@link String} to insert
-     * @see WindowsOrUnixClipboardListener#insert(String)
-     * @see MacClipboardListener#insert(String)
+     * @see WindowsOrUnixClipboard#insert(String)
+     * @see MacClipboard#insert(String)
      */
     abstract void insert(String stringContent);
 
@@ -67,8 +67,8 @@ abstract class ClipboardListener {
      * Insert the given {@link Image} into the system clipboard
      *
      * @param imageContent The given {@link Image} to insert
-     * @see WindowsOrUnixClipboardListener#insert(Image)
-     * @see MacClipboardListener#insert(Image)
+     * @see WindowsOrUnixClipboard#insert(Image)
+     * @see MacClipboard#insert(Image)
      */
     abstract void insert(Image imageContent);
 
@@ -76,8 +76,8 @@ abstract class ClipboardListener {
      * Insert the given {@link List} of {@link File} into the system clipboard
      *
      * @param fileContent The given {@link List} of {@link File} to insert
-     * @see WindowsOrUnixClipboardListener#insert(List)
-     * @see MacClipboardListener#insert(List)
+     * @see WindowsOrUnixClipboard#insert(List)
+     * @see MacClipboard#insert(List)
      */
     abstract void insert(List<File> fileContent);
 
@@ -86,8 +86,8 @@ abstract class ClipboardListener {
      * and notify the user about the new contents within the clipboard
      *
      * @param stringContent The given {@link String} to insert
-     * @see WindowsOrUnixClipboardListener#insertAndNotify(String)
-     * @see MacClipboardListener#insertAndNotify(String)
+     * @see WindowsOrUnixClipboard#insertAndNotify(String)
+     * @see MacClipboard#insertAndNotify(String)
      */
     abstract void insertAndNotify(String stringContent);
 
@@ -96,8 +96,8 @@ abstract class ClipboardListener {
      * and notify the user about the new contents within the clipboard
      *
      * @param imageContent The given {@link Image} to insert
-     * @see WindowsOrUnixClipboardListener#insertAndNotify(Image)
-     * @see MacClipboardListener#insertAndNotify(Image)
+     * @see WindowsOrUnixClipboard#insertAndNotify(Image)
+     * @see MacClipboard#insertAndNotify(Image)
      */
     abstract void insertAndNotify(Image imageContent);
 
@@ -106,8 +106,8 @@ abstract class ClipboardListener {
      * and notify the user about the new contents within the clipboard
      *
      * @param fileContent The given {@link List} of {@link File} to insert
-     * @see WindowsOrUnixClipboardListener#insertAndNotify(List)
-     * @see MacClipboardListener#insertAndNotify(List)
+     * @see WindowsOrUnixClipboard#insertAndNotify(List)
+     * @see MacClipboard#insertAndNotify(List)
      */
     abstract void insertAndNotify(List<File> fileContent);
 

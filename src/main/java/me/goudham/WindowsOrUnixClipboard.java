@@ -20,13 +20,13 @@ import static me.goudham.Contents.IMAGE;
 import static me.goudham.Contents.TEXT;
 
 /**
- * Clipboard Listener for Windows and Unix operating systems
+ * Clipboard for Windows and Unix operating systems
  */
-class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnable, ClipboardOwner {
+class WindowsOrUnixClipboard extends SystemClipboard implements Runnable, ClipboardOwner {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private boolean listening = false;
 
-    WindowsOrUnixClipboardListener() {
+    WindowsOrUnixClipboard() {
         super();
     }
 
@@ -167,7 +167,7 @@ class WindowsOrUnixClipboardListener extends ClipboardListener implements Runnab
     }
 
     /**
-     * Entry point for {@link WindowsOrUnixClipboardListener}
+     * Entry point for {@link WindowsOrUnixClipboard}
      * <p>Retrieves a thread from {@link Executors#newSingleThreadExecutor()} and executes code in the background</p>
      */
     @Override

@@ -20,14 +20,14 @@ import static me.goudham.Contents.IMAGE;
 import static me.goudham.Contents.TEXT;
 
 /**
- * Clipboard Listener for the macOS operating system
+ * Clipboard for the macOS operating system
  */
-class MacClipboardListener extends ClipboardListener implements Runnable {
+class MacClipboard extends SystemClipboard implements Runnable {
     ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     GenericClipboardContent<?>[] genericClipboardContents;
     private boolean listening = false;
 
-    MacClipboardListener() {
+    MacClipboard() {
         super();
     }
 
@@ -184,7 +184,7 @@ class MacClipboardListener extends ClipboardListener implements Runnable {
     }
 
     /**
-     * Main entry point for {@link MacClipboardListener}
+     * Main entry point for {@link MacClipboard}
      * <p>Retrieves thread from {@link Executors#newSingleThreadScheduledExecutor()} and executes code on a fixed delay</p>
      */
     @Override
