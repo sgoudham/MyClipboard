@@ -1,30 +1,30 @@
 package me.goudham.domain;
 
-import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import org.jetbrains.annotations.NotNull;
+import java.io.File;
+import java.util.List;
 
 /**
  * A {@link Transferable} which implements the capability required to transfer a
- * {@link java.awt.image.BufferedImage}
+ * {@link List} of {@link File}
  * <p>
- * This {@link Transferable} properly supports {@link DataFlavor#imageFlavor}
- * @see DataFlavor#imageFlavor
+ * This {@link Transferable} properly supports {@link DataFlavor#javaFileListFlavor}
+ * @see DataFlavor#javaFileListFlavor
  */
-public class TransferableImage implements Transferable {
+public class TransferableFile implements Transferable {
 
-    private final Image image;
+    private final List<File> files;
 
-    public TransferableImage(@NotNull Image image) {
-        this.image = image;
+    public TransferableFile(List<File> files) {
+        this.files = files;
     }
 
     @Override
     public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
-        if (flavor.equals(DataFlavor.imageFlavor)) {
-            return image;
+        if (flavor.equals(DataFlavor.javaFileListFlavor)) {
+            return files;
         } else {
             throw new UnsupportedFlavorException(flavor);
         }
@@ -32,11 +32,11 @@ public class TransferableImage implements Transferable {
 
     @Override
     public DataFlavor[] getTransferDataFlavors() {
-        return new DataFlavor[] { DataFlavor.imageFlavor };
+        return new DataFlavor[] { DataFlavor.javaFileListFlavor };
     }
 
     @Override
     public boolean isDataFlavorSupported(DataFlavor flavor) {
-        return flavor == DataFlavor.imageFlavor;
+        return flavor == DataFlavor.javaFileListFlavor;
     }
 }

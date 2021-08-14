@@ -1,10 +1,10 @@
-package me.goudham.domain;
+package me.goudham;
 
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 
-public enum Contents {
-    STRING(DataFlavor.stringFlavor) {
+enum Contents {
+    TEXT(DataFlavor.stringFlavor) {
         @Override
         public boolean isAvailable(Clipboard clipboard) {
             return clipboard.isDataFlavorAvailable(DataFlavor.stringFlavor);
@@ -16,7 +16,7 @@ public enum Contents {
             return clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor);
         }
     },
-    FILELIST(DataFlavor.javaFileListFlavor) {
+    FILE(DataFlavor.javaFileListFlavor) {
         @Override
         public boolean isAvailable(Clipboard clipboard) {
             return clipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor);
@@ -26,12 +26,12 @@ public enum Contents {
     private final DataFlavor dataFlavor;
 
     Contents(DataFlavor dataFlavor) {
-       this.dataFlavor = dataFlavor;
+        this.dataFlavor = dataFlavor;
     }
 
-    public DataFlavor getDataFlavor() {
+    DataFlavor getDataFlavor() {
         return dataFlavor;
     }
 
-    public abstract boolean isAvailable(Clipboard clipboard);
+    abstract boolean isAvailable(Clipboard clipboard);
 }
