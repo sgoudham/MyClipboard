@@ -1,6 +1,6 @@
 [license]: https://img.shields.io/github/license/sgoudham/MyClipboard
 [maven-central]: https://img.shields.io/maven-central/v/me.goudham/MyClipboard.svg?label=Maven%20Central
-[build-status]: https://goudham.me/jenkins/job/MyClipboard/job/release/badge/icon
+[build-status]: https://goudham.me/jenkins/job/sgoudham/job/MyClipboard/job/release/badge/icon
 [codecov]: https://codecov.io/gh/sgoudham/MyClipboard/branch/main/graph/badge.svg?token=F4LKql7rIq
 [issues]: https://img.shields.io/github/issues/sgoudham/MyClipboard?label=issues
 [pull-requests]: https://img.shields.io/github/issues-pr/sgoudham/MyClipboard
@@ -22,7 +22,71 @@ The inspiration for this project came from my frustration of macOS not having cl
 built-in unlike Windows. This library will allow you to access the system clipboard and manipulate it. 
 
 # Configuration
-TODO
+
+Follow the steps below for a basic implementation: 
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // Retrieve an instance of MyClipboard
+        MyClipboard myClipboard = MyClipboard.getSystemClipboard();
+
+        // Start listening for clipboard notifications 
+        myClipboard.startListening();
+
+        // Add event listeners for different types of events (Text, Image & File)
+        myClipboard.addEventListener((TextEvent) (oldContent, newContent) -> {
+            String oldText = oldContent.getText();
+            BufferedImage oldImage = oldContent.getImage();
+            List<File> oldFiles = oldContent.getFiles();
+            System.out.println("Old Text: " + oldText);
+            System.out.println("Old Image: " + oldImage);
+            System.out.println("Old File: " + oldFiles);
+            System.out.println("New String Content: " + newContent);
+        });
+
+        myClipboard.addEventListener((ImageEvent) (oldContent, newContent) -> {
+            String oldText = oldContent.getText();
+            BufferedImage oldImage = oldContent.getImage();
+            List<File> oldFiles = oldContent.getFiles();
+            System.out.println("Old Text: " + oldText);
+            System.out.println("Old Image: " + oldImage);
+            System.out.println("Old File: " + oldFiles);
+            System.out.println("New Image Content: " + newContent);
+        });
+
+        myClipboard.addEventListener((FileEvent) (oldContent, newContent) -> {
+            String oldText = oldContent.getText();
+            BufferedImage oldImage = oldContent.getImage();
+            List<File> oldFiles = oldContent.getFiles();
+            System.out.println("Old Text: " + oldText);
+            System.out.println("Old Image: " + oldImage);
+            System.out.println("Old File" + oldFiles);
+            System.out.println("New File Content: " + newContent);
+        });
+        
+        // Insert into the clipboard
+        myClipboard.insert("exampleContent");
+        
+        // Insert and notify MyClipboard of the new content
+        myClipboard.insertAndNotify("exampleContent");
+
+        // Set monitoring for clipboard types
+        myClipboard.setImageMonitored(true || false);
+        myClipboard.setTextMonitored(true || false);
+        myClipboard.setFileMonitored(true || false);
+        
+        // Toggle monitoring for clipboard types
+        myClipboard.toggleTextMonitored();
+        myClipboard.toggleImagesMonitored();
+        myClipboard.toggleFilesMonitored();
+        
+        // Stop listening for clipboard notifications
+        myClipboard.stopListening();
+    }
+}
+```
+
 
 # Windows / *Unix
 This approach differs from the macOS section below as Windows/*Unix properly notify the program with global clipboard events.
@@ -33,9 +97,6 @@ has new content within it - and the contents can be observed by multiple consume
 Unlike the aforementioned event-driven approach, macOS unfortunately is not very good at notifying the program if the 
 system clipboard has changed. To query the system clipboard contents, we need to employ a polling schedule. I have chosen
 **200ms** to ensure that images and large files can be copied over as well as reducing the load on the CPU.
-
-# Contributing
-TODO
 
 # Installation
 
