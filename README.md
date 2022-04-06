@@ -1,6 +1,6 @@
 [license]: https://img.shields.io/github/license/sgoudham/MyClipboard
 [maven-central]: https://img.shields.io/maven-central/v/me.goudham/MyClipboard.svg?label=Maven%20Central
-[build-status]: https://goudham.me/jenkins/job/MyClipboard/job/release/badge/icon
+[build-status]: https://goudham.me/jenkins/job/sgoudham/job/MyClipboard/job/release/badge/icon
 [codecov]: https://codecov.io/gh/sgoudham/MyClipboard/branch/main/graph/badge.svg?token=F4LKql7rIq
 [issues]: https://img.shields.io/github/issues/sgoudham/MyClipboard?label=issues
 [pull-requests]: https://img.shields.io/github/issues-pr/sgoudham/MyClipboard
