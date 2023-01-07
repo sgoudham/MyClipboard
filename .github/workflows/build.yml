@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -31,7 +31,9 @@ jobs:
         run: mvn -B -DskipTests clean package
 
       - name: Test
-        run: mvn test
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: mvn test
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v3
