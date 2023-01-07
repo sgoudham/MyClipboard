@@ -21,25 +21,17 @@ jobs:
           cache: 'maven'
           server-id: ossrh
           server-username: sgoudham
-          server-password: ${{ secrets.OSSRH_PASSWORD }}
+          server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: Build
         run: mvn -B -DskipTests clean package
 
-      - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./target/site/jacoco
-          files: jacoco.xml
-          fail_ci_if_error: false
-
       - name: Deploy
         env:
           MAVEN_USERNAME: sgoudham
-          MAVEN_TOKEN: ${{ secrets.OSSRH_PASSWORD }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
         run: mvn -B -DskipTests deploy
 
