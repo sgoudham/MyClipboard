@@ -1,0 +1,62 @@
+name: Build
+
+on:
+  push:
+    branches: '**'
+    paths:
+      - 'src/**'
+      - 'pom.xml'
+  pull_request:
+    branches: '**'
+    paths:
+      - 'src/**'
+      - 'pom.xml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'maven'
+
+      - name: Build
+        run: mvn -B -DskipTests clean package
+
+      - name: Test
+        run: mvn test
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./target/site/jacoco
+          files: jacoco.xml
+          fail_ci_if_error: false
+
+      - name: Retrieve Name & Version
+        run: |
+          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+          echo "NAME=$(mvn help:evaluate -Dexpression=project.name -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Archive Jar
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./target/${{ env.NAME }}-${{ env.VERSION }}.jar
+
+      - name: Archive Javadoc
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./target/${{ env.NAME }}-${{ env.VERSION }}-javadoc.jar
+
+      - name: Archive Sources
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./target/${{ env.NAME }}-${{ env.VERSION }}-sources.jar

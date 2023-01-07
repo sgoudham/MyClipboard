@@ -1,18 +1,10 @@
-[license]: https://img.shields.io/github/license/sgoudham/MyClipboard
 [maven-central]: https://img.shields.io/maven-central/v/me.goudham/MyClipboard.svg?label=Maven%20Central
-[build-status]: https://goudham.me/jenkins/job/sgoudham/job/MyClipboard/job/release/badge/icon
+[build-status]: https://img.shields.io/github/checks-status/sgoudham/MyClipboard/main
 [codecov]: https://codecov.io/gh/sgoudham/MyClipboard/branch/main/graph/badge.svg?token=F4LKql7rIq
-[issues]: https://img.shields.io/github/issues/sgoudham/MyClipboard?label=issues
-[pull-requests]: https://img.shields.io/github/issues-pr/sgoudham/MyClipboard
-[fossa]: https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsgoudham%2FMyClipboard.svg?type=shield
 
-![fossa]
-![license]
 ![maven-central]
 ![build-status]
 ![codecov]
-![issues]
-![pull-requests]
 
 # MyClipboard
 Utility Library to Access and Manipulate the Default System Clipboard

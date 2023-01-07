@@ -1,0 +1,72 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'maven'
+          server-id: ossrh
+          server-username: sgoudham
+          server-password: ${{ secrets.OSSRH_PASSWORD }}
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+
+      - name: Build
+        run: mvn -B -DskipTests clean package
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./target/site/jacoco
+          files: jacoco.xml
+          fail_ci_if_error: false
+
+      - name: Deploy
+        env:
+          OSSRH_USERNAME: sgoudham
+          OSSRH_TOKEN: ${{ secrets.OSSRH_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+        run: mvn -B -DskipTests deploy
+
+      - name: Get Name & Version
+        run: |
+          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+          echo "NAME=$(mvn help:evaluate -Dexpression=project.name -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Archive Jar
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./target/${{ env.NAME }}-${{ env.VERSION }}.jar
+
+      - name: Archive Javadoc
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./target/${{ env.NAME }}-${{ env.VERSION }}-javadoc.jar
+
+      - name: Archive Sources
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./target/${{ env.NAME }}-${{ env.VERSION }}-sources.jar
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: target/*.jar
+          generateReleaseNotes: true
+          makeLatest: true
+          draft: true
